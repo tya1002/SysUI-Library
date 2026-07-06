@@ -1,0 +1,25 @@
+-- File 'main' ini akan me-load library UI 'loader' otomatis di latar belakang
+local SysUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/tya1002/SysUI-Library/main/loader"))()
+
+-- Buka UI
+local Window = SysUI:Load()
+
+-- Tulis semua tombol cheat Anda di sini
+Window:BindToggle("Page_1_A", "Row_A", {
+    Default = false,
+    Callback = function(state)
+        if state then
+            print("Aimbot Aktif!")
+            -- Tulis script cheat aimbot Anda di sini
+        else
+            print("Aimbot Mati!")
+        end
+    end
+})
+
+Window:BindSlider("Page_1_A", "Row_B", {
+    Min = 10, Max = 100, Default = 50, Unit = "%",
+    Callback = function(val)
+        print("Aimbot FOV set to:", val)
+    end
+})
