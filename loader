@@ -207,7 +207,17 @@ function SysUI:Load(config)
     
     -- Load the template: First try local sources, then fallback to Roblox Cloud Asset (for executor)
     local template
-    local localSource = script:FindFirstChild("SysHubUI") or game.StarterGui:FindFirstChild("SysHubUI")
+    local localSource
+    pcall(function()
+        if script and typeof(script) == "Instance" then
+            localSource = script:FindFirstChild("SysHubUI")
+        end
+    end)
+    if not localSource then
+        pcall(function()
+            localSource = game:GetService("StarterGui"):FindFirstChild("SysHubUI")
+        end)
+    end
     
     if localSource then
         template = localSource:Clone()
