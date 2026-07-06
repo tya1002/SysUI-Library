@@ -236,6 +236,10 @@ function SysUI:Load(config)
     gui.Name = "SysHubUI_Loaded"
     gui.ResetOnSpawn = false
     
+    -- Destroy the original SysHubUILogic to prevent conflicts with the library
+    local logic = gui:FindFirstChild("SysHubUILogic")
+    if logic then logic:Destroy() end
+    
     local mainFrame = gui:WaitForChild("MainFrame")
     local loginFrame = gui:WaitForChild("LoginFrame")
     local sidebar = mainFrame:WaitForChild("Sidebar")
