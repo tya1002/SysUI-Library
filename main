@@ -1,19 +1,12 @@
--- File 'main' ini akan me-load library UI 'loader' otomatis di latar belakang
-local SysUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/tya1002/SysUI-Library/main/loader"))()
+-- File 'main' ini me-load library dengan bypass cache agar perubahan langsung aktif
+local SysUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/tya1002/SysUI-Library/main/loader?t=" .. os.time()))()
 
--- Buka UI
 local Window = SysUI:Load()
 
--- Tulis semua tombol cheat Anda di sini
 Window:BindToggle("Page_1_A", "Row_A", {
     Default = false,
     Callback = function(state)
-        if state then
-            print("Aimbot Aktif!")
-            -- Tulis script cheat aimbot Anda di sini
-        else
-            print("Aimbot Mati!")
-        end
+        print("Aimbot:", state)
     end
 })
 
