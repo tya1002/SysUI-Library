@@ -1,0 +1,3845 @@
+--[[
+    SysUI Library - Premium GUI Wrapper Library (SysHubUI Edition)
+    Wraps around the pre-built `SysHubUI` ScreenGui template.
+    Allows scripters to load their pre-made GUI design and bind callbacks 
+    to rows, buttons, toggles, sliders, dropdowns, inputs, color pickers, and keybinds.
+]]
+
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+
+local function createUI()
+local obj_1 = Instance.new("ScreenGui")
+obj_1.Name = "SysHubUI"
+obj_1.ResetOnSpawn = false
+obj_1.Enabled = true
+obj_1.DisplayOrder = 0
+obj_1.IgnoreGuiInset = true
+local obj_2 = Instance.new("Frame")
+obj_2.Name = "MainFrame"
+obj_2.Size = UDim2.new(0, 620, 0, 400)
+obj_2.Position = UDim2.new(0.5, 0, 0.5296609997749329, 0)
+obj_2.AnchorPoint = Vector2.new(0.5, 0.5)
+obj_2.BackgroundColor3 = Color3.fromRGB(5, 8, 20)
+obj_2.BackgroundTransparency = 0
+obj_2.BorderSizePixel = 0
+obj_2.Visible = false
+obj_2.ZIndex = 1
+obj_2.ClipsDescendants = true
+obj_2.LayoutOrder = 0
+obj_2.Rotation = 0
+obj_2.Parent = obj_1
+local obj_3 = Instance.new("UICorner")
+obj_3.Name = "UICorner"
+obj_3.CornerRadius = UDim.new(0, 16)
+obj_3.Parent = obj_2
+local obj_4 = Instance.new("Frame")
+obj_4.Name = "Sidebar"
+obj_4.Size = UDim2.new(0, 160, 1, 0)
+obj_4.Position = UDim2.new(0, 0, 0, 0)
+obj_4.AnchorPoint = Vector2.new(0, 0)
+obj_4.BackgroundColor3 = Color3.fromRGB(5, 8, 20)
+obj_4.BackgroundTransparency = 0.5
+obj_4.BorderSizePixel = 0
+obj_4.Visible = true
+obj_4.ZIndex = 1
+obj_4.ClipsDescendants = false
+obj_4.LayoutOrder = 0
+obj_4.Rotation = 0
+obj_4.Parent = obj_2
+local obj_5 = Instance.new("UICorner")
+obj_5.Name = "UICorner"
+obj_5.CornerRadius = UDim.new(0, 16)
+obj_5.Parent = obj_4
+local obj_6 = Instance.new("Frame")
+obj_6.Name = "CornerMask"
+obj_6.Size = UDim2.new(0, 20, 1, 0)
+obj_6.Position = UDim2.new(1, -20, 0, 0)
+obj_6.AnchorPoint = Vector2.new(0, 0)
+obj_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+obj_6.BackgroundTransparency = 0
+obj_6.BorderSizePixel = 0
+obj_6.Visible = true
+obj_6.ZIndex = 1
+obj_6.ClipsDescendants = false
+obj_6.LayoutOrder = 0
+obj_6.Rotation = 0
+obj_6.Parent = obj_4
+local obj_7 = Instance.new("UIGradient")
+obj_7.Name = "UIGradient"
+obj_7.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(1, 47, 122)), ColorSequenceKeypoint.new(1, Color3.fromRGB(1, 47, 122))})
+obj_7.Enabled = true
+obj_7.Offset = Vector2.new(0, 0)
+obj_7.Rotation = 0
+obj_7.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.529411792755127, 1), NumberSequenceKeypoint.new(1, 0)})
+obj_7.Parent = obj_6
+local obj_8 = Instance.new("Frame")
+obj_8.Name = "RightBorder"
+obj_8.Size = UDim2.new(0, 1, 1, 0)
+obj_8.Position = UDim2.new(1, 0, 0, 0)
+obj_8.AnchorPoint = Vector2.new(0, 0)
+obj_8.BackgroundColor3 = Color3.fromRGB(0, 85, 255)
+obj_8.BackgroundTransparency = 0.4000000059604645
+obj_8.BorderSizePixel = 0
+obj_8.Visible = true
+obj_8.ZIndex = 1
+obj_8.ClipsDescendants = false
+obj_8.LayoutOrder = 0
+obj_8.Rotation = 0
+obj_8.Parent = obj_4
+local obj_9 = Instance.new("Frame")
+obj_9.Name = "LogoGroup"
+obj_9.Size = UDim2.new(1, -40, 0, 36)
+obj_9.Position = UDim2.new(0, 20, 0, 16)
+obj_9.AnchorPoint = Vector2.new(0, 0)
+obj_9.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_9.BackgroundTransparency = 1
+obj_9.BorderSizePixel = 1
+obj_9.Visible = true
+obj_9.ZIndex = 1
+obj_9.ClipsDescendants = false
+obj_9.LayoutOrder = 0
+obj_9.Rotation = 0
+obj_9.Parent = obj_4
+local obj_10 = Instance.new("ImageLabel")
+obj_10.Name = "Icon"
+obj_10.Size = UDim2.new(0, 122, 0, 62)
+obj_10.Position = UDim2.new(-0.11666666716337204, 0, 0.5, 0)
+obj_10.AnchorPoint = Vector2.new(0, 0.5)
+obj_10.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_10.BackgroundTransparency = 1
+obj_10.BorderSizePixel = 1
+obj_10.Visible = true
+obj_10.ZIndex = 1
+obj_10.ClipsDescendants = true
+obj_10.LayoutOrder = 0
+obj_10.Rotation = 0
+obj_10.Image = "rbxassetid://129147718736508"
+obj_10.ImageColor3 = Color3.fromRGB(0, 150, 255)
+obj_10.ImageRectOffset = Vector2.new(0, 0)
+obj_10.ImageRectSize = Vector2.new(0, 0)
+obj_10.ImageTransparency = 0
+obj_10.ScaleType = Enum.ScaleType.Stretch
+obj_10.SliceCenter = Rect.new(0, 0, 0, 0)
+obj_10.SliceScale = 1
+obj_10.Parent = obj_9
+local obj_11 = Instance.new("ImageLabel")
+obj_11.Name = "LightSweep"
+obj_11.Size = UDim2.new(2, 0, 2, 0)
+obj_11.Position = UDim2.new(-2, 0, -0.5, 0)
+obj_11.AnchorPoint = Vector2.new(0, 0)
+obj_11.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_11.BackgroundTransparency = 1
+obj_11.BorderSizePixel = 1
+obj_11.Visible = true
+obj_11.ZIndex = 1
+obj_11.ClipsDescendants = false
+obj_11.LayoutOrder = 0
+obj_11.Rotation = 0
+obj_11.Image = "rbxassetid://15264669894"
+obj_11.ImageColor3 = Color3.fromRGB(255, 255, 255)
+obj_11.ImageRectOffset = Vector2.new(0, 0)
+obj_11.ImageRectSize = Vector2.new(0, 0)
+obj_11.ImageTransparency = 0.4000000059604645
+obj_11.ScaleType = Enum.ScaleType.Stretch
+obj_11.SliceCenter = Rect.new(0, 0, 0, 0)
+obj_11.SliceScale = 1
+obj_11.Parent = obj_10
+local obj_12 = Instance.new("TextLabel")
+obj_12.Name = "Text"
+obj_12.Size = UDim2.new(1, -34, 1, 0)
+obj_12.Position = UDim2.new(0, 48, 0, 10)
+obj_12.AnchorPoint = Vector2.new(0, 0)
+obj_12.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_12.BackgroundTransparency = 1
+obj_12.BorderSizePixel = 1
+obj_12.Visible = true
+obj_12.ZIndex = 1
+obj_12.ClipsDescendants = false
+obj_12.LayoutOrder = 0
+obj_12.Rotation = 0
+obj_12.Text = "Premium"
+obj_12.TextColor3 = Color3.fromRGB(116, 116, 116)
+obj_12.TextSize = 11
+obj_12.Font = Enum.Font.GothamBold
+obj_12.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_12.TextStrokeTransparency = 1
+obj_12.TextWrapped = false
+obj_12.TextXAlignment = Enum.TextXAlignment.Left
+obj_12.TextYAlignment = Enum.TextYAlignment.Center
+obj_12.RichText = false
+obj_12.Parent = obj_9
+local obj_13 = Instance.new("Frame")
+obj_13.Name = "LogoCircleGlow"
+obj_13.Size = UDim2.new(0, 80, 0, 80)
+obj_13.Position = UDim2.new(-0.11666666716337204, -9, 0.5, 0)
+obj_13.AnchorPoint = Vector2.new(0, 0.5)
+obj_13.BackgroundColor3 = Color3.fromRGB(0, 110, 255)
+obj_13.BackgroundTransparency = 0.75
+obj_13.BorderSizePixel = 1
+obj_13.Visible = true
+obj_13.ZIndex = 0
+obj_13.ClipsDescendants = false
+obj_13.LayoutOrder = 0
+obj_13.Rotation = 0
+obj_13.Parent = obj_9
+local obj_14 = Instance.new("UICorner")
+obj_14.Name = "UICorner"
+obj_14.CornerRadius = UDim.new(1, 0)
+obj_14.Parent = obj_13
+local obj_15 = Instance.new("UIStroke")
+obj_15.Name = "UIStroke"
+obj_15.Color = Color3.fromRGB(0, 140, 255)
+obj_15.Thickness = 1.5
+obj_15.Transparency = 0.5
+obj_15.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_15.LineJoinMode = Enum.LineJoinMode.Round
+obj_15.Parent = obj_13
+local obj_16 = Instance.new("Frame")
+obj_16.Name = "ProfileCard"
+obj_16.Size = UDim2.new(0.9750000238418579, -16, 0, 48)
+obj_16.Position = UDim2.new(0, 8, 1, -56)
+obj_16.AnchorPoint = Vector2.new(0, 0)
+obj_16.BackgroundColor3 = Color3.fromRGB(10, 15, 35)
+obj_16.BackgroundTransparency = 0
+obj_16.BorderSizePixel = 0
+obj_16.Visible = true
+obj_16.ZIndex = 1
+obj_16.ClipsDescendants = false
+obj_16.LayoutOrder = 0
+obj_16.Rotation = 0
+obj_16.Parent = obj_4
+local obj_17 = Instance.new("UICorner")
+obj_17.Name = "UICorner"
+obj_17.CornerRadius = UDim.new(0, 10)
+obj_17.Parent = obj_16
+local obj_18 = Instance.new("TextLabel")
+obj_18.Name = "Status"
+obj_18.Size = UDim2.new(1, -85, 0, 18)
+obj_18.Position = UDim2.new(-0.0694444477558136, 52, 0.5425001978874207, 0)
+obj_18.AnchorPoint = Vector2.new(0, 0)
+obj_18.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_18.BackgroundTransparency = 1
+obj_18.BorderSizePixel = 1
+obj_18.Visible = true
+obj_18.ZIndex = 1
+obj_18.ClipsDescendants = false
+obj_18.LayoutOrder = 0
+obj_18.Rotation = 0
+obj_18.Text = "Status : N/A"
+obj_18.TextColor3 = Color3.fromRGB(120, 135, 160)
+obj_18.TextSize = 9
+obj_18.Font = Enum.Font.GothamMedium
+obj_18.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_18.TextStrokeTransparency = 1
+obj_18.TextWrapped = false
+obj_18.TextXAlignment = Enum.TextXAlignment.Left
+obj_18.TextYAlignment = Enum.TextYAlignment.Center
+obj_18.RichText = false
+obj_18.Parent = obj_16
+local obj_19 = Instance.new("TextLabel")
+obj_19.Name = "Arrow"
+obj_19.Size = UDim2.new(0, 14, 0, 14)
+obj_19.Position = UDim2.new(1, -24, 0.5, 0)
+obj_19.AnchorPoint = Vector2.new(0, 0.5)
+obj_19.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_19.BackgroundTransparency = 1
+obj_19.BorderSizePixel = 1
+obj_19.Visible = true
+obj_19.ZIndex = 1
+obj_19.ClipsDescendants = false
+obj_19.LayoutOrder = 0
+obj_19.Rotation = 0
+obj_19.Text = "v"
+obj_19.TextColor3 = Color3.fromRGB(120, 135, 160)
+obj_19.TextSize = 10
+obj_19.Font = Enum.Font.GothamMedium
+obj_19.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_19.TextStrokeTransparency = 1
+obj_19.TextWrapped = false
+obj_19.TextXAlignment = Enum.TextXAlignment.Center
+obj_19.TextYAlignment = Enum.TextYAlignment.Center
+obj_19.RichText = false
+obj_19.Parent = obj_16
+local obj_20 = Instance.new("Frame")
+obj_20.Name = "Avatar"
+obj_20.Size = UDim2.new(0, 28, 0, 28)
+obj_20.Position = UDim2.new(0, 8, 0.5, 0)
+obj_20.AnchorPoint = Vector2.new(0, 0.5)
+obj_20.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+obj_20.BackgroundTransparency = 0
+obj_20.BorderSizePixel = 0
+obj_20.Visible = true
+obj_20.ZIndex = 1
+obj_20.ClipsDescendants = false
+obj_20.LayoutOrder = 0
+obj_20.Rotation = 0
+obj_20.Parent = obj_16
+local obj_21 = Instance.new("UICorner")
+obj_21.Name = "UICorner"
+obj_21.CornerRadius = UDim.new(0, 18)
+obj_21.Parent = obj_20
+local obj_22 = Instance.new("ImageLabel")
+obj_22.Name = "Icon"
+obj_22.Size = UDim2.new(0, 20, 0, 18)
+obj_22.Position = UDim2.new(0.1333334743976593, 0, 0.4977874755859375, 0)
+obj_22.AnchorPoint = Vector2.new(0, 0.5)
+obj_22.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_22.BackgroundTransparency = 1
+obj_22.BorderSizePixel = 1
+obj_22.Visible = true
+obj_22.ZIndex = 1
+obj_22.ClipsDescendants = true
+obj_22.LayoutOrder = 0
+obj_22.Rotation = 0
+obj_22.Image = "rbxassetid://81146515672929"
+obj_22.ImageColor3 = Color3.fromRGB(0, 150, 255)
+obj_22.ImageRectOffset = Vector2.new(0, 0)
+obj_22.ImageRectSize = Vector2.new(0, 0)
+obj_22.ImageTransparency = 0
+obj_22.ScaleType = Enum.ScaleType.Stretch
+obj_22.SliceCenter = Rect.new(0, 0, 0, 0)
+obj_22.SliceScale = 1
+obj_22.Parent = obj_20
+local obj_23 = Instance.new("ImageLabel")
+obj_23.Name = "LightSweep"
+obj_23.Size = UDim2.new(2, 0, 2, 0)
+obj_23.Position = UDim2.new(-2, 0, -0.5, 0)
+obj_23.AnchorPoint = Vector2.new(0, 0)
+obj_23.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_23.BackgroundTransparency = 1
+obj_23.BorderSizePixel = 1
+obj_23.Visible = true
+obj_23.ZIndex = 1
+obj_23.ClipsDescendants = false
+obj_23.LayoutOrder = 0
+obj_23.Rotation = 0
+obj_23.Image = "rbxassetid://15264669894"
+obj_23.ImageColor3 = Color3.fromRGB(255, 255, 255)
+obj_23.ImageRectOffset = Vector2.new(0, 0)
+obj_23.ImageRectSize = Vector2.new(0, 0)
+obj_23.ImageTransparency = 0.4000000059604645
+obj_23.ScaleType = Enum.ScaleType.Stretch
+obj_23.SliceCenter = Rect.new(0, 0, 0, 0)
+obj_23.SliceScale = 1
+obj_23.Parent = obj_22
+local obj_24 = Instance.new("UIGradient")
+obj_24.Name = "UIGradient"
+obj_24.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(11, 27, 63)), ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 2))})
+obj_24.Enabled = true
+obj_24.Offset = Vector2.new(0, 0)
+obj_24.Rotation = 0
+obj_24.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 0)})
+obj_24.Parent = obj_20
+local obj_25 = Instance.new("UIStroke")
+obj_25.Name = "UIStroke"
+obj_25.Color = Color3.fromRGB(255, 255, 255)
+obj_25.Thickness = 1
+obj_25.Transparency = 0
+obj_25.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_25.LineJoinMode = Enum.LineJoinMode.Round
+obj_25.Parent = obj_20
+local obj_26 = Instance.new("UIGradient")
+obj_26.Name = "UIGradient"
+obj_26.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 85, 255)), ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 2))})
+obj_26.Enabled = true
+obj_26.Offset = Vector2.new(0, 0)
+obj_26.Rotation = 0
+obj_26.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 0)})
+obj_26.Parent = obj_25
+local obj_27 = Instance.new("TextLabel")
+obj_27.Name = "DisplayName"
+obj_27.Size = UDim2.new(1.1408730745315552, -85, 0, 18)
+obj_27.Position = UDim2.new(-0.06944449245929718, 52, 0.16750018298625946, 0)
+obj_27.AnchorPoint = Vector2.new(0, 0)
+obj_27.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_27.BackgroundTransparency = 1
+obj_27.BorderSizePixel = 1
+obj_27.Visible = true
+obj_27.ZIndex = 1
+obj_27.ClipsDescendants = false
+obj_27.LayoutOrder = 0
+obj_27.Rotation = 0
+obj_27.Text = "Display Name"
+obj_27.TextColor3 = Color3.fromRGB(255, 255, 255)
+obj_27.TextSize = 10
+obj_27.Font = Enum.Font.GothamBold
+obj_27.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_27.TextStrokeTransparency = 1
+obj_27.TextWrapped = false
+obj_27.TextXAlignment = Enum.TextXAlignment.Left
+obj_27.TextYAlignment = Enum.TextYAlignment.Center
+obj_27.RichText = false
+obj_27.Parent = obj_16
+local obj_28 = Instance.new("ScrollingFrame")
+obj_28.Name = "SidebarScroll"
+obj_28.Size = UDim2.new(1, 0, 1, -128)
+obj_28.Position = UDim2.new(0, 0, 0, 70)
+obj_28.AnchorPoint = Vector2.new(0, 0)
+obj_28.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_28.BackgroundTransparency = 1
+obj_28.BorderSizePixel = 0
+obj_28.Visible = true
+obj_28.ZIndex = 2
+obj_28.ClipsDescendants = true
+obj_28.LayoutOrder = 0
+obj_28.Rotation = 0
+obj_28.CanvasPosition = Vector2.new(0, 0)
+obj_28.CanvasSize = UDim2.new(0, 0, 0, 0)
+obj_28.ScrollBarImageColor3 = Color3.fromRGB(59, 130, 246)
+obj_28.ScrollBarImageTransparency = 0
+obj_28.ScrollBarThickness = 2
+obj_28.ScrollingDirection = Enum.ScrollingDirection.Y
+obj_28.AutomaticCanvasSize = Enum.AutomaticSize.Y
+obj_28.Parent = obj_4
+local obj_29 = Instance.new("UIListLayout")
+obj_29.Name = "Layout"
+obj_29.Padding = UDim.new(0, 4)
+obj_29.FillDirection = Enum.FillDirection.Vertical
+obj_29.HorizontalAlignment = Enum.HorizontalAlignment.Left
+obj_29.VerticalAlignment = Enum.VerticalAlignment.Top
+obj_29.SortOrder = Enum.SortOrder.LayoutOrder
+obj_29.Parent = obj_28
+local obj_30 = Instance.new("UIPadding")
+obj_30.Name = "UIPadding"
+obj_30.PaddingLeft = UDim.new(0, 8)
+obj_30.PaddingRight = UDim.new(0, 6)
+obj_30.PaddingTop = UDim.new(0, 8)
+obj_30.PaddingBottom = UDim.new(0, 8)
+obj_30.Parent = obj_28
+local obj_31 = Instance.new("Frame")
+obj_31.Name = "Group_1"
+obj_31.Size = UDim2.new(1, 0, 0, 30)
+obj_31.Position = UDim2.new(0, 0, 0, 0)
+obj_31.AnchorPoint = Vector2.new(0, 0)
+obj_31.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_31.BackgroundTransparency = 1
+obj_31.BorderSizePixel = 0
+obj_31.Visible = true
+obj_31.ZIndex = 2
+obj_31.ClipsDescendants = false
+obj_31.LayoutOrder = 1
+obj_31.Rotation = 0
+obj_31.Parent = obj_28
+local obj_32 = Instance.new("UIListLayout")
+obj_32.Name = "UIListLayout"
+obj_32.Padding = UDim.new(0, 0)
+obj_32.FillDirection = Enum.FillDirection.Vertical
+obj_32.HorizontalAlignment = Enum.HorizontalAlignment.Left
+obj_32.VerticalAlignment = Enum.VerticalAlignment.Top
+obj_32.SortOrder = Enum.SortOrder.LayoutOrder
+obj_32.Parent = obj_31
+local obj_33 = Instance.new("TextButton")
+obj_33.Name = "Header"
+obj_33.Size = UDim2.new(1, 0, 0, 30)
+obj_33.Position = UDim2.new(0, 0, 0, 0)
+obj_33.AnchorPoint = Vector2.new(0, 0)
+obj_33.BackgroundColor3 = Color3.fromRGB(12, 20, 50)
+obj_33.BackgroundTransparency = 0
+obj_33.BorderSizePixel = 0
+obj_33.Visible = true
+obj_33.ZIndex = 2
+obj_33.ClipsDescendants = false
+obj_33.LayoutOrder = 1
+obj_33.Rotation = 0
+obj_33.Text = ""
+obj_33.TextColor3 = Color3.fromRGB(27, 42, 53)
+obj_33.TextSize = 8
+obj_33.Font = Enum.Font.Legacy
+obj_33.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_33.TextStrokeTransparency = 1
+obj_33.TextWrapped = false
+obj_33.TextXAlignment = Enum.TextXAlignment.Center
+obj_33.TextYAlignment = Enum.TextYAlignment.Center
+obj_33.RichText = false
+obj_33.Parent = obj_31
+local obj_34 = Instance.new("UIGradient")
+obj_34.Name = "UIGradient"
+obj_34.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(50, 110, 255)), ColorSequenceKeypoint.new(0.44999998807907104, Color3.fromRGB(20, 50, 140)), ColorSequenceKeypoint.new(1, Color3.fromRGB(8, 14, 38))})
+obj_34.Enabled = true
+obj_34.Offset = Vector2.new(0, 0)
+obj_34.Rotation = 0
+obj_34.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.5), NumberSequenceKeypoint.new(0.44999998807907104, 0.7200000286102295), NumberSequenceKeypoint.new(1, 0.8999999761581421)})
+obj_34.Parent = obj_33
+local obj_35 = Instance.new("UICorner")
+obj_35.Name = "UICorner"
+obj_35.CornerRadius = UDim.new(0, 6)
+obj_35.Parent = obj_33
+local obj_36 = Instance.new("TextLabel")
+obj_36.Name = "Label"
+obj_36.Size = UDim2.new(1, -28, 1, 0)
+obj_36.Position = UDim2.new(0, 10, 0, 0)
+obj_36.AnchorPoint = Vector2.new(0, 0)
+obj_36.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_36.BackgroundTransparency = 1
+obj_36.BorderSizePixel = 1
+obj_36.Visible = true
+obj_36.ZIndex = 2
+obj_36.ClipsDescendants = false
+obj_36.LayoutOrder = 0
+obj_36.Rotation = 0
+obj_36.Text = "Menu 1"
+obj_36.TextColor3 = Color3.fromRGB(180, 200, 235)
+obj_36.TextSize = 11
+obj_36.Font = Enum.Font.GothamMedium
+obj_36.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_36.TextStrokeTransparency = 1
+obj_36.TextWrapped = false
+obj_36.TextXAlignment = Enum.TextXAlignment.Left
+obj_36.TextYAlignment = Enum.TextYAlignment.Center
+obj_36.RichText = false
+obj_36.Parent = obj_33
+local obj_37 = Instance.new("TextLabel")
+obj_37.Name = "Arrow"
+obj_37.Size = UDim2.new(0, 16, 0, 16)
+obj_37.Position = UDim2.new(1, -20, 0.5, 0)
+obj_37.AnchorPoint = Vector2.new(0, 0.5)
+obj_37.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_37.BackgroundTransparency = 1
+obj_37.BorderSizePixel = 1
+obj_37.Visible = true
+obj_37.ZIndex = 2
+obj_37.ClipsDescendants = false
+obj_37.LayoutOrder = 0
+obj_37.Rotation = 0
+obj_37.Text = "▶"
+obj_37.TextColor3 = Color3.fromRGB(100, 130, 200)
+obj_37.TextSize = 8
+obj_37.Font = Enum.Font.GothamBold
+obj_37.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_37.TextStrokeTransparency = 1
+obj_37.TextWrapped = false
+obj_37.TextXAlignment = Enum.TextXAlignment.Center
+obj_37.TextYAlignment = Enum.TextYAlignment.Center
+obj_37.RichText = false
+obj_37.Parent = obj_33
+local obj_38 = Instance.new("UIStroke")
+obj_38.Name = "UIStroke"
+obj_38.Color = Color3.fromRGB(40, 90, 220)
+obj_38.Thickness = 0.800000011920929
+obj_38.Transparency = 0.699999988079071
+obj_38.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_38.LineJoinMode = Enum.LineJoinMode.Round
+obj_38.Parent = obj_33
+local obj_39 = Instance.new("Frame")
+obj_39.Name = "SubItems"
+obj_39.Size = UDim2.new(1, 0, 0, 0)
+obj_39.Position = UDim2.new(0, 0, 0, 0)
+obj_39.AnchorPoint = Vector2.new(0, 0)
+obj_39.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_39.BackgroundTransparency = 1
+obj_39.BorderSizePixel = 0
+obj_39.Visible = true
+obj_39.ZIndex = 2
+obj_39.ClipsDescendants = true
+obj_39.LayoutOrder = 2
+obj_39.Rotation = 0
+obj_39.Parent = obj_31
+local obj_40 = Instance.new("UIListLayout")
+obj_40.Name = "UIListLayout"
+obj_40.Padding = UDim.new(0, 2)
+obj_40.FillDirection = Enum.FillDirection.Vertical
+obj_40.HorizontalAlignment = Enum.HorizontalAlignment.Left
+obj_40.VerticalAlignment = Enum.VerticalAlignment.Top
+obj_40.SortOrder = Enum.SortOrder.LayoutOrder
+obj_40.Parent = obj_39
+local obj_41 = Instance.new("UIPadding")
+obj_41.Name = "UIPadding"
+obj_41.PaddingLeft = UDim.new(0, 12)
+obj_41.PaddingRight = UDim.new(0, 4)
+obj_41.PaddingTop = UDim.new(0, 4)
+obj_41.PaddingBottom = UDim.new(0, 4)
+obj_41.Parent = obj_39
+local obj_42 = Instance.new("TextButton")
+obj_42.Name = "Item_A"
+obj_42.Size = UDim2.new(1, 0, 0, 26)
+obj_42.Position = UDim2.new(0, 0, 0, 0)
+obj_42.AnchorPoint = Vector2.new(0, 0)
+obj_42.BackgroundColor3 = Color3.fromRGB(10, 18, 45)
+obj_42.BackgroundTransparency = 0.20000000298023224
+obj_42.BorderSizePixel = 0
+obj_42.Visible = true
+obj_42.ZIndex = 2
+obj_42.ClipsDescendants = false
+obj_42.LayoutOrder = 1
+obj_42.Rotation = 0
+obj_42.Text = ""
+obj_42.TextColor3 = Color3.fromRGB(27, 42, 53)
+obj_42.TextSize = 8
+obj_42.Font = Enum.Font.Legacy
+obj_42.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_42.TextStrokeTransparency = 1
+obj_42.TextWrapped = false
+obj_42.TextXAlignment = Enum.TextXAlignment.Center
+obj_42.TextYAlignment = Enum.TextYAlignment.Center
+obj_42.RichText = false
+obj_42.Parent = obj_39
+local obj_43 = Instance.new("UICorner")
+obj_43.Name = "UICorner"
+obj_43.CornerRadius = UDim.new(0, 5)
+obj_43.Parent = obj_42
+local obj_44 = Instance.new("Frame")
+obj_44.Name = "Accent"
+obj_44.Size = UDim2.new(0, 2, 0.6000000238418579, 0)
+obj_44.Position = UDim2.new(0, 0, 0.20000000298023224, 0)
+obj_44.AnchorPoint = Vector2.new(0, 0)
+obj_44.BackgroundColor3 = Color3.fromRGB(50, 110, 255)
+obj_44.BackgroundTransparency = 0.4000000059604645
+obj_44.BorderSizePixel = 0
+obj_44.Visible = true
+obj_44.ZIndex = 2
+obj_44.ClipsDescendants = false
+obj_44.LayoutOrder = 0
+obj_44.Rotation = 0
+obj_44.Parent = obj_42
+local obj_45 = Instance.new("UICorner")
+obj_45.Name = "UICorner"
+obj_45.CornerRadius = UDim.new(1, 0)
+obj_45.Parent = obj_44
+local obj_46 = Instance.new("TextLabel")
+obj_46.Name = "Label"
+obj_46.Size = UDim2.new(1, -12, 1, 0)
+obj_46.Position = UDim2.new(0, 10, 0, 0)
+obj_46.AnchorPoint = Vector2.new(0, 0)
+obj_46.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_46.BackgroundTransparency = 1
+obj_46.BorderSizePixel = 1
+obj_46.Visible = true
+obj_46.ZIndex = 2
+obj_46.ClipsDescendants = false
+obj_46.LayoutOrder = 0
+obj_46.Rotation = 0
+obj_46.Text = "A"
+obj_46.TextColor3 = Color3.fromRGB(140, 165, 210)
+obj_46.TextSize = 11
+obj_46.Font = Enum.Font.GothamMedium
+obj_46.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_46.TextStrokeTransparency = 1
+obj_46.TextWrapped = false
+obj_46.TextXAlignment = Enum.TextXAlignment.Left
+obj_46.TextYAlignment = Enum.TextYAlignment.Center
+obj_46.RichText = false
+obj_46.Parent = obj_42
+local obj_47 = Instance.new("UIGradient")
+obj_47.Name = "UIGradient"
+obj_47.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 70, 180)), ColorSequenceKeypoint.new(1, Color3.fromRGB(8, 14, 38))})
+obj_47.Enabled = true
+obj_47.Offset = Vector2.new(0, 0)
+obj_47.Rotation = 0
+obj_47.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.75), NumberSequenceKeypoint.new(1, 0.9200000166893005)})
+obj_47.Parent = obj_42
+local obj_48 = Instance.new("UIStroke")
+obj_48.Name = "UIStroke"
+obj_48.Color = Color3.fromRGB(30, 60, 140)
+obj_48.Thickness = 0.800000011920929
+obj_48.Transparency = 0.6499999761581421
+obj_48.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_48.LineJoinMode = Enum.LineJoinMode.Round
+obj_48.Parent = obj_42
+local obj_49 = Instance.new("TextButton")
+obj_49.Name = "Item_B"
+obj_49.Size = UDim2.new(1, 0, 0, 26)
+obj_49.Position = UDim2.new(0, 0, 0, 0)
+obj_49.AnchorPoint = Vector2.new(0, 0)
+obj_49.BackgroundColor3 = Color3.fromRGB(10, 18, 45)
+obj_49.BackgroundTransparency = 0.20000000298023224
+obj_49.BorderSizePixel = 0
+obj_49.Visible = true
+obj_49.ZIndex = 2
+obj_49.ClipsDescendants = false
+obj_49.LayoutOrder = 2
+obj_49.Rotation = 0
+obj_49.Text = ""
+obj_49.TextColor3 = Color3.fromRGB(27, 42, 53)
+obj_49.TextSize = 8
+obj_49.Font = Enum.Font.Legacy
+obj_49.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_49.TextStrokeTransparency = 1
+obj_49.TextWrapped = false
+obj_49.TextXAlignment = Enum.TextXAlignment.Center
+obj_49.TextYAlignment = Enum.TextYAlignment.Center
+obj_49.RichText = false
+obj_49.Parent = obj_39
+local obj_50 = Instance.new("UICorner")
+obj_50.Name = "UICorner"
+obj_50.CornerRadius = UDim.new(0, 5)
+obj_50.Parent = obj_49
+local obj_51 = Instance.new("Frame")
+obj_51.Name = "Accent"
+obj_51.Size = UDim2.new(0, 2, 0.6000000238418579, 0)
+obj_51.Position = UDim2.new(0, 0, 0.20000000298023224, 0)
+obj_51.AnchorPoint = Vector2.new(0, 0)
+obj_51.BackgroundColor3 = Color3.fromRGB(50, 110, 255)
+obj_51.BackgroundTransparency = 0.4000000059604645
+obj_51.BorderSizePixel = 0
+obj_51.Visible = true
+obj_51.ZIndex = 2
+obj_51.ClipsDescendants = false
+obj_51.LayoutOrder = 0
+obj_51.Rotation = 0
+obj_51.Parent = obj_49
+local obj_52 = Instance.new("UICorner")
+obj_52.Name = "UICorner"
+obj_52.CornerRadius = UDim.new(1, 0)
+obj_52.Parent = obj_51
+local obj_53 = Instance.new("TextLabel")
+obj_53.Name = "Label"
+obj_53.Size = UDim2.new(1, -12, 1, 0)
+obj_53.Position = UDim2.new(0, 10, 0, 0)
+obj_53.AnchorPoint = Vector2.new(0, 0)
+obj_53.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_53.BackgroundTransparency = 1
+obj_53.BorderSizePixel = 1
+obj_53.Visible = true
+obj_53.ZIndex = 2
+obj_53.ClipsDescendants = false
+obj_53.LayoutOrder = 0
+obj_53.Rotation = 0
+obj_53.Text = "B"
+obj_53.TextColor3 = Color3.fromRGB(140, 165, 210)
+obj_53.TextSize = 11
+obj_53.Font = Enum.Font.GothamMedium
+obj_53.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_53.TextStrokeTransparency = 1
+obj_53.TextWrapped = false
+obj_53.TextXAlignment = Enum.TextXAlignment.Left
+obj_53.TextYAlignment = Enum.TextYAlignment.Center
+obj_53.RichText = false
+obj_53.Parent = obj_49
+local obj_54 = Instance.new("UIGradient")
+obj_54.Name = "UIGradient"
+obj_54.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 70, 180)), ColorSequenceKeypoint.new(1, Color3.fromRGB(8, 14, 38))})
+obj_54.Enabled = true
+obj_54.Offset = Vector2.new(0, 0)
+obj_54.Rotation = 0
+obj_54.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.75), NumberSequenceKeypoint.new(1, 0.9200000166893005)})
+obj_54.Parent = obj_49
+local obj_55 = Instance.new("UIStroke")
+obj_55.Name = "UIStroke"
+obj_55.Color = Color3.fromRGB(30, 60, 140)
+obj_55.Thickness = 0.800000011920929
+obj_55.Transparency = 0.6499999761581421
+obj_55.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_55.LineJoinMode = Enum.LineJoinMode.Round
+obj_55.Parent = obj_49
+local obj_56 = Instance.new("TextButton")
+obj_56.Name = "Item_C"
+obj_56.Size = UDim2.new(1, 0, 0, 26)
+obj_56.Position = UDim2.new(0, 0, 0, 0)
+obj_56.AnchorPoint = Vector2.new(0, 0)
+obj_56.BackgroundColor3 = Color3.fromRGB(10, 18, 45)
+obj_56.BackgroundTransparency = 0.20000000298023224
+obj_56.BorderSizePixel = 0
+obj_56.Visible = true
+obj_56.ZIndex = 2
+obj_56.ClipsDescendants = false
+obj_56.LayoutOrder = 3
+obj_56.Rotation = 0
+obj_56.Text = ""
+obj_56.TextColor3 = Color3.fromRGB(27, 42, 53)
+obj_56.TextSize = 8
+obj_56.Font = Enum.Font.Legacy
+obj_56.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_56.TextStrokeTransparency = 1
+obj_56.TextWrapped = false
+obj_56.TextXAlignment = Enum.TextXAlignment.Center
+obj_56.TextYAlignment = Enum.TextYAlignment.Center
+obj_56.RichText = false
+obj_56.Parent = obj_39
+local obj_57 = Instance.new("UICorner")
+obj_57.Name = "UICorner"
+obj_57.CornerRadius = UDim.new(0, 5)
+obj_57.Parent = obj_56
+local obj_58 = Instance.new("Frame")
+obj_58.Name = "Accent"
+obj_58.Size = UDim2.new(0, 2, 0.6000000238418579, 0)
+obj_58.Position = UDim2.new(0, 0, 0.20000000298023224, 0)
+obj_58.AnchorPoint = Vector2.new(0, 0)
+obj_58.BackgroundColor3 = Color3.fromRGB(50, 110, 255)
+obj_58.BackgroundTransparency = 0.4000000059604645
+obj_58.BorderSizePixel = 0
+obj_58.Visible = true
+obj_58.ZIndex = 2
+obj_58.ClipsDescendants = false
+obj_58.LayoutOrder = 0
+obj_58.Rotation = 0
+obj_58.Parent = obj_56
+local obj_59 = Instance.new("UICorner")
+obj_59.Name = "UICorner"
+obj_59.CornerRadius = UDim.new(1, 0)
+obj_59.Parent = obj_58
+local obj_60 = Instance.new("TextLabel")
+obj_60.Name = "Label"
+obj_60.Size = UDim2.new(1, -12, 1, 0)
+obj_60.Position = UDim2.new(0, 10, 0, 0)
+obj_60.AnchorPoint = Vector2.new(0, 0)
+obj_60.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_60.BackgroundTransparency = 1
+obj_60.BorderSizePixel = 1
+obj_60.Visible = true
+obj_60.ZIndex = 2
+obj_60.ClipsDescendants = false
+obj_60.LayoutOrder = 0
+obj_60.Rotation = 0
+obj_60.Text = "C"
+obj_60.TextColor3 = Color3.fromRGB(140, 165, 210)
+obj_60.TextSize = 11
+obj_60.Font = Enum.Font.GothamMedium
+obj_60.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_60.TextStrokeTransparency = 1
+obj_60.TextWrapped = false
+obj_60.TextXAlignment = Enum.TextXAlignment.Left
+obj_60.TextYAlignment = Enum.TextYAlignment.Center
+obj_60.RichText = false
+obj_60.Parent = obj_56
+local obj_61 = Instance.new("UIGradient")
+obj_61.Name = "UIGradient"
+obj_61.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 70, 180)), ColorSequenceKeypoint.new(1, Color3.fromRGB(8, 14, 38))})
+obj_61.Enabled = true
+obj_61.Offset = Vector2.new(0, 0)
+obj_61.Rotation = 0
+obj_61.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.75), NumberSequenceKeypoint.new(1, 0.9200000166893005)})
+obj_61.Parent = obj_56
+local obj_62 = Instance.new("UIStroke")
+obj_62.Name = "UIStroke"
+obj_62.Color = Color3.fromRGB(30, 60, 140)
+obj_62.Thickness = 0.800000011920929
+obj_62.Transparency = 0.6499999761581421
+obj_62.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_62.LineJoinMode = Enum.LineJoinMode.Round
+obj_62.Parent = obj_56
+local obj_63 = Instance.new("Frame")
+obj_63.Name = "Group_2"
+obj_63.Size = UDim2.new(1, 0, 0, 30)
+obj_63.Position = UDim2.new(0, 0, 0, 0)
+obj_63.AnchorPoint = Vector2.new(0, 0)
+obj_63.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_63.BackgroundTransparency = 1
+obj_63.BorderSizePixel = 0
+obj_63.Visible = true
+obj_63.ZIndex = 2
+obj_63.ClipsDescendants = false
+obj_63.LayoutOrder = 2
+obj_63.Rotation = 0
+obj_63.Parent = obj_28
+local obj_64 = Instance.new("UIListLayout")
+obj_64.Name = "UIListLayout"
+obj_64.Padding = UDim.new(0, 0)
+obj_64.FillDirection = Enum.FillDirection.Vertical
+obj_64.HorizontalAlignment = Enum.HorizontalAlignment.Left
+obj_64.VerticalAlignment = Enum.VerticalAlignment.Top
+obj_64.SortOrder = Enum.SortOrder.LayoutOrder
+obj_64.Parent = obj_63
+local obj_65 = Instance.new("TextButton")
+obj_65.Name = "Header"
+obj_65.Size = UDim2.new(1, 0, 0, 30)
+obj_65.Position = UDim2.new(0, 0, 0, 0)
+obj_65.AnchorPoint = Vector2.new(0, 0)
+obj_65.BackgroundColor3 = Color3.fromRGB(12, 20, 50)
+obj_65.BackgroundTransparency = 0
+obj_65.BorderSizePixel = 0
+obj_65.Visible = true
+obj_65.ZIndex = 2
+obj_65.ClipsDescendants = false
+obj_65.LayoutOrder = 1
+obj_65.Rotation = 0
+obj_65.Text = ""
+obj_65.TextColor3 = Color3.fromRGB(27, 42, 53)
+obj_65.TextSize = 8
+obj_65.Font = Enum.Font.Legacy
+obj_65.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_65.TextStrokeTransparency = 1
+obj_65.TextWrapped = false
+obj_65.TextXAlignment = Enum.TextXAlignment.Center
+obj_65.TextYAlignment = Enum.TextYAlignment.Center
+obj_65.RichText = false
+obj_65.Parent = obj_63
+local obj_66 = Instance.new("UIGradient")
+obj_66.Name = "UIGradient"
+obj_66.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(50, 110, 255)), ColorSequenceKeypoint.new(0.44999998807907104, Color3.fromRGB(20, 50, 140)), ColorSequenceKeypoint.new(1, Color3.fromRGB(8, 14, 38))})
+obj_66.Enabled = true
+obj_66.Offset = Vector2.new(0, 0)
+obj_66.Rotation = 0
+obj_66.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.5), NumberSequenceKeypoint.new(0.44999998807907104, 0.7200000286102295), NumberSequenceKeypoint.new(1, 0.8999999761581421)})
+obj_66.Parent = obj_65
+local obj_67 = Instance.new("UICorner")
+obj_67.Name = "UICorner"
+obj_67.CornerRadius = UDim.new(0, 6)
+obj_67.Parent = obj_65
+local obj_68 = Instance.new("TextLabel")
+obj_68.Name = "Label"
+obj_68.Size = UDim2.new(1, -28, 1, 0)
+obj_68.Position = UDim2.new(0, 10, 0, 0)
+obj_68.AnchorPoint = Vector2.new(0, 0)
+obj_68.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_68.BackgroundTransparency = 1
+obj_68.BorderSizePixel = 1
+obj_68.Visible = true
+obj_68.ZIndex = 2
+obj_68.ClipsDescendants = false
+obj_68.LayoutOrder = 0
+obj_68.Rotation = 0
+obj_68.Text = "Menu 2"
+obj_68.TextColor3 = Color3.fromRGB(180, 200, 235)
+obj_68.TextSize = 11
+obj_68.Font = Enum.Font.GothamMedium
+obj_68.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_68.TextStrokeTransparency = 1
+obj_68.TextWrapped = false
+obj_68.TextXAlignment = Enum.TextXAlignment.Left
+obj_68.TextYAlignment = Enum.TextYAlignment.Center
+obj_68.RichText = false
+obj_68.Parent = obj_65
+local obj_69 = Instance.new("TextLabel")
+obj_69.Name = "Arrow"
+obj_69.Size = UDim2.new(0, 16, 0, 16)
+obj_69.Position = UDim2.new(1, -20, 0.5, 0)
+obj_69.AnchorPoint = Vector2.new(0, 0.5)
+obj_69.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_69.BackgroundTransparency = 1
+obj_69.BorderSizePixel = 1
+obj_69.Visible = true
+obj_69.ZIndex = 2
+obj_69.ClipsDescendants = false
+obj_69.LayoutOrder = 0
+obj_69.Rotation = 0
+obj_69.Text = "▶"
+obj_69.TextColor3 = Color3.fromRGB(100, 130, 200)
+obj_69.TextSize = 8
+obj_69.Font = Enum.Font.GothamBold
+obj_69.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_69.TextStrokeTransparency = 1
+obj_69.TextWrapped = false
+obj_69.TextXAlignment = Enum.TextXAlignment.Center
+obj_69.TextYAlignment = Enum.TextYAlignment.Center
+obj_69.RichText = false
+obj_69.Parent = obj_65
+local obj_70 = Instance.new("UIStroke")
+obj_70.Name = "UIStroke"
+obj_70.Color = Color3.fromRGB(40, 90, 220)
+obj_70.Thickness = 0.800000011920929
+obj_70.Transparency = 0.699999988079071
+obj_70.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_70.LineJoinMode = Enum.LineJoinMode.Round
+obj_70.Parent = obj_65
+local obj_71 = Instance.new("Frame")
+obj_71.Name = "SubItems"
+obj_71.Size = UDim2.new(1, 0, 0, 0)
+obj_71.Position = UDim2.new(0, 0, 0, 0)
+obj_71.AnchorPoint = Vector2.new(0, 0)
+obj_71.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_71.BackgroundTransparency = 1
+obj_71.BorderSizePixel = 0
+obj_71.Visible = true
+obj_71.ZIndex = 2
+obj_71.ClipsDescendants = true
+obj_71.LayoutOrder = 2
+obj_71.Rotation = 0
+obj_71.Parent = obj_63
+local obj_72 = Instance.new("UIListLayout")
+obj_72.Name = "UIListLayout"
+obj_72.Padding = UDim.new(0, 2)
+obj_72.FillDirection = Enum.FillDirection.Vertical
+obj_72.HorizontalAlignment = Enum.HorizontalAlignment.Left
+obj_72.VerticalAlignment = Enum.VerticalAlignment.Top
+obj_72.SortOrder = Enum.SortOrder.LayoutOrder
+obj_72.Parent = obj_71
+local obj_73 = Instance.new("UIPadding")
+obj_73.Name = "UIPadding"
+obj_73.PaddingLeft = UDim.new(0, 12)
+obj_73.PaddingRight = UDim.new(0, 4)
+obj_73.PaddingTop = UDim.new(0, 4)
+obj_73.PaddingBottom = UDim.new(0, 4)
+obj_73.Parent = obj_71
+local obj_74 = Instance.new("TextButton")
+obj_74.Name = "Item_A"
+obj_74.Size = UDim2.new(1, 0, 0, 26)
+obj_74.Position = UDim2.new(0, 0, 0, 0)
+obj_74.AnchorPoint = Vector2.new(0, 0)
+obj_74.BackgroundColor3 = Color3.fromRGB(10, 18, 45)
+obj_74.BackgroundTransparency = 0.20000000298023224
+obj_74.BorderSizePixel = 0
+obj_74.Visible = true
+obj_74.ZIndex = 2
+obj_74.ClipsDescendants = false
+obj_74.LayoutOrder = 1
+obj_74.Rotation = 0
+obj_74.Text = ""
+obj_74.TextColor3 = Color3.fromRGB(27, 42, 53)
+obj_74.TextSize = 8
+obj_74.Font = Enum.Font.Legacy
+obj_74.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_74.TextStrokeTransparency = 1
+obj_74.TextWrapped = false
+obj_74.TextXAlignment = Enum.TextXAlignment.Center
+obj_74.TextYAlignment = Enum.TextYAlignment.Center
+obj_74.RichText = false
+obj_74.Parent = obj_71
+local obj_75 = Instance.new("UICorner")
+obj_75.Name = "UICorner"
+obj_75.CornerRadius = UDim.new(0, 5)
+obj_75.Parent = obj_74
+local obj_76 = Instance.new("Frame")
+obj_76.Name = "Accent"
+obj_76.Size = UDim2.new(0, 2, 0.6000000238418579, 0)
+obj_76.Position = UDim2.new(0, 0, 0.20000000298023224, 0)
+obj_76.AnchorPoint = Vector2.new(0, 0)
+obj_76.BackgroundColor3 = Color3.fromRGB(50, 110, 255)
+obj_76.BackgroundTransparency = 0.4000000059604645
+obj_76.BorderSizePixel = 0
+obj_76.Visible = true
+obj_76.ZIndex = 2
+obj_76.ClipsDescendants = false
+obj_76.LayoutOrder = 0
+obj_76.Rotation = 0
+obj_76.Parent = obj_74
+local obj_77 = Instance.new("UICorner")
+obj_77.Name = "UICorner"
+obj_77.CornerRadius = UDim.new(1, 0)
+obj_77.Parent = obj_76
+local obj_78 = Instance.new("TextLabel")
+obj_78.Name = "Label"
+obj_78.Size = UDim2.new(1, -12, 1, 0)
+obj_78.Position = UDim2.new(0, 10, 0, 0)
+obj_78.AnchorPoint = Vector2.new(0, 0)
+obj_78.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_78.BackgroundTransparency = 1
+obj_78.BorderSizePixel = 1
+obj_78.Visible = true
+obj_78.ZIndex = 2
+obj_78.ClipsDescendants = false
+obj_78.LayoutOrder = 0
+obj_78.Rotation = 0
+obj_78.Text = "A"
+obj_78.TextColor3 = Color3.fromRGB(140, 165, 210)
+obj_78.TextSize = 11
+obj_78.Font = Enum.Font.GothamMedium
+obj_78.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_78.TextStrokeTransparency = 1
+obj_78.TextWrapped = false
+obj_78.TextXAlignment = Enum.TextXAlignment.Left
+obj_78.TextYAlignment = Enum.TextYAlignment.Center
+obj_78.RichText = false
+obj_78.Parent = obj_74
+local obj_79 = Instance.new("UIGradient")
+obj_79.Name = "UIGradient"
+obj_79.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 70, 180)), ColorSequenceKeypoint.new(1, Color3.fromRGB(8, 14, 38))})
+obj_79.Enabled = true
+obj_79.Offset = Vector2.new(0, 0)
+obj_79.Rotation = 0
+obj_79.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.75), NumberSequenceKeypoint.new(1, 0.9200000166893005)})
+obj_79.Parent = obj_74
+local obj_80 = Instance.new("UIStroke")
+obj_80.Name = "UIStroke"
+obj_80.Color = Color3.fromRGB(30, 60, 140)
+obj_80.Thickness = 0.800000011920929
+obj_80.Transparency = 0.6499999761581421
+obj_80.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_80.LineJoinMode = Enum.LineJoinMode.Round
+obj_80.Parent = obj_74
+local obj_81 = Instance.new("TextButton")
+obj_81.Name = "Item_B"
+obj_81.Size = UDim2.new(1, 0, 0, 26)
+obj_81.Position = UDim2.new(0, 0, 0, 0)
+obj_81.AnchorPoint = Vector2.new(0, 0)
+obj_81.BackgroundColor3 = Color3.fromRGB(10, 18, 45)
+obj_81.BackgroundTransparency = 0.20000000298023224
+obj_81.BorderSizePixel = 0
+obj_81.Visible = true
+obj_81.ZIndex = 2
+obj_81.ClipsDescendants = false
+obj_81.LayoutOrder = 2
+obj_81.Rotation = 0
+obj_81.Text = ""
+obj_81.TextColor3 = Color3.fromRGB(27, 42, 53)
+obj_81.TextSize = 8
+obj_81.Font = Enum.Font.Legacy
+obj_81.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_81.TextStrokeTransparency = 1
+obj_81.TextWrapped = false
+obj_81.TextXAlignment = Enum.TextXAlignment.Center
+obj_81.TextYAlignment = Enum.TextYAlignment.Center
+obj_81.RichText = false
+obj_81.Parent = obj_71
+local obj_82 = Instance.new("UICorner")
+obj_82.Name = "UICorner"
+obj_82.CornerRadius = UDim.new(0, 5)
+obj_82.Parent = obj_81
+local obj_83 = Instance.new("Frame")
+obj_83.Name = "Accent"
+obj_83.Size = UDim2.new(0, 2, 0.6000000238418579, 0)
+obj_83.Position = UDim2.new(0, 0, 0.20000000298023224, 0)
+obj_83.AnchorPoint = Vector2.new(0, 0)
+obj_83.BackgroundColor3 = Color3.fromRGB(50, 110, 255)
+obj_83.BackgroundTransparency = 0.4000000059604645
+obj_83.BorderSizePixel = 0
+obj_83.Visible = true
+obj_83.ZIndex = 2
+obj_83.ClipsDescendants = false
+obj_83.LayoutOrder = 0
+obj_83.Rotation = 0
+obj_83.Parent = obj_81
+local obj_84 = Instance.new("UICorner")
+obj_84.Name = "UICorner"
+obj_84.CornerRadius = UDim.new(1, 0)
+obj_84.Parent = obj_83
+local obj_85 = Instance.new("TextLabel")
+obj_85.Name = "Label"
+obj_85.Size = UDim2.new(1, -12, 1, 0)
+obj_85.Position = UDim2.new(0, 10, 0, 0)
+obj_85.AnchorPoint = Vector2.new(0, 0)
+obj_85.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_85.BackgroundTransparency = 1
+obj_85.BorderSizePixel = 1
+obj_85.Visible = true
+obj_85.ZIndex = 2
+obj_85.ClipsDescendants = false
+obj_85.LayoutOrder = 0
+obj_85.Rotation = 0
+obj_85.Text = "B"
+obj_85.TextColor3 = Color3.fromRGB(140, 165, 210)
+obj_85.TextSize = 11
+obj_85.Font = Enum.Font.GothamMedium
+obj_85.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_85.TextStrokeTransparency = 1
+obj_85.TextWrapped = false
+obj_85.TextXAlignment = Enum.TextXAlignment.Left
+obj_85.TextYAlignment = Enum.TextYAlignment.Center
+obj_85.RichText = false
+obj_85.Parent = obj_81
+local obj_86 = Instance.new("UIGradient")
+obj_86.Name = "UIGradient"
+obj_86.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 70, 180)), ColorSequenceKeypoint.new(1, Color3.fromRGB(8, 14, 38))})
+obj_86.Enabled = true
+obj_86.Offset = Vector2.new(0, 0)
+obj_86.Rotation = 0
+obj_86.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.75), NumberSequenceKeypoint.new(1, 0.9200000166893005)})
+obj_86.Parent = obj_81
+local obj_87 = Instance.new("UIStroke")
+obj_87.Name = "UIStroke"
+obj_87.Color = Color3.fromRGB(30, 60, 140)
+obj_87.Thickness = 0.800000011920929
+obj_87.Transparency = 0.6499999761581421
+obj_87.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_87.LineJoinMode = Enum.LineJoinMode.Round
+obj_87.Parent = obj_81
+local obj_88 = Instance.new("TextButton")
+obj_88.Name = "Item_C"
+obj_88.Size = UDim2.new(1, 0, 0, 26)
+obj_88.Position = UDim2.new(0, 0, 0, 0)
+obj_88.AnchorPoint = Vector2.new(0, 0)
+obj_88.BackgroundColor3 = Color3.fromRGB(10, 18, 45)
+obj_88.BackgroundTransparency = 0.20000000298023224
+obj_88.BorderSizePixel = 0
+obj_88.Visible = true
+obj_88.ZIndex = 2
+obj_88.ClipsDescendants = false
+obj_88.LayoutOrder = 3
+obj_88.Rotation = 0
+obj_88.Text = ""
+obj_88.TextColor3 = Color3.fromRGB(27, 42, 53)
+obj_88.TextSize = 8
+obj_88.Font = Enum.Font.Legacy
+obj_88.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_88.TextStrokeTransparency = 1
+obj_88.TextWrapped = false
+obj_88.TextXAlignment = Enum.TextXAlignment.Center
+obj_88.TextYAlignment = Enum.TextYAlignment.Center
+obj_88.RichText = false
+obj_88.Parent = obj_71
+local obj_89 = Instance.new("UICorner")
+obj_89.Name = "UICorner"
+obj_89.CornerRadius = UDim.new(0, 5)
+obj_89.Parent = obj_88
+local obj_90 = Instance.new("Frame")
+obj_90.Name = "Accent"
+obj_90.Size = UDim2.new(0, 2, 0.6000000238418579, 0)
+obj_90.Position = UDim2.new(0, 0, 0.20000000298023224, 0)
+obj_90.AnchorPoint = Vector2.new(0, 0)
+obj_90.BackgroundColor3 = Color3.fromRGB(50, 110, 255)
+obj_90.BackgroundTransparency = 0.4000000059604645
+obj_90.BorderSizePixel = 0
+obj_90.Visible = true
+obj_90.ZIndex = 2
+obj_90.ClipsDescendants = false
+obj_90.LayoutOrder = 0
+obj_90.Rotation = 0
+obj_90.Parent = obj_88
+local obj_91 = Instance.new("UICorner")
+obj_91.Name = "UICorner"
+obj_91.CornerRadius = UDim.new(1, 0)
+obj_91.Parent = obj_90
+local obj_92 = Instance.new("TextLabel")
+obj_92.Name = "Label"
+obj_92.Size = UDim2.new(1, -12, 1, 0)
+obj_92.Position = UDim2.new(0, 10, 0, 0)
+obj_92.AnchorPoint = Vector2.new(0, 0)
+obj_92.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_92.BackgroundTransparency = 1
+obj_92.BorderSizePixel = 1
+obj_92.Visible = true
+obj_92.ZIndex = 2
+obj_92.ClipsDescendants = false
+obj_92.LayoutOrder = 0
+obj_92.Rotation = 0
+obj_92.Text = "C"
+obj_92.TextColor3 = Color3.fromRGB(140, 165, 210)
+obj_92.TextSize = 11
+obj_92.Font = Enum.Font.GothamMedium
+obj_92.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_92.TextStrokeTransparency = 1
+obj_92.TextWrapped = false
+obj_92.TextXAlignment = Enum.TextXAlignment.Left
+obj_92.TextYAlignment = Enum.TextYAlignment.Center
+obj_92.RichText = false
+obj_92.Parent = obj_88
+local obj_93 = Instance.new("UIGradient")
+obj_93.Name = "UIGradient"
+obj_93.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 70, 180)), ColorSequenceKeypoint.new(1, Color3.fromRGB(8, 14, 38))})
+obj_93.Enabled = true
+obj_93.Offset = Vector2.new(0, 0)
+obj_93.Rotation = 0
+obj_93.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.75), NumberSequenceKeypoint.new(1, 0.9200000166893005)})
+obj_93.Parent = obj_88
+local obj_94 = Instance.new("UIStroke")
+obj_94.Name = "UIStroke"
+obj_94.Color = Color3.fromRGB(30, 60, 140)
+obj_94.Thickness = 0.800000011920929
+obj_94.Transparency = 0.6499999761581421
+obj_94.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_94.LineJoinMode = Enum.LineJoinMode.Round
+obj_94.Parent = obj_88
+local obj_95 = Instance.new("Frame")
+obj_95.Name = "Group_3"
+obj_95.Size = UDim2.new(1, 0, 0, 30)
+obj_95.Position = UDim2.new(0, 0, 0, 0)
+obj_95.AnchorPoint = Vector2.new(0, 0)
+obj_95.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_95.BackgroundTransparency = 1
+obj_95.BorderSizePixel = 0
+obj_95.Visible = true
+obj_95.ZIndex = 2
+obj_95.ClipsDescendants = false
+obj_95.LayoutOrder = 3
+obj_95.Rotation = 0
+obj_95.Parent = obj_28
+local obj_96 = Instance.new("UIListLayout")
+obj_96.Name = "UIListLayout"
+obj_96.Padding = UDim.new(0, 0)
+obj_96.FillDirection = Enum.FillDirection.Vertical
+obj_96.HorizontalAlignment = Enum.HorizontalAlignment.Left
+obj_96.VerticalAlignment = Enum.VerticalAlignment.Top
+obj_96.SortOrder = Enum.SortOrder.LayoutOrder
+obj_96.Parent = obj_95
+local obj_97 = Instance.new("TextButton")
+obj_97.Name = "Header"
+obj_97.Size = UDim2.new(1, 0, 0, 30)
+obj_97.Position = UDim2.new(0, 0, 0, 0)
+obj_97.AnchorPoint = Vector2.new(0, 0)
+obj_97.BackgroundColor3 = Color3.fromRGB(12, 20, 50)
+obj_97.BackgroundTransparency = 0
+obj_97.BorderSizePixel = 0
+obj_97.Visible = true
+obj_97.ZIndex = 2
+obj_97.ClipsDescendants = false
+obj_97.LayoutOrder = 1
+obj_97.Rotation = 0
+obj_97.Text = ""
+obj_97.TextColor3 = Color3.fromRGB(27, 42, 53)
+obj_97.TextSize = 8
+obj_97.Font = Enum.Font.Legacy
+obj_97.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_97.TextStrokeTransparency = 1
+obj_97.TextWrapped = false
+obj_97.TextXAlignment = Enum.TextXAlignment.Center
+obj_97.TextYAlignment = Enum.TextYAlignment.Center
+obj_97.RichText = false
+obj_97.Parent = obj_95
+local obj_98 = Instance.new("UIGradient")
+obj_98.Name = "UIGradient"
+obj_98.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(50, 110, 255)), ColorSequenceKeypoint.new(0.44999998807907104, Color3.fromRGB(20, 50, 140)), ColorSequenceKeypoint.new(1, Color3.fromRGB(8, 14, 38))})
+obj_98.Enabled = true
+obj_98.Offset = Vector2.new(0, 0)
+obj_98.Rotation = 0
+obj_98.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.5), NumberSequenceKeypoint.new(0.44999998807907104, 0.7200000286102295), NumberSequenceKeypoint.new(1, 0.8999999761581421)})
+obj_98.Parent = obj_97
+local obj_99 = Instance.new("UICorner")
+obj_99.Name = "UICorner"
+obj_99.CornerRadius = UDim.new(0, 6)
+obj_99.Parent = obj_97
+local obj_100 = Instance.new("TextLabel")
+obj_100.Name = "Label"
+obj_100.Size = UDim2.new(1, -28, 1, 0)
+obj_100.Position = UDim2.new(0, 10, 0, 0)
+obj_100.AnchorPoint = Vector2.new(0, 0)
+obj_100.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_100.BackgroundTransparency = 1
+obj_100.BorderSizePixel = 1
+obj_100.Visible = true
+obj_100.ZIndex = 2
+obj_100.ClipsDescendants = false
+obj_100.LayoutOrder = 0
+obj_100.Rotation = 0
+obj_100.Text = "Menu 3"
+obj_100.TextColor3 = Color3.fromRGB(180, 200, 235)
+obj_100.TextSize = 11
+obj_100.Font = Enum.Font.GothamMedium
+obj_100.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_100.TextStrokeTransparency = 1
+obj_100.TextWrapped = false
+obj_100.TextXAlignment = Enum.TextXAlignment.Left
+obj_100.TextYAlignment = Enum.TextYAlignment.Center
+obj_100.RichText = false
+obj_100.Parent = obj_97
+local obj_101 = Instance.new("TextLabel")
+obj_101.Name = "Arrow"
+obj_101.Size = UDim2.new(0, 16, 0, 16)
+obj_101.Position = UDim2.new(1, -20, 0.5, 0)
+obj_101.AnchorPoint = Vector2.new(0, 0.5)
+obj_101.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_101.BackgroundTransparency = 1
+obj_101.BorderSizePixel = 1
+obj_101.Visible = true
+obj_101.ZIndex = 2
+obj_101.ClipsDescendants = false
+obj_101.LayoutOrder = 0
+obj_101.Rotation = 0
+obj_101.Text = "▶"
+obj_101.TextColor3 = Color3.fromRGB(100, 130, 200)
+obj_101.TextSize = 8
+obj_101.Font = Enum.Font.GothamBold
+obj_101.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_101.TextStrokeTransparency = 1
+obj_101.TextWrapped = false
+obj_101.TextXAlignment = Enum.TextXAlignment.Center
+obj_101.TextYAlignment = Enum.TextYAlignment.Center
+obj_101.RichText = false
+obj_101.Parent = obj_97
+local obj_102 = Instance.new("UIStroke")
+obj_102.Name = "UIStroke"
+obj_102.Color = Color3.fromRGB(40, 90, 220)
+obj_102.Thickness = 0.800000011920929
+obj_102.Transparency = 0.699999988079071
+obj_102.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_102.LineJoinMode = Enum.LineJoinMode.Round
+obj_102.Parent = obj_97
+local obj_103 = Instance.new("Frame")
+obj_103.Name = "SubItems"
+obj_103.Size = UDim2.new(1, 0, 0, 0)
+obj_103.Position = UDim2.new(0, 0, 0, 0)
+obj_103.AnchorPoint = Vector2.new(0, 0)
+obj_103.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_103.BackgroundTransparency = 1
+obj_103.BorderSizePixel = 0
+obj_103.Visible = true
+obj_103.ZIndex = 2
+obj_103.ClipsDescendants = true
+obj_103.LayoutOrder = 2
+obj_103.Rotation = 0
+obj_103.Parent = obj_95
+local obj_104 = Instance.new("UIListLayout")
+obj_104.Name = "UIListLayout"
+obj_104.Padding = UDim.new(0, 2)
+obj_104.FillDirection = Enum.FillDirection.Vertical
+obj_104.HorizontalAlignment = Enum.HorizontalAlignment.Left
+obj_104.VerticalAlignment = Enum.VerticalAlignment.Top
+obj_104.SortOrder = Enum.SortOrder.LayoutOrder
+obj_104.Parent = obj_103
+local obj_105 = Instance.new("UIPadding")
+obj_105.Name = "UIPadding"
+obj_105.PaddingLeft = UDim.new(0, 12)
+obj_105.PaddingRight = UDim.new(0, 4)
+obj_105.PaddingTop = UDim.new(0, 4)
+obj_105.PaddingBottom = UDim.new(0, 4)
+obj_105.Parent = obj_103
+local obj_106 = Instance.new("TextButton")
+obj_106.Name = "Item_A"
+obj_106.Size = UDim2.new(1, 0, 0, 26)
+obj_106.Position = UDim2.new(0, 0, 0, 0)
+obj_106.AnchorPoint = Vector2.new(0, 0)
+obj_106.BackgroundColor3 = Color3.fromRGB(10, 18, 45)
+obj_106.BackgroundTransparency = 0.20000000298023224
+obj_106.BorderSizePixel = 0
+obj_106.Visible = true
+obj_106.ZIndex = 2
+obj_106.ClipsDescendants = false
+obj_106.LayoutOrder = 1
+obj_106.Rotation = 0
+obj_106.Text = ""
+obj_106.TextColor3 = Color3.fromRGB(27, 42, 53)
+obj_106.TextSize = 8
+obj_106.Font = Enum.Font.Legacy
+obj_106.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_106.TextStrokeTransparency = 1
+obj_106.TextWrapped = false
+obj_106.TextXAlignment = Enum.TextXAlignment.Center
+obj_106.TextYAlignment = Enum.TextYAlignment.Center
+obj_106.RichText = false
+obj_106.Parent = obj_103
+local obj_107 = Instance.new("UICorner")
+obj_107.Name = "UICorner"
+obj_107.CornerRadius = UDim.new(0, 5)
+obj_107.Parent = obj_106
+local obj_108 = Instance.new("Frame")
+obj_108.Name = "Accent"
+obj_108.Size = UDim2.new(0, 2, 0.6000000238418579, 0)
+obj_108.Position = UDim2.new(0, 0, 0.20000000298023224, 0)
+obj_108.AnchorPoint = Vector2.new(0, 0)
+obj_108.BackgroundColor3 = Color3.fromRGB(50, 110, 255)
+obj_108.BackgroundTransparency = 0.4000000059604645
+obj_108.BorderSizePixel = 0
+obj_108.Visible = true
+obj_108.ZIndex = 2
+obj_108.ClipsDescendants = false
+obj_108.LayoutOrder = 0
+obj_108.Rotation = 0
+obj_108.Parent = obj_106
+local obj_109 = Instance.new("UICorner")
+obj_109.Name = "UICorner"
+obj_109.CornerRadius = UDim.new(1, 0)
+obj_109.Parent = obj_108
+local obj_110 = Instance.new("TextLabel")
+obj_110.Name = "Label"
+obj_110.Size = UDim2.new(1, -12, 1, 0)
+obj_110.Position = UDim2.new(0, 10, 0, 0)
+obj_110.AnchorPoint = Vector2.new(0, 0)
+obj_110.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_110.BackgroundTransparency = 1
+obj_110.BorderSizePixel = 1
+obj_110.Visible = true
+obj_110.ZIndex = 2
+obj_110.ClipsDescendants = false
+obj_110.LayoutOrder = 0
+obj_110.Rotation = 0
+obj_110.Text = "A"
+obj_110.TextColor3 = Color3.fromRGB(140, 165, 210)
+obj_110.TextSize = 11
+obj_110.Font = Enum.Font.GothamMedium
+obj_110.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_110.TextStrokeTransparency = 1
+obj_110.TextWrapped = false
+obj_110.TextXAlignment = Enum.TextXAlignment.Left
+obj_110.TextYAlignment = Enum.TextYAlignment.Center
+obj_110.RichText = false
+obj_110.Parent = obj_106
+local obj_111 = Instance.new("UIGradient")
+obj_111.Name = "UIGradient"
+obj_111.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 70, 180)), ColorSequenceKeypoint.new(1, Color3.fromRGB(8, 14, 38))})
+obj_111.Enabled = true
+obj_111.Offset = Vector2.new(0, 0)
+obj_111.Rotation = 0
+obj_111.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.75), NumberSequenceKeypoint.new(1, 0.9200000166893005)})
+obj_111.Parent = obj_106
+local obj_112 = Instance.new("UIStroke")
+obj_112.Name = "UIStroke"
+obj_112.Color = Color3.fromRGB(30, 60, 140)
+obj_112.Thickness = 0.800000011920929
+obj_112.Transparency = 0.6499999761581421
+obj_112.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_112.LineJoinMode = Enum.LineJoinMode.Round
+obj_112.Parent = obj_106
+local obj_113 = Instance.new("TextButton")
+obj_113.Name = "Item_B"
+obj_113.Size = UDim2.new(1, 0, 0, 26)
+obj_113.Position = UDim2.new(0, 0, 0, 0)
+obj_113.AnchorPoint = Vector2.new(0, 0)
+obj_113.BackgroundColor3 = Color3.fromRGB(10, 18, 45)
+obj_113.BackgroundTransparency = 0.20000000298023224
+obj_113.BorderSizePixel = 0
+obj_113.Visible = true
+obj_113.ZIndex = 2
+obj_113.ClipsDescendants = false
+obj_113.LayoutOrder = 2
+obj_113.Rotation = 0
+obj_113.Text = ""
+obj_113.TextColor3 = Color3.fromRGB(27, 42, 53)
+obj_113.TextSize = 8
+obj_113.Font = Enum.Font.Legacy
+obj_113.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_113.TextStrokeTransparency = 1
+obj_113.TextWrapped = false
+obj_113.TextXAlignment = Enum.TextXAlignment.Center
+obj_113.TextYAlignment = Enum.TextYAlignment.Center
+obj_113.RichText = false
+obj_113.Parent = obj_103
+local obj_114 = Instance.new("UICorner")
+obj_114.Name = "UICorner"
+obj_114.CornerRadius = UDim.new(0, 5)
+obj_114.Parent = obj_113
+local obj_115 = Instance.new("Frame")
+obj_115.Name = "Accent"
+obj_115.Size = UDim2.new(0, 2, 0.6000000238418579, 0)
+obj_115.Position = UDim2.new(0, 0, 0.20000000298023224, 0)
+obj_115.AnchorPoint = Vector2.new(0, 0)
+obj_115.BackgroundColor3 = Color3.fromRGB(50, 110, 255)
+obj_115.BackgroundTransparency = 0.4000000059604645
+obj_115.BorderSizePixel = 0
+obj_115.Visible = true
+obj_115.ZIndex = 2
+obj_115.ClipsDescendants = false
+obj_115.LayoutOrder = 0
+obj_115.Rotation = 0
+obj_115.Parent = obj_113
+local obj_116 = Instance.new("UICorner")
+obj_116.Name = "UICorner"
+obj_116.CornerRadius = UDim.new(1, 0)
+obj_116.Parent = obj_115
+local obj_117 = Instance.new("TextLabel")
+obj_117.Name = "Label"
+obj_117.Size = UDim2.new(1, -12, 1, 0)
+obj_117.Position = UDim2.new(0, 10, 0, 0)
+obj_117.AnchorPoint = Vector2.new(0, 0)
+obj_117.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_117.BackgroundTransparency = 1
+obj_117.BorderSizePixel = 1
+obj_117.Visible = true
+obj_117.ZIndex = 2
+obj_117.ClipsDescendants = false
+obj_117.LayoutOrder = 0
+obj_117.Rotation = 0
+obj_117.Text = "B"
+obj_117.TextColor3 = Color3.fromRGB(140, 165, 210)
+obj_117.TextSize = 11
+obj_117.Font = Enum.Font.GothamMedium
+obj_117.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_117.TextStrokeTransparency = 1
+obj_117.TextWrapped = false
+obj_117.TextXAlignment = Enum.TextXAlignment.Left
+obj_117.TextYAlignment = Enum.TextYAlignment.Center
+obj_117.RichText = false
+obj_117.Parent = obj_113
+local obj_118 = Instance.new("UIGradient")
+obj_118.Name = "UIGradient"
+obj_118.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 70, 180)), ColorSequenceKeypoint.new(1, Color3.fromRGB(8, 14, 38))})
+obj_118.Enabled = true
+obj_118.Offset = Vector2.new(0, 0)
+obj_118.Rotation = 0
+obj_118.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.75), NumberSequenceKeypoint.new(1, 0.9200000166893005)})
+obj_118.Parent = obj_113
+local obj_119 = Instance.new("UIStroke")
+obj_119.Name = "UIStroke"
+obj_119.Color = Color3.fromRGB(30, 60, 140)
+obj_119.Thickness = 0.800000011920929
+obj_119.Transparency = 0.6499999761581421
+obj_119.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_119.LineJoinMode = Enum.LineJoinMode.Round
+obj_119.Parent = obj_113
+local obj_120 = Instance.new("TextButton")
+obj_120.Name = "Item_C"
+obj_120.Size = UDim2.new(1, 0, 0, 26)
+obj_120.Position = UDim2.new(0, 0, 0, 0)
+obj_120.AnchorPoint = Vector2.new(0, 0)
+obj_120.BackgroundColor3 = Color3.fromRGB(10, 18, 45)
+obj_120.BackgroundTransparency = 0.20000000298023224
+obj_120.BorderSizePixel = 0
+obj_120.Visible = true
+obj_120.ZIndex = 2
+obj_120.ClipsDescendants = false
+obj_120.LayoutOrder = 3
+obj_120.Rotation = 0
+obj_120.Text = ""
+obj_120.TextColor3 = Color3.fromRGB(27, 42, 53)
+obj_120.TextSize = 8
+obj_120.Font = Enum.Font.Legacy
+obj_120.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_120.TextStrokeTransparency = 1
+obj_120.TextWrapped = false
+obj_120.TextXAlignment = Enum.TextXAlignment.Center
+obj_120.TextYAlignment = Enum.TextYAlignment.Center
+obj_120.RichText = false
+obj_120.Parent = obj_103
+local obj_121 = Instance.new("UICorner")
+obj_121.Name = "UICorner"
+obj_121.CornerRadius = UDim.new(0, 5)
+obj_121.Parent = obj_120
+local obj_122 = Instance.new("Frame")
+obj_122.Name = "Accent"
+obj_122.Size = UDim2.new(0, 2, 0.6000000238418579, 0)
+obj_122.Position = UDim2.new(0, 0, 0.20000000298023224, 0)
+obj_122.AnchorPoint = Vector2.new(0, 0)
+obj_122.BackgroundColor3 = Color3.fromRGB(50, 110, 255)
+obj_122.BackgroundTransparency = 0.4000000059604645
+obj_122.BorderSizePixel = 0
+obj_122.Visible = true
+obj_122.ZIndex = 2
+obj_122.ClipsDescendants = false
+obj_122.LayoutOrder = 0
+obj_122.Rotation = 0
+obj_122.Parent = obj_120
+local obj_123 = Instance.new("UICorner")
+obj_123.Name = "UICorner"
+obj_123.CornerRadius = UDim.new(1, 0)
+obj_123.Parent = obj_122
+local obj_124 = Instance.new("TextLabel")
+obj_124.Name = "Label"
+obj_124.Size = UDim2.new(1, -12, 1, 0)
+obj_124.Position = UDim2.new(0, 10, 0, 0)
+obj_124.AnchorPoint = Vector2.new(0, 0)
+obj_124.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_124.BackgroundTransparency = 1
+obj_124.BorderSizePixel = 1
+obj_124.Visible = true
+obj_124.ZIndex = 2
+obj_124.ClipsDescendants = false
+obj_124.LayoutOrder = 0
+obj_124.Rotation = 0
+obj_124.Text = "C"
+obj_124.TextColor3 = Color3.fromRGB(140, 165, 210)
+obj_124.TextSize = 11
+obj_124.Font = Enum.Font.GothamMedium
+obj_124.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_124.TextStrokeTransparency = 1
+obj_124.TextWrapped = false
+obj_124.TextXAlignment = Enum.TextXAlignment.Left
+obj_124.TextYAlignment = Enum.TextYAlignment.Center
+obj_124.RichText = false
+obj_124.Parent = obj_120
+local obj_125 = Instance.new("UIGradient")
+obj_125.Name = "UIGradient"
+obj_125.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 70, 180)), ColorSequenceKeypoint.new(1, Color3.fromRGB(8, 14, 38))})
+obj_125.Enabled = true
+obj_125.Offset = Vector2.new(0, 0)
+obj_125.Rotation = 0
+obj_125.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.75), NumberSequenceKeypoint.new(1, 0.9200000166893005)})
+obj_125.Parent = obj_120
+local obj_126 = Instance.new("UIStroke")
+obj_126.Name = "UIStroke"
+obj_126.Color = Color3.fromRGB(30, 60, 140)
+obj_126.Thickness = 0.800000011920929
+obj_126.Transparency = 0.6499999761581421
+obj_126.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_126.LineJoinMode = Enum.LineJoinMode.Round
+obj_126.Parent = obj_120
+local obj_127 = Instance.new("TextButton")
+obj_127.Name = "Btn_About"
+obj_127.Size = UDim2.new(1, 0, 0, 30)
+obj_127.Position = UDim2.new(0, 0, 0, 0)
+obj_127.AnchorPoint = Vector2.new(0, 0)
+obj_127.BackgroundColor3 = Color3.fromRGB(12, 20, 50)
+obj_127.BackgroundTransparency = 0
+obj_127.BorderSizePixel = 1
+obj_127.Visible = true
+obj_127.ZIndex = 1
+obj_127.ClipsDescendants = false
+obj_127.LayoutOrder = 100
+obj_127.Rotation = 0
+obj_127.Text = ""
+obj_127.TextColor3 = Color3.fromRGB(27, 42, 53)
+obj_127.TextSize = 8
+obj_127.Font = Enum.Font.Legacy
+obj_127.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_127.TextStrokeTransparency = 1
+obj_127.TextWrapped = false
+obj_127.TextXAlignment = Enum.TextXAlignment.Center
+obj_127.TextYAlignment = Enum.TextYAlignment.Center
+obj_127.RichText = false
+obj_127.Parent = obj_28
+local obj_128 = Instance.new("UIGradient")
+obj_128.Name = "UIGradient"
+obj_128.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(50, 110, 255)), ColorSequenceKeypoint.new(0.44999998807907104, Color3.fromRGB(20, 50, 140)), ColorSequenceKeypoint.new(1, Color3.fromRGB(8, 14, 38))})
+obj_128.Enabled = true
+obj_128.Offset = Vector2.new(0, 0)
+obj_128.Rotation = 0
+obj_128.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.5), NumberSequenceKeypoint.new(0.44999998807907104, 0.7200000286102295), NumberSequenceKeypoint.new(1, 0.8999999761581421)})
+obj_128.Parent = obj_127
+local obj_129 = Instance.new("UICorner")
+obj_129.Name = "UICorner"
+obj_129.CornerRadius = UDim.new(0, 6)
+obj_129.Parent = obj_127
+local obj_130 = Instance.new("UIStroke")
+obj_130.Name = "UIStroke"
+obj_130.Color = Color3.fromRGB(40, 90, 220)
+obj_130.Thickness = 0.800000011920929
+obj_130.Transparency = 0.699999988079071
+obj_130.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_130.LineJoinMode = Enum.LineJoinMode.Round
+obj_130.Parent = obj_127
+local obj_131 = Instance.new("TextLabel")
+obj_131.Name = "Label"
+obj_131.Size = UDim2.new(1, -28, 1, 0)
+obj_131.Position = UDim2.new(0, 10, 0, 0)
+obj_131.AnchorPoint = Vector2.new(0, 0)
+obj_131.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_131.BackgroundTransparency = 1
+obj_131.BorderSizePixel = 1
+obj_131.Visible = true
+obj_131.ZIndex = 1
+obj_131.ClipsDescendants = false
+obj_131.LayoutOrder = 0
+obj_131.Rotation = 0
+obj_131.Text = "About"
+obj_131.TextColor3 = Color3.fromRGB(180, 200, 235)
+obj_131.TextSize = 11
+obj_131.Font = Enum.Font.GothamMedium
+obj_131.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_131.TextStrokeTransparency = 1
+obj_131.TextWrapped = false
+obj_131.TextXAlignment = Enum.TextXAlignment.Left
+obj_131.TextYAlignment = Enum.TextYAlignment.Center
+obj_131.RichText = false
+obj_131.Parent = obj_127
+local obj_132 = Instance.new("TextButton")
+obj_132.Name = "Btn_Settings"
+obj_132.Size = UDim2.new(1, 0, 0, 30)
+obj_132.Position = UDim2.new(0, 0, 0, 0)
+obj_132.AnchorPoint = Vector2.new(0, 0)
+obj_132.BackgroundColor3 = Color3.fromRGB(12, 20, 50)
+obj_132.BackgroundTransparency = 0
+obj_132.BorderSizePixel = 1
+obj_132.Visible = true
+obj_132.ZIndex = 1
+obj_132.ClipsDescendants = false
+obj_132.LayoutOrder = 99
+obj_132.Rotation = 0
+obj_132.Text = ""
+obj_132.TextColor3 = Color3.fromRGB(27, 42, 53)
+obj_132.TextSize = 8
+obj_132.Font = Enum.Font.Legacy
+obj_132.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_132.TextStrokeTransparency = 1
+obj_132.TextWrapped = false
+obj_132.TextXAlignment = Enum.TextXAlignment.Center
+obj_132.TextYAlignment = Enum.TextYAlignment.Center
+obj_132.RichText = false
+obj_132.Parent = obj_28
+local obj_133 = Instance.new("UIGradient")
+obj_133.Name = "UIGradient"
+obj_133.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(50, 110, 255)), ColorSequenceKeypoint.new(0.44999998807907104, Color3.fromRGB(20, 50, 140)), ColorSequenceKeypoint.new(1, Color3.fromRGB(8, 14, 38))})
+obj_133.Enabled = true
+obj_133.Offset = Vector2.new(0, 0)
+obj_133.Rotation = 0
+obj_133.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.5), NumberSequenceKeypoint.new(0.44999998807907104, 0.7200000286102295), NumberSequenceKeypoint.new(1, 0.8999999761581421)})
+obj_133.Parent = obj_132
+local obj_134 = Instance.new("UICorner")
+obj_134.Name = "UICorner"
+obj_134.CornerRadius = UDim.new(0, 6)
+obj_134.Parent = obj_132
+local obj_135 = Instance.new("UIStroke")
+obj_135.Name = "UIStroke"
+obj_135.Color = Color3.fromRGB(40, 90, 220)
+obj_135.Thickness = 0.800000011920929
+obj_135.Transparency = 0.699999988079071
+obj_135.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_135.LineJoinMode = Enum.LineJoinMode.Round
+obj_135.Parent = obj_132
+local obj_136 = Instance.new("TextLabel")
+obj_136.Name = "Label"
+obj_136.Size = UDim2.new(1, -28, 1, 0)
+obj_136.Position = UDim2.new(0, 10, 0, 0)
+obj_136.AnchorPoint = Vector2.new(0, 0)
+obj_136.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_136.BackgroundTransparency = 1
+obj_136.BorderSizePixel = 1
+obj_136.Visible = true
+obj_136.ZIndex = 1
+obj_136.ClipsDescendants = false
+obj_136.LayoutOrder = 0
+obj_136.Rotation = 0
+obj_136.Text = "Settings"
+obj_136.TextColor3 = Color3.fromRGB(180, 200, 235)
+obj_136.TextSize = 11
+obj_136.Font = Enum.Font.GothamMedium
+obj_136.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_136.TextStrokeTransparency = 1
+obj_136.TextWrapped = false
+obj_136.TextXAlignment = Enum.TextXAlignment.Left
+obj_136.TextYAlignment = Enum.TextYAlignment.Center
+obj_136.RichText = false
+obj_136.Parent = obj_132
+local obj_137 = Instance.new("UIGradient")
+obj_137.Name = "UIGradient"
+obj_137.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(5, 8, 20)), ColorSequenceKeypoint.new(1, Color3.fromRGB(3, 5, 14))})
+obj_137.Enabled = true
+obj_137.Offset = Vector2.new(0, 0)
+obj_137.Rotation = 90
+obj_137.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 0)})
+obj_137.Parent = obj_4
+local obj_138 = Instance.new("Frame")
+obj_138.Name = "MainPanel"
+obj_138.Size = UDim2.new(1, -160, 1, 0)
+obj_138.Position = UDim2.new(0, 160, 0, 0)
+obj_138.AnchorPoint = Vector2.new(0, 0)
+obj_138.BackgroundColor3 = Color3.fromRGB(7, 11, 26)
+obj_138.BackgroundTransparency = 1
+obj_138.BorderSizePixel = 1
+obj_138.Visible = true
+obj_138.ZIndex = 1
+obj_138.ClipsDescendants = true
+obj_138.LayoutOrder = 0
+obj_138.Rotation = 0
+obj_138.Parent = obj_2
+local obj_139 = Instance.new("Frame")
+obj_139.Name = "Header"
+obj_139.Size = UDim2.new(1, -40, 0, 50)
+obj_139.Position = UDim2.new(0, 20, 0, 10)
+obj_139.AnchorPoint = Vector2.new(0, 0)
+obj_139.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_139.BackgroundTransparency = 1
+obj_139.BorderSizePixel = 1
+obj_139.Visible = true
+obj_139.ZIndex = 6
+obj_139.ClipsDescendants = false
+obj_139.LayoutOrder = 0
+obj_139.Rotation = 0
+obj_139.Parent = obj_138
+local obj_140 = Instance.new("TextLabel")
+obj_140.Name = "Title"
+obj_140.Size = UDim2.new(1, 0, 0, 22)
+obj_140.Position = UDim2.new(0, 0, 0, 0)
+obj_140.AnchorPoint = Vector2.new(0, 0)
+obj_140.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_140.BackgroundTransparency = 1
+obj_140.BorderSizePixel = 1
+obj_140.Visible = true
+obj_140.ZIndex = 6
+obj_140.ClipsDescendants = false
+obj_140.LayoutOrder = 0
+obj_140.Rotation = 0
+obj_140.Text = "Title 1"
+obj_140.TextColor3 = Color3.fromRGB(255, 255, 255)
+obj_140.TextSize = 16
+obj_140.Font = Enum.Font.GothamBold
+obj_140.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_140.TextStrokeTransparency = 1
+obj_140.TextWrapped = false
+obj_140.TextXAlignment = Enum.TextXAlignment.Left
+obj_140.TextYAlignment = Enum.TextYAlignment.Center
+obj_140.RichText = false
+obj_140.Parent = obj_139
+local obj_141 = Instance.new("TextLabel")
+obj_141.Name = "Subtitle"
+obj_141.Size = UDim2.new(1, -200, 0, 14)
+obj_141.Position = UDim2.new(0, 0, 0, 23)
+obj_141.AnchorPoint = Vector2.new(0, 0)
+obj_141.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_141.BackgroundTransparency = 1
+obj_141.BorderSizePixel = 1
+obj_141.Visible = true
+obj_141.ZIndex = 6
+obj_141.ClipsDescendants = false
+obj_141.LayoutOrder = 0
+obj_141.Rotation = 0
+obj_141.Text = "Premium Fiture"
+obj_141.TextColor3 = Color3.fromRGB(130, 145, 175)
+obj_141.TextSize = 11
+obj_141.Font = Enum.Font.GothamMedium
+obj_141.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_141.TextStrokeTransparency = 1
+obj_141.TextWrapped = false
+obj_141.TextXAlignment = Enum.TextXAlignment.Left
+obj_141.TextYAlignment = Enum.TextYAlignment.Center
+obj_141.RichText = false
+obj_141.Parent = obj_139
+local obj_142 = Instance.new("Frame")
+obj_142.Name = "SearchBox"
+obj_142.Size = UDim2.new(0, 180, 0, 26)
+obj_142.Position = UDim2.new(0.6666666865348816, -180, 1.100000023841858, 0)
+obj_142.AnchorPoint = Vector2.new(0, 0.5)
+obj_142.BackgroundColor3 = Color3.fromRGB(8, 12, 28)
+obj_142.BackgroundTransparency = 0
+obj_142.BorderSizePixel = 0
+obj_142.Visible = true
+obj_142.ZIndex = 6
+obj_142.ClipsDescendants = false
+obj_142.LayoutOrder = 0
+obj_142.Rotation = 0
+obj_142.Parent = obj_139
+local obj_143 = Instance.new("UICorner")
+obj_143.Name = "UICorner"
+obj_143.CornerRadius = UDim.new(0, 8)
+obj_143.Parent = obj_142
+local obj_144 = Instance.new("UIStroke")
+obj_144.Name = "UIStroke"
+obj_144.Color = Color3.fromRGB(22, 30, 56)
+obj_144.Thickness = 1
+obj_144.Transparency = 0
+obj_144.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_144.LineJoinMode = Enum.LineJoinMode.Round
+obj_144.Parent = obj_142
+local obj_145 = Instance.new("ImageLabel")
+obj_145.Name = "Icon"
+obj_145.Size = UDim2.new(0, 12, 0, 12)
+obj_145.Position = UDim2.new(0, 10, 0.5, 0)
+obj_145.AnchorPoint = Vector2.new(0, 0.5)
+obj_145.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_145.BackgroundTransparency = 1
+obj_145.BorderSizePixel = 1
+obj_145.Visible = true
+obj_145.ZIndex = 6
+obj_145.ClipsDescendants = false
+obj_145.LayoutOrder = 0
+obj_145.Rotation = 0
+obj_145.Image = "rbxassetid://120442954102156"
+obj_145.ImageColor3 = Color3.fromRGB(110, 125, 150)
+obj_145.ImageRectOffset = Vector2.new(0, 0)
+obj_145.ImageRectSize = Vector2.new(0, 0)
+obj_145.ImageTransparency = 0
+obj_145.ScaleType = Enum.ScaleType.Stretch
+obj_145.SliceCenter = Rect.new(0, 0, 0, 0)
+obj_145.SliceScale = 1
+obj_145.Parent = obj_142
+local obj_146 = Instance.new("TextBox")
+obj_146.Name = "TextBox"
+obj_146.Size = UDim2.new(1, -40, 1, 0)
+obj_146.Position = UDim2.new(0, 30, 0, 0)
+obj_146.AnchorPoint = Vector2.new(0, 0)
+obj_146.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_146.BackgroundTransparency = 1
+obj_146.BorderSizePixel = 1
+obj_146.Visible = true
+obj_146.ZIndex = 6
+obj_146.ClipsDescendants = false
+obj_146.LayoutOrder = 0
+obj_146.Rotation = 0
+obj_146.Text = ""
+obj_146.TextColor3 = Color3.fromRGB(255, 255, 255)
+obj_146.TextSize = 11
+obj_146.Font = Enum.Font.GothamMedium
+obj_146.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_146.TextStrokeTransparency = 1
+obj_146.TextWrapped = false
+obj_146.TextXAlignment = Enum.TextXAlignment.Left
+obj_146.TextYAlignment = Enum.TextYAlignment.Center
+obj_146.RichText = false
+obj_146.PlaceholderText = "Search...."
+obj_146.PlaceholderColor3 = Color3.fromRGB(100, 115, 135)
+obj_146.ClearTextOnFocus = false
+obj_146.TextEditable = true
+obj_146.Parent = obj_142
+local obj_147 = Instance.new("UIGradient")
+obj_147.Name = "UIGradient"
+obj_147.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(8, 13, 30)), ColorSequenceKeypoint.new(1, Color3.fromRGB(5, 8, 20))})
+obj_147.Enabled = true
+obj_147.Offset = Vector2.new(0, 0)
+obj_147.Rotation = 90
+obj_147.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 0)})
+obj_147.Parent = obj_138
+local obj_148 = Instance.new("Frame")
+obj_148.Name = "GlowOuter"
+obj_148.Size = UDim2.new(0, 460, 0, 460)
+obj_148.Position = UDim2.new(0.908695638179779, 30, 0.17499999701976776, -220)
+obj_148.AnchorPoint = Vector2.new(1, 0)
+obj_148.BackgroundColor3 = Color3.fromRGB(25, 75, 220)
+obj_148.BackgroundTransparency = 0.9100000262260437
+obj_148.BorderSizePixel = 0
+obj_148.Visible = true
+obj_148.ZIndex = 2
+obj_148.ClipsDescendants = false
+obj_148.LayoutOrder = 0
+obj_148.Rotation = 0
+obj_148.Parent = obj_138
+local obj_149 = Instance.new("UICorner")
+obj_149.Name = "UICorner"
+obj_149.CornerRadius = UDim.new(1, 0)
+obj_149.Parent = obj_148
+local obj_150 = Instance.new("Frame")
+obj_150.Name = "GlowMid"
+obj_150.Size = UDim2.new(0, 280, 0, 280)
+obj_150.Position = UDim2.new(1, 10, 0, -100)
+obj_150.AnchorPoint = Vector2.new(1, 0)
+obj_150.BackgroundColor3 = Color3.fromRGB(40, 100, 240)
+obj_150.BackgroundTransparency = 0.8999999761581421
+obj_150.BorderSizePixel = 0
+obj_150.Visible = true
+obj_150.ZIndex = 2
+obj_150.ClipsDescendants = false
+obj_150.LayoutOrder = 0
+obj_150.Rotation = 0
+obj_150.Parent = obj_138
+local obj_151 = Instance.new("UICorner")
+obj_151.Name = "UICorner"
+obj_151.CornerRadius = UDim.new(1, 0)
+obj_151.Parent = obj_150
+local obj_152 = Instance.new("Frame")
+obj_152.Name = "GlowInner"
+obj_152.Size = UDim2.new(0, 150, 0, 150)
+obj_152.Position = UDim2.new(1, -10, 0, -30)
+obj_152.AnchorPoint = Vector2.new(1, 0)
+obj_152.BackgroundColor3 = Color3.fromRGB(60, 130, 255)
+obj_152.BackgroundTransparency = 0.8999999761581421
+obj_152.BorderSizePixel = 0
+obj_152.Visible = true
+obj_152.ZIndex = 2
+obj_152.ClipsDescendants = false
+obj_152.LayoutOrder = 0
+obj_152.Rotation = 0
+obj_152.Parent = obj_138
+local obj_153 = Instance.new("UICorner")
+obj_153.Name = "UICorner"
+obj_153.CornerRadius = UDim.new(1, 0)
+obj_153.Parent = obj_152
+local obj_154 = Instance.new("Frame")
+obj_154.Name = "AboutPanel"
+obj_154.Size = UDim2.new(1, -40, 1, -92)
+obj_154.Position = UDim2.new(0, 20, 0, 86)
+obj_154.AnchorPoint = Vector2.new(0, 0)
+obj_154.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_154.BackgroundTransparency = 1
+obj_154.BorderSizePixel = 1
+obj_154.Visible = false
+obj_154.ZIndex = 6
+obj_154.ClipsDescendants = false
+obj_154.LayoutOrder = 0
+obj_154.Rotation = 0
+obj_154.Parent = obj_138
+local obj_155 = Instance.new("ScrollingFrame")
+obj_155.Name = "AboutScroll"
+obj_155.Size = UDim2.new(1, 0, 1, 0)
+obj_155.Position = UDim2.new(0, 0, 0, 0)
+obj_155.AnchorPoint = Vector2.new(0, 0)
+obj_155.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_155.BackgroundTransparency = 1
+obj_155.BorderSizePixel = 1
+obj_155.Visible = true
+obj_155.ZIndex = 6
+obj_155.ClipsDescendants = true
+obj_155.LayoutOrder = 0
+obj_155.Rotation = 0
+obj_155.CanvasPosition = Vector2.new(0, 0)
+obj_155.CanvasSize = UDim2.new(0, 0, 0, 0)
+obj_155.ScrollBarImageColor3 = Color3.fromRGB(0, 100, 255)
+obj_155.ScrollBarImageTransparency = 0
+obj_155.ScrollBarThickness = 3
+obj_155.ScrollingDirection = Enum.ScrollingDirection.Y
+obj_155.AutomaticCanvasSize = Enum.AutomaticSize.Y
+obj_155.Parent = obj_154
+local obj_156 = Instance.new("UIListLayout")
+obj_156.Name = "UIListLayout"
+obj_156.Padding = UDim.new(0, 14)
+obj_156.FillDirection = Enum.FillDirection.Vertical
+obj_156.HorizontalAlignment = Enum.HorizontalAlignment.Center
+obj_156.VerticalAlignment = Enum.VerticalAlignment.Top
+obj_156.SortOrder = Enum.SortOrder.LayoutOrder
+obj_156.Parent = obj_155
+local obj_157 = Instance.new("ImageLabel")
+obj_157.Name = "BannerImage"
+obj_157.Size = UDim2.new(0, 320, 0, 181)
+obj_157.Position = UDim2.new(0.08762886375188828, 0, 0, 0)
+obj_157.AnchorPoint = Vector2.new(0, 0)
+obj_157.BackgroundColor3 = Color3.fromRGB(15, 23, 42)
+obj_157.BackgroundTransparency = 1
+obj_157.BorderSizePixel = 1
+obj_157.Visible = true
+obj_157.ZIndex = 7
+obj_157.ClipsDescendants = false
+obj_157.LayoutOrder = 1
+obj_157.Rotation = 0
+obj_157.Image = "rbxassetid://129147718736508"
+obj_157.ImageColor3 = Color3.fromRGB(255, 255, 255)
+obj_157.ImageRectOffset = Vector2.new(0, 0)
+obj_157.ImageRectSize = Vector2.new(0, 0)
+obj_157.ImageTransparency = 0
+obj_157.ScaleType = Enum.ScaleType.Crop
+obj_157.SliceCenter = Rect.new(0, 0, 0, 0)
+obj_157.SliceScale = 1
+obj_157.Parent = obj_155
+local obj_158 = Instance.new("TextLabel")
+obj_158.Name = "DescriptionLabel"
+obj_158.Size = UDim2.new(1, -20, 0, 110)
+obj_158.Position = UDim2.new(0, 0, 0, 0)
+obj_158.AnchorPoint = Vector2.new(0, 0)
+obj_158.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_158.BackgroundTransparency = 1
+obj_158.BorderSizePixel = 1
+obj_158.Visible = true
+obj_158.ZIndex = 7
+obj_158.ClipsDescendants = false
+obj_158.LayoutOrder = 2
+obj_158.Rotation = 0
+obj_158.Text = "<b>SysHub Corporation V1.0</b><br/><br/>Welcome to the ultimate keybinding and settings interface. SysHub provides a state-of-the-art configuration system with dynamic custom controls, smooth animations, and optimized performance. Customize your hotkeys, adjust steppers, and calibrate sliders to suit your gameplay style. Built with high performance and rich aesthetics in mind."
+obj_158.TextColor3 = Color3.fromRGB(180, 200, 235)
+obj_158.TextSize = 12
+obj_158.Font = Enum.Font.Gotham
+obj_158.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_158.TextStrokeTransparency = 1
+obj_158.TextWrapped = true
+obj_158.TextXAlignment = Enum.TextXAlignment.Left
+obj_158.TextYAlignment = Enum.TextYAlignment.Top
+obj_158.RichText = true
+obj_158.Parent = obj_155
+local obj_159 = Instance.new("UIPadding")
+obj_159.Name = "UIPadding"
+obj_159.PaddingLeft = UDim.new(0, 16)
+obj_159.PaddingRight = UDim.new(0, 16)
+obj_159.PaddingTop = UDim.new(0, 12)
+obj_159.PaddingBottom = UDim.new(0, 16)
+obj_159.Parent = obj_155
+local obj_160 = Instance.new("Frame")
+obj_160.Name = "DiscordContainer"
+obj_160.Size = UDim2.new(1, 0, 0, 36)
+obj_160.Position = UDim2.new(0, 0, 0, 0)
+obj_160.AnchorPoint = Vector2.new(0, 0)
+obj_160.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_160.BackgroundTransparency = 1
+obj_160.BorderSizePixel = 1
+obj_160.Visible = true
+obj_160.ZIndex = 1
+obj_160.ClipsDescendants = false
+obj_160.LayoutOrder = 3
+obj_160.Rotation = 0
+obj_160.Parent = obj_155
+local obj_161 = Instance.new("TextButton")
+obj_161.Name = "DiscordBtn"
+obj_161.Size = UDim2.new(0, 170, 0, 32)
+obj_161.Position = UDim2.new(0, 0, 0.5, 0)
+obj_161.AnchorPoint = Vector2.new(0, 0.5)
+obj_161.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
+obj_161.BackgroundTransparency = 0.15000000596046448
+obj_161.BorderSizePixel = 1
+obj_161.Visible = true
+obj_161.ZIndex = 7
+obj_161.ClipsDescendants = false
+obj_161.LayoutOrder = 0
+obj_161.Rotation = 0
+obj_161.Text = ""
+obj_161.TextColor3 = Color3.fromRGB(27, 42, 53)
+obj_161.TextSize = 8
+obj_161.Font = Enum.Font.Legacy
+obj_161.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_161.TextStrokeTransparency = 1
+obj_161.TextWrapped = false
+obj_161.TextXAlignment = Enum.TextXAlignment.Center
+obj_161.TextYAlignment = Enum.TextYAlignment.Center
+obj_161.RichText = false
+obj_161.Parent = obj_160
+local obj_162 = Instance.new("UICorner")
+obj_162.Name = "UICorner"
+obj_162.CornerRadius = UDim.new(0, 6)
+obj_162.Parent = obj_161
+local obj_163 = Instance.new("UIStroke")
+obj_163.Name = "UIStroke"
+obj_163.Color = Color3.fromRGB(40, 90, 220)
+obj_163.Thickness = 1
+obj_163.Transparency = 0.699999988079071
+obj_163.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_163.LineJoinMode = Enum.LineJoinMode.Round
+obj_163.Parent = obj_161
+local obj_164 = Instance.new("UIListLayout")
+obj_164.Name = "UIListLayout"
+obj_164.Padding = UDim.new(0, 8)
+obj_164.FillDirection = Enum.FillDirection.Horizontal
+obj_164.HorizontalAlignment = Enum.HorizontalAlignment.Left
+obj_164.VerticalAlignment = Enum.VerticalAlignment.Center
+obj_164.SortOrder = Enum.SortOrder.Name
+obj_164.Parent = obj_161
+local obj_165 = Instance.new("UIPadding")
+obj_165.Name = "UIPadding"
+obj_165.PaddingLeft = UDim.new(0, 10)
+obj_165.PaddingRight = UDim.new(0, 0)
+obj_165.PaddingTop = UDim.new(0, 0)
+obj_165.PaddingBottom = UDim.new(0, 0)
+obj_165.Parent = obj_161
+local obj_166 = Instance.new("ImageLabel")
+obj_166.Name = "Icon"
+obj_166.Size = UDim2.new(0, 18, 0, 18)
+obj_166.Position = UDim2.new(0, 0, 0, 0)
+obj_166.AnchorPoint = Vector2.new(0, 0)
+obj_166.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_166.BackgroundTransparency = 1
+obj_166.BorderSizePixel = 1
+obj_166.Visible = true
+obj_166.ZIndex = 8
+obj_166.ClipsDescendants = false
+obj_166.LayoutOrder = 0
+obj_166.Rotation = 0
+obj_166.Image = "rbxassetid://73132811772878"
+obj_166.ImageColor3 = Color3.fromRGB(255, 255, 255)
+obj_166.ImageRectOffset = Vector2.new(0, 0)
+obj_166.ImageRectSize = Vector2.new(0, 0)
+obj_166.ImageTransparency = 0
+obj_166.ScaleType = Enum.ScaleType.Stretch
+obj_166.SliceCenter = Rect.new(0, 0, 0, 0)
+obj_166.SliceScale = 1
+obj_166.Parent = obj_161
+local obj_167 = Instance.new("TextLabel")
+obj_167.Name = "Label"
+obj_167.Size = UDim2.new(0, 120, 1, 0)
+obj_167.Position = UDim2.new(0, 0, 0, 0)
+obj_167.AnchorPoint = Vector2.new(0, 0)
+obj_167.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_167.BackgroundTransparency = 1
+obj_167.BorderSizePixel = 1
+obj_167.Visible = true
+obj_167.ZIndex = 8
+obj_167.ClipsDescendants = false
+obj_167.LayoutOrder = 0
+obj_167.Rotation = 0
+obj_167.Text = "SysHub Discord"
+obj_167.TextColor3 = Color3.fromRGB(255, 255, 255)
+obj_167.TextSize = 13
+obj_167.Font = Enum.Font.GothamBold
+obj_167.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_167.TextStrokeTransparency = 1
+obj_167.TextWrapped = false
+obj_167.TextXAlignment = Enum.TextXAlignment.Left
+obj_167.TextYAlignment = Enum.TextYAlignment.Center
+obj_167.RichText = false
+obj_167.Parent = obj_161
+local obj_168 = Instance.new("UIGradient")
+obj_168.Name = "UIGradient"
+obj_168.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(10, 18, 45)), ColorSequenceKeypoint.new(1, Color3.fromRGB(20, 32, 75))})
+obj_168.Enabled = true
+obj_168.Offset = Vector2.new(0, 0)
+obj_168.Rotation = 45
+obj_168.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 0)})
+obj_168.Parent = obj_161
+local obj_169 = Instance.new("Frame")
+obj_169.Name = "CopyrightContainer"
+obj_169.Size = UDim2.new(1, 0, 0, 20)
+obj_169.Position = UDim2.new(0, 0, 0, 0)
+obj_169.AnchorPoint = Vector2.new(0, 0)
+obj_169.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_169.BackgroundTransparency = 1
+obj_169.BorderSizePixel = 1
+obj_169.Visible = true
+obj_169.ZIndex = 1
+obj_169.ClipsDescendants = false
+obj_169.LayoutOrder = 4
+obj_169.Rotation = 0
+obj_169.Parent = obj_155
+local obj_170 = Instance.new("TextLabel")
+obj_170.Name = "CopyrightLabel"
+obj_170.Size = UDim2.new(1, 0, 1, 0)
+obj_170.Position = UDim2.new(0, 0, 0, 0)
+obj_170.AnchorPoint = Vector2.new(0, 0)
+obj_170.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_170.BackgroundTransparency = 1
+obj_170.BorderSizePixel = 1
+obj_170.Visible = true
+obj_170.ZIndex = 7
+obj_170.ClipsDescendants = false
+obj_170.LayoutOrder = 0
+obj_170.Rotation = 0
+obj_170.Text = "©️ 2026 Syshub Corporation"
+obj_170.TextColor3 = Color3.fromRGB(80, 100, 130)
+obj_170.TextSize = 11
+obj_170.Font = Enum.Font.Gotham
+obj_170.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_170.TextStrokeTransparency = 1
+obj_170.TextWrapped = false
+obj_170.TextXAlignment = Enum.TextXAlignment.Left
+obj_170.TextYAlignment = Enum.TextYAlignment.Center
+obj_170.RichText = false
+obj_170.Parent = obj_169
+local obj_171 = Instance.new("ScrollingFrame")
+obj_171.Name = "Page_1_A"
+obj_171.Size = UDim2.new(1, -40, 1, -92)
+obj_171.Position = UDim2.new(0, 20, 0, 86)
+obj_171.AnchorPoint = Vector2.new(0, 0)
+obj_171.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_171.BackgroundTransparency = 1
+obj_171.BorderSizePixel = 0
+obj_171.Visible = false
+obj_171.ZIndex = 6
+obj_171.ClipsDescendants = true
+obj_171.LayoutOrder = 0
+obj_171.Rotation = 0
+obj_171.CanvasPosition = Vector2.new(0, 0)
+obj_171.CanvasSize = UDim2.new(0, 0, 0, 0)
+obj_171.ScrollBarImageColor3 = Color3.fromRGB(0, 85, 255)
+obj_171.ScrollBarImageTransparency = 0.5
+obj_171.ScrollBarThickness = 4
+obj_171.ScrollingDirection = Enum.ScrollingDirection.XY
+obj_171.AutomaticCanvasSize = Enum.AutomaticSize.Y
+obj_171.Parent = obj_138
+local obj_172 = Instance.new("UIListLayout")
+obj_172.Name = "UIListLayout"
+obj_172.Padding = UDim.new(0, 10)
+obj_172.FillDirection = Enum.FillDirection.Vertical
+obj_172.HorizontalAlignment = Enum.HorizontalAlignment.Center
+obj_172.VerticalAlignment = Enum.VerticalAlignment.Top
+obj_172.SortOrder = Enum.SortOrder.LayoutOrder
+obj_172.Parent = obj_171
+local obj_173 = Instance.new("Frame")
+obj_173.Name = "Row_A"
+obj_173.Size = UDim2.new(1, -16, 0, 38)
+obj_173.Position = UDim2.new(0, 0, 0, 0)
+obj_173.AnchorPoint = Vector2.new(0, 0)
+obj_173.BackgroundColor3 = Color3.fromRGB(10, 16, 36)
+obj_173.BackgroundTransparency = 0
+obj_173.BorderSizePixel = 0
+obj_173.Visible = true
+obj_173.ZIndex = 6
+obj_173.ClipsDescendants = false
+obj_173.LayoutOrder = 1
+obj_173.Rotation = 0
+obj_173.Parent = obj_171
+local obj_174 = Instance.new("UICorner")
+obj_174.Name = "UICorner"
+obj_174.CornerRadius = UDim.new(0, 8)
+obj_174.Parent = obj_173
+local obj_175 = Instance.new("UIStroke")
+obj_175.Name = "UIStroke"
+obj_175.Color = Color3.fromRGB(20, 28, 48)
+obj_175.Thickness = 1
+obj_175.Transparency = 0
+obj_175.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_175.LineJoinMode = Enum.LineJoinMode.Round
+obj_175.Parent = obj_173
+local obj_176 = Instance.new("Frame")
+obj_176.Name = "Toggle"
+obj_176.Size = UDim2.new(0, 70, 0, 20)
+obj_176.Position = UDim2.new(1, -5, 0.5, 0)
+obj_176.AnchorPoint = Vector2.new(1, 0.5)
+obj_176.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_176.BackgroundTransparency = 1
+obj_176.BorderSizePixel = 1
+obj_176.Visible = true
+obj_176.ZIndex = 6
+obj_176.ClipsDescendants = false
+obj_176.LayoutOrder = 0
+obj_176.Rotation = 0
+obj_176.Parent = obj_173
+local obj_177 = Instance.new("Frame")
+obj_177.Name = "Switch"
+obj_177.Size = UDim2.new(0, 34, 0, 18)
+obj_177.Position = UDim2.new(0, 0, 0.5, 0)
+obj_177.AnchorPoint = Vector2.new(0, 0.5)
+obj_177.BackgroundColor3 = Color3.fromRGB(20, 26, 46)
+obj_177.BackgroundTransparency = 0
+obj_177.BorderSizePixel = 0
+obj_177.Visible = true
+obj_177.ZIndex = 6
+obj_177.ClipsDescendants = false
+obj_177.LayoutOrder = 0
+obj_177.Rotation = 0
+obj_177.Parent = obj_176
+local obj_178 = Instance.new("UICorner")
+obj_178.Name = "UICorner"
+obj_178.CornerRadius = UDim.new(1, 0)
+obj_178.Parent = obj_177
+local obj_179 = Instance.new("Frame")
+obj_179.Name = "Knob"
+obj_179.Size = UDim2.new(0, 12, 0, 12)
+obj_179.Position = UDim2.new(0, 3, 0.5, 0)
+obj_179.AnchorPoint = Vector2.new(0, 0.5)
+obj_179.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+obj_179.BackgroundTransparency = 0
+obj_179.BorderSizePixel = 0
+obj_179.Visible = true
+obj_179.ZIndex = 6
+obj_179.ClipsDescendants = false
+obj_179.LayoutOrder = 0
+obj_179.Rotation = 0
+obj_179.Parent = obj_177
+local obj_180 = Instance.new("UICorner")
+obj_180.Name = "UICorner"
+obj_180.CornerRadius = UDim.new(1, 0)
+obj_180.Parent = obj_179
+local obj_181 = Instance.new("TextButton")
+obj_181.Name = "ClickButton"
+obj_181.Size = UDim2.new(1, 0, 1, 0)
+obj_181.Position = UDim2.new(0, 0, 0, 0)
+obj_181.AnchorPoint = Vector2.new(0, 0)
+obj_181.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_181.BackgroundTransparency = 1
+obj_181.BorderSizePixel = 1
+obj_181.Visible = true
+obj_181.ZIndex = 6
+obj_181.ClipsDescendants = false
+obj_181.LayoutOrder = 0
+obj_181.Rotation = 0
+obj_181.Text = ""
+obj_181.TextColor3 = Color3.fromRGB(27, 42, 53)
+obj_181.TextSize = 8
+obj_181.Font = Enum.Font.Legacy
+obj_181.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_181.TextStrokeTransparency = 1
+obj_181.TextWrapped = false
+obj_181.TextXAlignment = Enum.TextXAlignment.Center
+obj_181.TextYAlignment = Enum.TextYAlignment.Center
+obj_181.RichText = false
+obj_181.Parent = obj_177
+local obj_182 = Instance.new("TextLabel")
+obj_182.Name = "StatusLabel"
+obj_182.Size = UDim2.new(0, 28, 1, 0)
+obj_182.Position = UDim2.new(0, 37, 0, 0)
+obj_182.AnchorPoint = Vector2.new(0, 0)
+obj_182.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_182.BackgroundTransparency = 1
+obj_182.BorderSizePixel = 1
+obj_182.Visible = true
+obj_182.ZIndex = 6
+obj_182.ClipsDescendants = false
+obj_182.LayoutOrder = 0
+obj_182.Rotation = 0
+obj_182.Text = "OFF"
+obj_182.TextColor3 = Color3.fromRGB(100, 115, 135)
+obj_182.TextSize = 9
+obj_182.Font = Enum.Font.GothamBold
+obj_182.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_182.TextStrokeTransparency = 1
+obj_182.TextWrapped = false
+obj_182.TextXAlignment = Enum.TextXAlignment.Left
+obj_182.TextYAlignment = Enum.TextYAlignment.Center
+obj_182.RichText = false
+obj_182.Parent = obj_176
+local obj_183 = Instance.new("UIGradient")
+obj_183.Name = "UIGradient"
+obj_183.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(12, 20, 44)), ColorSequenceKeypoint.new(1, Color3.fromRGB(8, 14, 30))})
+obj_183.Enabled = true
+obj_183.Offset = Vector2.new(0, 0)
+obj_183.Rotation = 0
+obj_183.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 0)})
+obj_183.Parent = obj_173
+local obj_184 = Instance.new("TextLabel")
+obj_184.Name = "Title"
+obj_184.Size = UDim2.new(0, 135, 0, 20)
+obj_184.Position = UDim2.new(0, 10, 0.5, 0)
+obj_184.AnchorPoint = Vector2.new(0, 0.5)
+obj_184.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_184.BackgroundTransparency = 1
+obj_184.BorderSizePixel = 1
+obj_184.Visible = true
+obj_184.ZIndex = 1
+obj_184.ClipsDescendants = false
+obj_184.LayoutOrder = 0
+obj_184.Rotation = 0
+obj_184.Text = "Preset 1"
+obj_184.TextColor3 = Color3.fromRGB(200, 220, 255)
+obj_184.TextSize = 13
+obj_184.Font = Enum.Font.GothamBold
+obj_184.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_184.TextStrokeTransparency = 1
+obj_184.TextWrapped = false
+obj_184.TextXAlignment = Enum.TextXAlignment.Left
+obj_184.TextYAlignment = Enum.TextYAlignment.Center
+obj_184.RichText = false
+obj_184.Parent = obj_173
+local obj_185 = Instance.new("TextButton")
+obj_185.Name = "KeybindButton"
+obj_185.Size = UDim2.new(0, 34, 0, 15)
+obj_185.Position = UDim2.new(1, -80, 0.5, 0)
+obj_185.AnchorPoint = Vector2.new(1, 0.5)
+obj_185.BackgroundColor3 = Color3.fromRGB(15, 20, 42)
+obj_185.BackgroundTransparency = 0
+obj_185.BorderSizePixel = 1
+obj_185.Visible = true
+obj_185.ZIndex = 1
+obj_185.ClipsDescendants = false
+obj_185.LayoutOrder = 0
+obj_185.Rotation = 0
+obj_185.Text = "[...]"
+obj_185.TextColor3 = Color3.fromRGB(150, 175, 220)
+obj_185.TextSize = 9
+obj_185.Font = Enum.Font.GothamMedium
+obj_185.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_185.TextStrokeTransparency = 1
+obj_185.TextWrapped = false
+obj_185.TextXAlignment = Enum.TextXAlignment.Center
+obj_185.TextYAlignment = Enum.TextYAlignment.Center
+obj_185.RichText = false
+obj_185.Parent = obj_173
+local obj_186 = Instance.new("UICorner")
+obj_186.Name = "UICorner"
+obj_186.CornerRadius = UDim.new(0, 4)
+obj_186.Parent = obj_185
+local obj_187 = Instance.new("UIStroke")
+obj_187.Name = "UIStroke"
+obj_187.Color = Color3.fromRGB(30, 42, 75)
+obj_187.Thickness = 1
+obj_187.Transparency = 0
+obj_187.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_187.LineJoinMode = Enum.LineJoinMode.Round
+obj_187.Parent = obj_185
+local obj_188 = Instance.new("Frame")
+obj_188.Name = "Row_B"
+obj_188.Size = UDim2.new(1, -16, 0, 38)
+obj_188.Position = UDim2.new(0, 0, 0, 0)
+obj_188.AnchorPoint = Vector2.new(0, 0)
+obj_188.BackgroundColor3 = Color3.fromRGB(10, 16, 36)
+obj_188.BackgroundTransparency = 0
+obj_188.BorderSizePixel = 0
+obj_188.Visible = true
+obj_188.ZIndex = 6
+obj_188.ClipsDescendants = false
+obj_188.LayoutOrder = 2
+obj_188.Rotation = 0
+obj_188.Parent = obj_171
+local obj_189 = Instance.new("UICorner")
+obj_189.Name = "UICorner"
+obj_189.CornerRadius = UDim.new(0, 8)
+obj_189.Parent = obj_188
+local obj_190 = Instance.new("UIStroke")
+obj_190.Name = "UIStroke"
+obj_190.Color = Color3.fromRGB(20, 28, 48)
+obj_190.Thickness = 1
+obj_190.Transparency = 0
+obj_190.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_190.LineJoinMode = Enum.LineJoinMode.Round
+obj_190.Parent = obj_188
+local obj_191 = Instance.new("Frame")
+obj_191.Name = "Toggle"
+obj_191.Size = UDim2.new(0, 70, 0, 20)
+obj_191.Position = UDim2.new(1, -5, 0.5, 0)
+obj_191.AnchorPoint = Vector2.new(1, 0.5)
+obj_191.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_191.BackgroundTransparency = 1
+obj_191.BorderSizePixel = 1
+obj_191.Visible = true
+obj_191.ZIndex = 6
+obj_191.ClipsDescendants = false
+obj_191.LayoutOrder = 0
+obj_191.Rotation = 0
+obj_191.Parent = obj_188
+local obj_192 = Instance.new("Frame")
+obj_192.Name = "Switch"
+obj_192.Size = UDim2.new(0, 34, 0, 18)
+obj_192.Position = UDim2.new(0, 0, 0.5, 0)
+obj_192.AnchorPoint = Vector2.new(0, 0.5)
+obj_192.BackgroundColor3 = Color3.fromRGB(20, 26, 46)
+obj_192.BackgroundTransparency = 0
+obj_192.BorderSizePixel = 0
+obj_192.Visible = true
+obj_192.ZIndex = 6
+obj_192.ClipsDescendants = false
+obj_192.LayoutOrder = 0
+obj_192.Rotation = 0
+obj_192.Parent = obj_191
+local obj_193 = Instance.new("UICorner")
+obj_193.Name = "UICorner"
+obj_193.CornerRadius = UDim.new(1, 0)
+obj_193.Parent = obj_192
+local obj_194 = Instance.new("Frame")
+obj_194.Name = "Knob"
+obj_194.Size = UDim2.new(0, 12, 0, 12)
+obj_194.Position = UDim2.new(0, 3, 0.5, 0)
+obj_194.AnchorPoint = Vector2.new(0, 0.5)
+obj_194.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+obj_194.BackgroundTransparency = 0
+obj_194.BorderSizePixel = 0
+obj_194.Visible = true
+obj_194.ZIndex = 6
+obj_194.ClipsDescendants = false
+obj_194.LayoutOrder = 0
+obj_194.Rotation = 0
+obj_194.Parent = obj_192
+local obj_195 = Instance.new("UICorner")
+obj_195.Name = "UICorner"
+obj_195.CornerRadius = UDim.new(1, 0)
+obj_195.Parent = obj_194
+local obj_196 = Instance.new("TextButton")
+obj_196.Name = "ClickButton"
+obj_196.Size = UDim2.new(1, 0, 1, 0)
+obj_196.Position = UDim2.new(0, 0, 0, 0)
+obj_196.AnchorPoint = Vector2.new(0, 0)
+obj_196.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_196.BackgroundTransparency = 1
+obj_196.BorderSizePixel = 1
+obj_196.Visible = true
+obj_196.ZIndex = 6
+obj_196.ClipsDescendants = false
+obj_196.LayoutOrder = 0
+obj_196.Rotation = 0
+obj_196.Text = ""
+obj_196.TextColor3 = Color3.fromRGB(27, 42, 53)
+obj_196.TextSize = 8
+obj_196.Font = Enum.Font.Legacy
+obj_196.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_196.TextStrokeTransparency = 1
+obj_196.TextWrapped = false
+obj_196.TextXAlignment = Enum.TextXAlignment.Center
+obj_196.TextYAlignment = Enum.TextYAlignment.Center
+obj_196.RichText = false
+obj_196.Parent = obj_192
+local obj_197 = Instance.new("TextLabel")
+obj_197.Name = "StatusLabel"
+obj_197.Size = UDim2.new(0, 28, 1, 0)
+obj_197.Position = UDim2.new(0, 37, 0, 0)
+obj_197.AnchorPoint = Vector2.new(0, 0)
+obj_197.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_197.BackgroundTransparency = 1
+obj_197.BorderSizePixel = 1
+obj_197.Visible = true
+obj_197.ZIndex = 6
+obj_197.ClipsDescendants = false
+obj_197.LayoutOrder = 0
+obj_197.Rotation = 0
+obj_197.Text = "OFF"
+obj_197.TextColor3 = Color3.fromRGB(100, 115, 135)
+obj_197.TextSize = 9
+obj_197.Font = Enum.Font.GothamBold
+obj_197.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_197.TextStrokeTransparency = 1
+obj_197.TextWrapped = false
+obj_197.TextXAlignment = Enum.TextXAlignment.Left
+obj_197.TextYAlignment = Enum.TextYAlignment.Center
+obj_197.RichText = false
+obj_197.Parent = obj_191
+local obj_198 = Instance.new("UIGradient")
+obj_198.Name = "UIGradient"
+obj_198.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(12, 20, 44)), ColorSequenceKeypoint.new(1, Color3.fromRGB(8, 14, 30))})
+obj_198.Enabled = true
+obj_198.Offset = Vector2.new(0, 0)
+obj_198.Rotation = 0
+obj_198.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 0)})
+obj_198.Parent = obj_188
+local obj_199 = Instance.new("TextLabel")
+obj_199.Name = "Title"
+obj_199.Size = UDim2.new(0, 135, 0, 20)
+obj_199.Position = UDim2.new(0, 10, 0.5, 0)
+obj_199.AnchorPoint = Vector2.new(0, 0.5)
+obj_199.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_199.BackgroundTransparency = 1
+obj_199.BorderSizePixel = 1
+obj_199.Visible = true
+obj_199.ZIndex = 1
+obj_199.ClipsDescendants = false
+obj_199.LayoutOrder = 0
+obj_199.Rotation = 0
+obj_199.Text = "Preset 2"
+obj_199.TextColor3 = Color3.fromRGB(200, 220, 255)
+obj_199.TextSize = 13
+obj_199.Font = Enum.Font.GothamBold
+obj_199.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_199.TextStrokeTransparency = 1
+obj_199.TextWrapped = false
+obj_199.TextXAlignment = Enum.TextXAlignment.Left
+obj_199.TextYAlignment = Enum.TextYAlignment.Center
+obj_199.RichText = false
+obj_199.Parent = obj_188
+local obj_200 = Instance.new("TextButton")
+obj_200.Name = "KeybindButton"
+obj_200.Size = UDim2.new(0, 34, 0, 15)
+obj_200.Position = UDim2.new(1, -80, 0.5, 0)
+obj_200.AnchorPoint = Vector2.new(1, 0.5)
+obj_200.BackgroundColor3 = Color3.fromRGB(15, 20, 42)
+obj_200.BackgroundTransparency = 0
+obj_200.BorderSizePixel = 1
+obj_200.Visible = true
+obj_200.ZIndex = 1
+obj_200.ClipsDescendants = false
+obj_200.LayoutOrder = 0
+obj_200.Rotation = 0
+obj_200.Text = "[...]"
+obj_200.TextColor3 = Color3.fromRGB(150, 175, 220)
+obj_200.TextSize = 9
+obj_200.Font = Enum.Font.GothamMedium
+obj_200.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_200.TextStrokeTransparency = 1
+obj_200.TextWrapped = false
+obj_200.TextXAlignment = Enum.TextXAlignment.Center
+obj_200.TextYAlignment = Enum.TextYAlignment.Center
+obj_200.RichText = false
+obj_200.Parent = obj_188
+local obj_201 = Instance.new("UICorner")
+obj_201.Name = "UICorner"
+obj_201.CornerRadius = UDim.new(0, 4)
+obj_201.Parent = obj_200
+local obj_202 = Instance.new("UIStroke")
+obj_202.Name = "UIStroke"
+obj_202.Color = Color3.fromRGB(30, 42, 75)
+obj_202.Thickness = 1
+obj_202.Transparency = 0
+obj_202.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_202.LineJoinMode = Enum.LineJoinMode.Round
+obj_202.Parent = obj_200
+local obj_203 = Instance.new("Frame")
+obj_203.Name = "CustomControl"
+obj_203.Size = UDim2.new(1, -270, 0, 22)
+obj_203.Position = UDim2.new(0, 150, 0.5, 0)
+obj_203.AnchorPoint = Vector2.new(0, 0.5)
+obj_203.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_203.BackgroundTransparency = 1
+obj_203.BorderSizePixel = 1
+obj_203.Visible = true
+obj_203.ZIndex = 20
+obj_203.ClipsDescendants = false
+obj_203.LayoutOrder = 0
+obj_203.Rotation = 0
+obj_203.Parent = obj_188
+local obj_204 = Instance.new("TextLabel")
+obj_204.Name = "ValueLabel"
+obj_204.Size = UDim2.new(0, 36, 1, 0)
+obj_204.Position = UDim2.new(1, 0, 0.5, 0)
+obj_204.AnchorPoint = Vector2.new(1, 0.5)
+obj_204.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+obj_204.BackgroundTransparency = 1
+obj_204.BorderSizePixel = 1
+obj_204.Visible = true
+obj_204.ZIndex = 21
+obj_204.ClipsDescendants = false
+obj_204.LayoutOrder = 0
+obj_204.Rotation = 0
+obj_204.Text = "75%"
+obj_204.TextColor3 = Color3.fromRGB(0, 140, 255)
+obj_204.TextSize = 13
+obj_204.Font = Enum.Font.SourceSansBold
+obj_204.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_204.TextStrokeTransparency = 1
+obj_204.TextWrapped = false
+obj_204.TextXAlignment = Enum.TextXAlignment.Center
+obj_204.TextYAlignment = Enum.TextYAlignment.Center
+obj_204.RichText = false
+obj_204.Parent = obj_203
+local obj_205 = Instance.new("TextButton")
+obj_205.Name = "Track"
+obj_205.Size = UDim2.new(1, -40, 0, 6)
+obj_205.Position = UDim2.new(0, 0, 0.5, 0)
+obj_205.AnchorPoint = Vector2.new(0, 0.5)
+obj_205.BackgroundColor3 = Color3.fromRGB(20, 26, 46)
+obj_205.BackgroundTransparency = 0
+obj_205.BorderSizePixel = 1
+obj_205.Visible = true
+obj_205.ZIndex = 21
+obj_205.ClipsDescendants = false
+obj_205.LayoutOrder = 0
+obj_205.Rotation = 0
+obj_205.Text = ""
+obj_205.TextColor3 = Color3.fromRGB(27, 42, 53)
+obj_205.TextSize = 8
+obj_205.Font = Enum.Font.Legacy
+obj_205.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+obj_205.TextStrokeTransparency = 1
+obj_205.TextWrapped = false
+obj_205.TextXAlignment = Enum.TextXAlignment.Center
+obj_205.TextYAlignment = Enum.TextYAlignment.Center
+obj_205.RichText = false
+obj_205.Parent = obj_203
+local obj_206 = Instance.new("UICorner")
+obj_206.Name = "UICorner"
+obj_206.CornerRadius = UDim.new(0, 3)
+obj_206.Parent = obj_205
+local obj_207 = Instance.new("UIStroke")
+obj_207.Name = "UIStroke"
+obj_207.Color = Color3.fromRGB(35, 45, 75)
+obj_207.Thickness = 1
+obj_207.Transparency = 0
+obj_207.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_207.LineJoinMode = Enum.LineJoinMode.Round
+obj_207.Parent = obj_205
+local obj_208 = Instance.new("Frame")
+obj_208.Name = "Fill"
+obj_208.Size = UDim2.new(0.75, 0, 1, 0)
+obj_208.Position = UDim2.new(0, 0, 0, 0)
+obj_208.AnchorPoint = Vector2.new(0, 0)
+obj_208.BackgroundColor3 = Color3.fromRGB(0, 100, 255)
+obj_208.BackgroundTransparency = 0
+obj_208.BorderSizePixel = 0
+obj_208.Visible = true
+obj_208.ZIndex = 22
+obj_208.ClipsDescendants = false
+obj_208.LayoutOrder = 0
+obj_208.Rotation = 0
+obj_208.Parent = obj_205
+local obj_209 = Instance.new("UICorner")
+obj_209.Name = "UICorner"
+obj_209.CornerRadius = UDim.new(0, 3)
+obj_209.Parent = obj_208
+local obj_210 = Instance.new("Frame")
+obj_210.Name = "Knob"
+obj_210.Size = UDim2.new(0, 12, 0, 12)
+obj_210.Position = UDim2.new(0.75, 0, 0.5, 0)
+obj_210.AnchorPoint = Vector2.new(0.5, 0.5)
+obj_210.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+obj_210.BackgroundTransparency = 0
+obj_210.BorderSizePixel = 1
+obj_210.Visible = true
+obj_210.ZIndex = 23
+obj_210.ClipsDescendants = false
+obj_210.LayoutOrder = 0
+obj_210.Rotation = 0
+obj_210.Parent = obj_205
+local obj_211 = Instance.new("UICorner")
+obj_211.Name = "UICorner"
+obj_211.CornerRadius = UDim.new(0, 6)
+obj_211.Parent = obj_210
+local obj_212 = Instance.new("UIStroke")
+obj_212.Name = "UIStroke"
+obj_212.Color = Color3.fromRGB(0, 100, 255)
+obj_212.Thickness = 1.5
+obj_212.Transparency = 0
+obj_212.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_212.LineJoinMode = Enum.LineJoinMode.Round
+obj_212.Parent = obj_210
+local obj_213 = Instance.new("Frame")
+obj_213.Name = "Row_C"
+obj_213.Size = UDim2.new(1, -16, 0, 38)
+obj_213.Position = UDim2.new(0, 0, 0, 0)
+obj_213.AnchorPoint = Vector2.new(0, 0)
+obj_213.BackgroundColor3 = Color3.fromRGB(10, 16, 36)
+obj_213.BackgroundTransparency = 0
+obj_213.BorderSizePixel = 0
+obj_213.Visible = true
+obj_213.ZIndex = 6
+obj_213.ClipsDescendants = false
+obj_213.LayoutOrder = 3
+obj_213.Rotation = 0
+obj_213.Parent = obj_171
+local obj_214 = Instance.new("UICorner")
+obj_214.Name = "UICorner"
+obj_214.CornerRadius = UDim.new(0, 8)
+obj_214.Parent = obj_213
+local obj_215 = Instance.new("UIStroke")
+obj_215.Name = "UIStroke"
+obj_215.Color = Color3.fromRGB(20, 28, 48)
+obj_215.Thickness = 1
+obj_215.Transparency = 0
+obj_215.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+obj_215.LineJoinMode = Enum.LineJoinMode.Round
+obj_215.Parent = obj_213
+local obj_216 = Instance.new("Frame")
+obj_216.Name = "Toggle"
+obj_216.Size = UDim2.new(0, 70, 0, 20)
+obj_216.Position = UDim2.new(1, -5, 0.5, 0)
+obj_216.AnchorPoint = Vector2.new(1, 0.5)
+obj_216.Backg... (truncated)
+
+local SysUI = {
+    Notifications = {},
+    ActiveWindow = nil
+}
+
+-- Lexical Scoping Declarations
+local WindowClass = {}
+WindowClass.__index = WindowClass
+
+-- Helper: Format Keybind Key Name
+local function formatKeyName(input)
+    if input == "None" or not input then return "..." end
+    if type(input) == "string" then return input end
+    local name = tostring(input):gsub("Enum%.KeyCode%.",""):gsub("Enum%.UserInputType%.","")
+    if name == "LeftAlt" then return "LAlt" end
+    if name == "RightAlt" then return "RAlt" end
+    if name == "LeftControl" then return "LCtrl" end
+    if name == "RightControl" then return "RCtrl" end
+    if name == "LeftShift" then return "LShift" end
+    if name == "RightShift" then return "RShift" end
+    if name == "MouseButton1" then return "M1" end
+    if name == "MouseButton2" then return "M2" end
+    if name == "MouseButton3" then return "M3" end
+    return name
+end
+
+-- Helper: Convert RGB to HEX String
+local function rgbToHex(color)
+    return string.format("#%02X%02X%02X", math.round(color.R * 255), math.round(color.G * 255), math.round(color.B * 255))
+end
+
+-- Helper: Convert HEX String to Color3
+local function hexToRgb(hex)
+    hex = hex:gsub("#", "")
+    if #hex ~= 6 then return Color3.fromRGB(255, 0, 0) end
+    local r = tonumber(hex:sub(1, 2), 16) or 255
+    local g = tonumber(hex:sub(3, 4), 16) or 0
+    local b = tonumber(hex:sub(5, 6), 16) or 0
+    return Color3.fromRGB(r, g, b)
+end
+
+-- ============================================================
+-- TOAST NOTIFICATION SYSTEM
+-- ============================================================
+function SysUI:Notify(config)
+    config = config or {}
+    local title = config.Title or "Notification"
+    local message = config.Content or ""
+    local duration = config.Duration or 3.5
+    
+    local screenGui = SysUI.ActiveWindow and SysUI.ActiveWindow.Gui
+    if not screenGui then return end
+    
+    local template = screenGui:FindFirstChild("NotificationTemplate")
+    if not template then return end
+    
+    local notif = template:Clone()
+    notif.Name = "Notification"
+    notif.Title.Text = title
+    notif.Message.Text = message
+    notif.Visible = true
+    notif.Parent = screenGui
+    
+    table.insert(SysUI.Notifications, 1, notif)
+    
+    local function reposition()
+        for i, card in ipairs(SysUI.Notifications) do
+            local targetY = -80 - (i - 1) * 65
+            TweenService:Create(card, TweenInfo.new(0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(1, -20, 1, targetY)}):Play()
+        end
+    end
+    
+    notif.Position = UDim2.new(1, 300, 1, -80)
+    reposition()
+    
+    TweenService:Create(notif, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Position = UDim2.new(1, -20, 1, -80)}):Play()
+    
+    task.delay(duration, function()
+        local idx = table.find(SysUI.Notifications, notif)
+        if idx then table.remove(SysUI.Notifications, idx) end
+        
+        local slideOut = TweenService:Create(notif, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.In), {Position = UDim2.new(1, 300, notif.Position.Y.Scale, notif.Position.Y.Offset)})
+        slideOut:Play()
+        reposition()
+        
+        slideOut.Completed:Wait()
+        notif:Destroy()
+    end)
+end
+
+-- ============================================================
+-- DRAGGABLE & RESIZABLE HANDLER
+-- ============================================================
+local function setupDraggableAndResizable(frame, dragHandles, minSize, maxSize, onResizeEnd)
+    local dragging = false
+    local dragInput, dragStart, startPos
+    
+    for _, handle in ipairs(dragHandles) do
+        handle.Active = true
+        handle.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                dragging = true
+                dragStart = input.Position
+                startPos = frame.Position
+                
+                local conn
+                conn = input.Changed:Connect(function()
+                    if input.UserInputState == Enum.UserInputState.End then
+                        dragging = false
+                        conn:Disconnect()
+                    end
+                end)
+            end
+        end)
+        
+        handle.InputChanged:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+                dragInput = input
+            end
+        end)
+    end
+    
+    UserInputService.InputChanged:Connect(function(input)
+        if dragging and input == dragInput then
+            local delta = input.Position - dragStart
+            frame.Position = UDim2.new(
+                startPos.X.Scale, startPos.X.Offset + delta.X,
+                startPos.Y.Scale, startPos.Y.Offset + delta.Y
+            )
+        end
+    end)
+    
+    local resizeGrip = frame:FindFirstChild("ResizeGrip")
+    if resizeGrip then
+        local resizing = false
+        local startSize, startFramePos, resizeStart
+        
+        resizeGrip.MouseEnter:Connect(function()
+            TweenService:Create(resizeGrip, TweenInfo.new(0.2), {TextColor3 = Color3.fromRGB(0, 220, 255), TextTransparency = 0.2}):Play()
+        end)
+        resizeGrip.MouseLeave:Connect(function()
+            TweenService:Create(resizeGrip, TweenInfo.new(0.2), {TextColor3 = Color3.fromRGB(0, 180, 255), TextTransparency = 0.4}):Play()
+        end)
+        
+        resizeGrip.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                resizing = true
+                resizeStart = input.Position
+                startSize = frame.AbsoluteSize
+                startFramePos = frame.Position
+                
+                local conn
+                conn = input.Changed:Connect(function()
+                    if input.UserInputState == Enum.UserInputState.End then
+                        resizing = false
+                        conn:Disconnect()
+                        if onResizeEnd then onResizeEnd(frame.Size) end
+                    end
+                end)
+            end
+        end)
+        
+        UserInputService.InputChanged:Connect(function(input)
+            if resizing and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+                local delta = input.Position - resizeStart
+                local newW = math.clamp(startSize.X + delta.X, minSize.X, maxSize.X)
+                local newH = math.clamp(startSize.Y + delta.Y, minSize.Y, maxSize.Y)
+                
+                local changeW = newW - startSize.X
+                local changeH = newH - startSize.Y
+                
+                frame.Size = UDim2.new(0, newW, 0, newH)
+                frame.Position = UDim2.new(
+                    startFramePos.X.Scale, startFramePos.X.Offset + changeW * 0.5,
+                    startFramePos.Y.Scale, startFramePos.Y.Offset + changeH * 0.5
+                )
+            end
+        end)
+    end
+end
+
+-- ============================================================
+-- LOAD GUI TEMPLATE & INITIALIZE CORE BEHAVIORS
+-- ============================================================
+function SysUI:Load(config)
+    config = config or {}
+    local authKey = config.Key
+    
+    -- Destroy existing clone if any
+    local existing = PlayerGui:FindFirstChild("SysHubUI_Loaded")
+    if existing then existing:Destroy() end
+    
+    local gui = createUI()
+    gui.Name = "SysHubUI_Loaded"
+    gui.ResetOnSpawn = false
+    
+    local mainFrame = gui:WaitForChild("MainFrame")
+    local loginFrame = gui:WaitForChild("LoginFrame")
+    local sidebar = mainFrame:WaitForChild("Sidebar")
+    local sidebarScroll = sidebar:WaitForChild("SidebarScroll")
+    local mainPanel = mainFrame:WaitForChild("MainPanel")
+    local minimizedWidget = gui:WaitForChild("MinimizedWidget")
+    local colorPickerWidget = gui:WaitForChild("ColorPickerWidget")
+    
+    local profileCard = sidebar:WaitForChild("ProfileCard")
+    local displayNameLabel = profileCard:WaitForChild("DisplayName")
+    local statusLabel = profileCard:WaitForChild("Status")
+    
+    local header = mainPanel:WaitForChild("Header")
+    local titleLabel = header:WaitForChild("Title")
+    local subtitleLabel = header:WaitForChild("Subtitle")
+    local searchBoxFrame = header:WaitForChild("SearchBox")
+    local searchBox = searchBoxFrame:WaitForChild("TextBox")
+    
+    local aboutPanel = mainPanel:WaitForChild("AboutPanel")
+    local settingsPanel = mainPanel:WaitForChild("SettingsPanel")
+    
+    local btnAbout = sidebarScroll:WaitForChild("Btn_About")
+    local btnSettings = sidebarScroll:WaitForChild("Btn_Settings")
+    
+    -- Local variables for state
+    local currentActiveFrame = "LoginFrame"
+    local originalLoginSize = loginFrame.Size
+    local originalMainSize = mainFrame.Size
+    local isBindingAnyKey = false
+    local keybindData = {} -- Map page -> row -> keybind settings
+    
+    -- Display Name
+    displayNameLabel.Text = LocalPlayer.DisplayName
+    
+    -- Setup Windows Drag & Resize
+    setupDraggableAndResizable(loginFrame, {loginBackground or loginFrame:WaitForChild("Background")}, Vector2.new(300, 320), Vector2.new(600, 620), function(s) originalLoginSize = s end)
+    setupDraggableAndResizable(mainFrame, {sidebar, header}, Vector2.new(500, 350), Vector2.new(1000, 700), function(s) originalMainSize = s end)
+    
+    -- ============================================================
+    -- TAB NAVIGATION SYSTEM
+    -- ============================================================
+    local function showTab(tabName, groupNum, itemLetter)
+        for _, page in ipairs(mainPanel:GetChildren()) do
+            if (page:IsA("ScrollingFrame") and page.Name:match("^Page_")) or page.Name == "SettingsPanel" then
+                page.Visible = false
+            end
+        end
+        
+        if tabName == "About" then
+            aboutPanel.Visible = true
+            searchBoxFrame.Visible = false
+            titleLabel.Text = "Tentang SysHub"
+            subtitleLabel.Text = "Premium"
+        elseif tabName == "Settings" then
+            aboutPanel.Visible = false
+            settingsPanel.Visible = true
+            searchBoxFrame.Visible = false
+            titleLabel.Text = "Settings"
+            subtitleLabel.Text = "Visual & UI"
+        else
+            aboutPanel.Visible = false
+            searchBoxFrame.Visible = true
+            local pageName = "Page_" .. tostring(groupNum) .. "_" .. tostring(itemLetter)
+            local targetPage = mainPanel:FindFirstChild(pageName)
+            if targetPage then targetPage.Visible = true end
+            titleLabel.Text = "Menu " .. groupNum .. "-" .. itemLetter
+            subtitleLabel.Text = "SubMenu " .. groupNum .. "-" .. itemLetter
+        end
+    end
+    
+    -- Tab Buttons
+    btnAbout.Activated:Connect(function() showTab("About") end)
+    btnSettings.Activated:Connect(function() showTab("Settings") end)
+    
+    -- Hover Transitions for About & Settings
+    for _, btn in ipairs({btnAbout, btnSettings}) do
+        local lbl = btn:FindFirstChild("Label")
+        local stroke = btn:FindFirstChildWhichIsA("UIStroke")
+        btn.MouseEnter:Connect(function()
+            btn.BackgroundTransparency = 0
+            btn.BackgroundColor3 = Color3.fromRGB(20, 50, 130)
+            if lbl then lbl.TextColor3 = Color3.fromRGB(255, 255, 255) end
+            if stroke then TweenService:Create(stroke, TweenInfo.new(0.15), {Color = Color3.fromRGB(60, 120, 255), Transparency = 0.3}):Play() end
+        end)
+        btn.MouseLeave:Connect(function()
+            btn.BackgroundTransparency = 0.2
+            btn.BackgroundColor3 = Color3.fromRGB(10, 18, 45)
+            if lbl then lbl.TextColor3 = Color3.fromRGB(140, 165, 210) end
+            if stroke then TweenService:Create(stroke, TweenInfo.new(0.15), {Color = Color3.fromRGB(30, 60, 140), Transparency = 0.65}):Play() end
+        end)
+    end
+    
+    -- Dropdown Group Menus
+    local function setupSidebarGroup(group)
+        local h = group:FindFirstChild("Header")
+        local sub = group:FindFirstChild("SubItems")
+        local arr = h and h:FindFirstChild("Arrow")
+        if not h or not sub then return end
+        
+        local open = false
+        h.MouseButton1Click:Connect(function()
+            open = not open
+            local info = TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+            local targetSubH = open and 90 or 0
+            local targetGroupH = 30 + targetSubH
+            
+            TweenService:Create(sub, info, {Size = UDim2.new(1, 0, 0, targetSubH)}):Play()
+            TweenService:Create(group, info, {Size = UDim2.new(1, 0, 0, targetGroupH)}):Play()
+            if arr then
+                arr.Text = open and "▼" or "►"
+                TweenService:Create(arr, info, {TextColor3 = open and Color3.fromRGB(80, 160, 255) or Color3.fromRGB(100, 130, 200)}):Play()
+            end
+        end)
+        
+        for _, item in ipairs(sub:GetChildren()) do
+            if item:IsA("TextButton") then
+                local lbl = item:FindFirstChild("Label")
+                local stroke = item:FindFirstChildWhichIsA("UIStroke")
+                item.MouseEnter:Connect(function()
+                    item.BackgroundTransparency = 0
+                    item.BackgroundColor3 = Color3.fromRGB(20, 50, 130)
+                    if lbl then lbl.TextColor3 = Color3.fromRGB(255, 255, 255) end
+                    if stroke then TweenService:Create(stroke, TweenInfo.new(0.15), {Color = Color3.fromRGB(60, 120, 255), Transparency = 0.3}):Play() end
+                end)
+                item.MouseLeave:Connect(function()
+                    item.BackgroundTransparency = 0.2
+                    item.BackgroundColor3 = Color3.fromRGB(10, 18, 45)
+                    if lbl then lbl.TextColor3 = Color3.fromRGB(140, 165, 210) end
+                    if stroke then TweenService:Create(stroke, TweenInfo.new(0.15), {Color = Color3.fromRGB(30, 60, 140), Transparency = 0.65}):Play() end
+                end)
+                
+                item.Activated:Connect(function()
+                    local gNum = group.Name:match("^Group_(%d+)") or "1"
+                    local iLetter = item.Name:match("^Item_(%a+)") or "A"
+                    showTab("Keybinds", gNum, iLetter)
+                end)
+            end
+        end
+    end
+    
+    for _, g in ipairs(sidebarScroll:GetChildren()) do
+        if g:IsA("Frame") and g.Name:match("^Group_") then
+            setupSidebarGroup(g)
+        end
+    end
+    
+    -- ============================================================
+    -- LOGO 3D SPIN ANIMATION ON MINIMIZE
+    -- ============================================================
+    local spinConn
+    local function startSpin()
+        if spinConn then spinConn:Disconnect() end
+        local rSpeed, sSpeed, elapsed = 10, 0.2, 0
+        spinConn = RunService.RenderStepped:Connect(function(dt)
+            minimizedWidget.Glow.Rotation = (minimizedWidget.Glow.Rotation + rSpeed * dt) % 360
+            elapsed = elapsed + dt
+            local sx = math.cos(elapsed * sSpeed * math.pi)
+            minimizedWidget.Icon.Size = UDim2.new(0, math.abs(sx) * 80, 0, 75)
+        end)
+    end
+    
+    local function stopSpin()
+        if spinConn then spinConn:Disconnect() spinConn = nil end
+        minimizedWidget.Icon.Size = UDim2.new(0, 80, 0, 75)
+        minimizedWidget.Glow.Rotation = 0
+    end
+    
+    -- Minimize / Restore Handlers
+    local function animateMinimize()
+        local info = TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.In)
+        if currentActiveFrame == "LoginFrame" then
+            loginFrame.ClipsDescendants = true
+            TweenService:Create(loginFrame, info, {Size = UDim2.new(0, originalLoginSize.X.Offset, 0, 0)}):Play()
+            task.wait(0.5)
+            loginFrame.Visible = false
+        else
+            mainFrame.ClipsDescendants = true
+            TweenService:Create(mainFrame, info, {Size = UDim2.new(0, originalMainSize.X.Offset, 0, 0)}):Play()
+            task.wait(0.5)
+            mainFrame.Visible = false
+        end
+        minimizedWidget.Visible = true
+        startSpin()
+    end
+    
+    local function animateRestore()
+        stopSpin()
+        minimizedWidget.Visible = false
+        local info = TweenInfo.new(0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+        
+        if currentActiveFrame == "LoginFrame" then
+            loginFrame.Size = UDim2.new(0, originalLoginSize.X.Offset, 0, 0)
+            loginFrame.Visible = true
+            loginFrame.ClipsDescendants = true
+            local tw = TweenService:Create(loginFrame, info, {Size = originalLoginSize})
+            tw:Play()
+            task.spawn(function() tw.Completed:Wait() loginFrame.ClipsDescendants = false end)
+        else
+            mainFrame.Size = UDim2.new(0, originalMainSize.X.Offset, 0, 0)
+            mainFrame.Visible = true
+            mainFrame.ClipsDescendants = true
+            local tw = TweenService:Create(mainFrame, info, {Size = originalMainSize})
+            tw:Play()
+            task.spawn(function() tw.Completed:Wait() mainFrame.ClipsDescendants = false end)
+        end
+    end
+    
+    minimizedWidget.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            local startPos = input.Position
+            local conn
+            conn = input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    conn:Disconnect()
+                    if (input.Position - startPos).Magnitude < 6 then
+                        animateRestore()
+                    end
+                end
+            end)
+        end
+    end)
+    
+    setupDraggableAndResizable(minimizedWidget, {minimizedWidget}, Vector2.new(40,40), Vector2.new(500,500))
+    
+    -- Window Control Clicks
+    local mainMin = mainFrame:WaitForChild("WindowControls"):WaitForChild("MinimizeBtn")
+    local mainClose = mainFrame:WaitForChild("WindowControls"):WaitForChild("CloseBtn")
+    local loginMin = loginFrame:WaitForChild("WindowControls"):WaitForChild("MinimizeBtn")
+    local loginClose = loginFrame:WaitForChild("WindowControls"):WaitForChild("CloseBtn")
+    
+    mainMin.MouseButton1Click:Connect(animateMinimize)
+    loginMin.MouseButton1Click:Connect(animateMinimize)
+    mainClose.MouseButton1Click:Connect(function() gui:Destroy() end)
+    loginClose.MouseButton1Click:Connect(function() gui:Destroy() end)
+    
+    -- Control Buttons Hover Transitions
+    for _, btn in ipairs({mainMin, mainClose, loginMin, loginClose}) do
+        local icon = btn:FindFirstChild("Icon") or btn:FindFirstChild("IconText")
+        local stroke = btn:FindFirstChildWhichIsA("UIStroke")
+        btn.MouseEnter:Connect(function()
+            if btn.Name == "CloseBtn" then
+                TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(180, 40, 40)}):Play()
+                if stroke then TweenService:Create(stroke, TweenInfo.new(0.2), {Color = Color3.fromRGB(255, 100, 100), Transparency = 0.2}):Play() end
+                if icon and icon:IsA("ImageLabel") then TweenService:Create(icon, TweenInfo.new(0.2), {ImageColor3 = Color3.fromRGB(255, 255, 255)}):Play() end
+            else
+                TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(40, 60, 110)}):Play()
+                if stroke then TweenService:Create(stroke, TweenInfo.new(0.2), {Color = Color3.fromRGB(80, 120, 255), Transparency = 0.2}):Play() end
+                if icon and icon:IsA("ImageLabel") then TweenService:Create(icon, TweenInfo.new(0.2), {ImageColor3 = Color3.fromRGB(255, 255, 255)}):Play() end
+            end
+        end)
+        btn.MouseLeave:Connect(function()
+            TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(20, 26, 46)}):Play()
+            if stroke then TweenService:Create(stroke, TweenInfo.new(0.2), {Color = Color3.fromRGB(30, 42, 75), Transparency = 0.5}):Play() end
+            if icon and icon:IsA("ImageLabel") then TweenService:Create(icon, TweenInfo.new(0.2), {ImageColor3 = Color3.fromRGB(150, 170, 210)}):Play() end
+        end)
+    end
+    
+    -- ============================================================
+    -- LOGIN FLOW EXECUTION
+    -- ============================================================
+    local function executeLogin(isPremiumKey)
+        statusLabel.Text = isPremiumKey and "Status : Premium" or "Status : Free"
+        currentActiveFrame = "MainFrame"
+        
+        loginFrame.ClipsDescendants = true
+        local info = TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.In)
+        TweenService:Create(loginFrame, info, {Size = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1}):Play()
+        for _, child in ipairs(loginFrame:GetDescendants()) do
+            if child:IsA("GuiObject") then
+                if child:IsA("TextLabel") or child:IsA("TextButton") or child:IsA("TextBox") then
+                    TweenService:Create(child, TweenInfo.new(0.3), {TextTransparency = 1}):Play()
+                elseif child:IsA("ImageLabel") then
+                    TweenService:Create(child, TweenInfo.new(0.3), {ImageTransparency = 1}):Play()
+                end
+            elseif child:IsA("UIStroke") then
+                TweenService:Create(child, TweenInfo.new(0.3), {Transparency = 1}):Play()
+            end
+        end
+        
+        task.wait(0.5)
+        loginFrame.Visible = false
+        
+        -- Slide Open MainFrame
+        mainFrame.Size = UDim2.new(0, 0, 0, 0)
+        mainFrame.Visible = true
+        TweenService:Create(mainFrame, TweenInfo.new(0.7, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = originalMainSize}):Play()
+        
+        showTab("About")
+        SysUI:Notify({
+            Title = "System Authorization",
+            Content = isPremiumKey and "Welcome back! Premium authorized." or "Welcome! Free access authorized.",
+            Duration = 3.5
+        })
+    end
+    
+    local keyInput = loginFrame:WaitForChild("KeyInput")
+    local loginBtn = loginFrame:WaitForChild("LoginBtn")
+    local premiumBtn = loginFrame:WaitForChild("OptionsContainer"):WaitForChild("PremiumBtn")
+    local freeBtn = loginFrame:WaitForChild("OptionsContainer"):WaitForChild("FreeBtn")
+    
+    premiumBtn.Activated:Connect(function() keyInput.Text = "SysHub-Premium-Key" end)
+    freeBtn.Activated:Connect(function() keyInput.Text = "SysHub-Free-Key" end)
+    
+    loginBtn.Activated:Connect(function()
+        local k = keyInput.Text
+        if k == "" then
+            -- Shake
+            local originalPos = loginFrame.Position
+            for i = 1, 6 do
+                local offset = (i % 2 == 0) and 8 or -8
+                loginFrame.Position = UDim2.new(originalPos.X.Scale, originalPos.X.Offset + offset, originalPos.Y.Scale, originalPos.Y.Offset)
+                task.wait(0.04)
+            end
+            loginFrame.Position = originalPos
+            return
+        end
+        
+        local isPremium = not k:lower():find("free")
+        executeLogin(isPremium)
+    end)
+    
+    -- Auto-skip login if authorization key is pre-set
+    if authKey then
+        task.spawn(function()
+            task.wait(0.1)
+            executeLogin(not authKey:lower():find("free"))
+        end)
+    end
+    
+    -- Discord Button
+    local dcBtn = aboutPanel:WaitForChild("AboutScroll"):WaitForChild("DiscordContainer"):WaitForChild("DiscordBtn")
+    dcBtn.Activated:Connect(function()
+        if setclipboard then pcall(function() setclipboard("https://discord.gg/syshub") end) end
+        SysUI:Notify({Title = "Discord Link", Content = "Discord link copied to clipboard!", Duration = 3})
+    end)
+    
+    -- Search filtering
+    searchBox:GetPropertyChangedSignal("Text"):Connect(function()
+        local q = searchBox.Text:lower()
+        for _, page in ipairs(mainPanel:GetChildren()) do
+            if page:IsA("ScrollingFrame") and page.Name:match("^Page_") then
+                for _, r in ipairs(page:GetChildren()) do
+                    if r:IsA("Frame") and r.Name:match("^Row_") then
+                        local t = r:FindFirstChild("Title") and r.Title.Text or ""
+                        r.Visible = q == "" or t:lower():find(q, 1, true) ~= nil
+                    end
+                end
+            end
+        end
+    end)
+    
+    -- Global keybind listener
+    UserInputService.InputBegan:Connect(function(input, gp)
+        if gp or UserInputService:GetFocusedTextBox() or isBindingAnyKey then return end
+        
+        for pName, pageBinds in pairs(keybindData) do
+            for rName, bind in pairs(pageBinds) do
+                local match = false
+                if bind.Key and bind.Key ~= "None" then
+                    if type(bind.Key) == "userdata" then
+                        match = (bind.Key.EnumType == Enum.KeyCode and input.KeyCode == bind.Key) or (bind.Key.EnumType == Enum.UserInputType and input.UserInputType == bind.Key)
+                    end
+                end
+                
+                if match then
+                    bind.State = not bind.State
+                    bind.Callback(bind.State)
+                    
+                    -- Sync UI Toggle switch visual if active
+                    local activePage = mainPanel:FindFirstChild(pName)
+                    local row = activePage and activePage:FindFirstChild(rName)
+                    local tf = row and row:FindFirstChild("Toggle")
+                    if tf then
+                        local sw = tf:FindFirstChild("Switch")
+                        local sl = tf:FindFirstChild("StatusLabel")
+                        local knob = sw and sw:FindFirstChild("Knob")
+                        if knob then
+                            local kp = bind.State and UDim2.new(0, 19, 0.5, 0) or UDim2.new(0, 3, 0.5, 0)
+                            local bc = bind.State and Color3.fromRGB(0, 85, 255) or Color3.fromRGB(20, 26, 46)
+                            TweenService:Create(knob, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = kp}):Play()
+                            TweenService:Create(sw, TweenInfo.new(0.2), {BackgroundColor3 = bc}):Play()
+                            if sl then
+                                sl.Text = bind.State and "ON" or "OFF"
+                                sl.TextColor3 = bind.State and Color3.fromRGB(0, 130, 255) or Color3.fromRGB(100, 115, 135)
+                            end
+                        end
+                    end
+                    
+                    local title = row and row:FindFirstChild("Title") and row.Title.Text or "Feature"
+                    SysUI:Notify({Title = title, Content = bind.State and "Activated successfully!" or "Deactivated successfully!", Duration = 3})
+                end
+            end
+        end
+    end)
+    
+    -- Parent ScreenGui to PlayerGui
+    gui.Parent = PlayerGui
+    
+    local Window = setmetatable({
+        Gui = gui,
+        Main = mainFrame,
+        MainPanel = mainPanel,
+        ColorPicker = colorPickerWidget,
+        KeybindData = keybindData
+    }, WindowClass)
+    
+    SysUI.ActiveWindow = Window
+    return Window
+end
+
+-- ============================================================
+-- WRAPPER BINDING APIS (Hook functions to named Rows)
+-- ============================================================
+
+-- helper to get a row from page name & row name
+local function getRow(window, pageName, rowName)
+    local page = window.MainPanel:FindFirstChild(pageName)
+    local row = page and page:FindFirstChild(rowName)
+    if not row then
+        warn(string.format("[SysUI] Row '%s' on page '%s' not found!", tostring(rowName), tostring(pageName)))
+    end
+    return row
+end
+
+-- 1. Bind Toggle
+function WindowClass:BindToggle(pageName, rowName, config)
+    config = config or {}
+    local default = config.Default or false
+    local callback = config.Callback or function() end
+    
+    local row = getRow(self, pageName, rowName)
+    local tf = row and row:FindFirstChild("Toggle")
+    local sw = tf and tf:FindFirstChild("Switch")
+    local knob = sw and sw:FindFirstChild("Knob")
+    local sl = tf and tf:FindFirstChild("StatusLabel")
+    local clickBtn = sw and (sw:FindFirstChild("ClickButton") or sw)
+    if not sw or not knob then return end
+    
+    local enabled = default
+    local function update(state)
+        enabled = state
+        local kp = enabled and UDim2.new(0, 19, 0.5, 0) or UDim2.new(0, 3, 0.5, 0)
+        local bc = enabled and Color3.fromRGB(0, 85, 255) or Color3.fromRGB(20, 26, 46)
+        
+        TweenService:Create(knob, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = kp}):Play()
+        TweenService:Create(sw, TweenInfo.new(0.2), {BackgroundColor3 = bc}):Play()
+        if sl then
+            sl.Text = enabled and "ON" or "OFF"
+            sl.TextColor3 = enabled and Color3.fromRGB(0, 130, 255) or Color3.fromRGB(100, 115, 135)
+        end
+        callback(enabled)
+    end
+    
+    clickBtn.MouseButton1Click:Connect(function()
+        update(not enabled)
+        local title = row:FindFirstChild("Title") and row.Title.Text or "Feature"
+        SysUI:Notify({Title = title, Content = enabled and "Activated successfully!" or "Deactivated successfully!", Duration = 3})
+    end)
+    
+    update(default)
+    
+    return {
+        Set = function(state) update(state) end
+    }
+end
+
+-- 2. Bind Keybind
+function WindowClass:BindKeybind(pageName, rowName, config)
+    config = config or {}
+    local default = config.Default or Enum.KeyCode.F
+    local callback = config.Callback or function() end
+    
+    local row = getRow(self, pageName, rowName)
+    local kbBtn = row and row:FindFirstChild("KeybindButton")
+    if not kbBtn then return end
+    
+    if not self.KeybindData[pageName] then self.KeybindData[pageName] = {} end
+    self.KeybindData[pageName][rowName] = {
+        Key = default,
+        State = false,
+        Callback = callback
+    }
+    
+    kbBtn.Text = default == "None" and "[...]" or ("[ " .. formatKeyName(default) .. " ]")
+    local isListening = false
+    
+    kbBtn.MouseButton1Click:Connect(function()
+        if isListening then return end
+        isListening = true
+        kbBtn.Text = "[...]"
+        kbBtn.TextColor3 = Color3.fromRGB(0, 170, 255)
+        
+        local conn
+        conn = UserInputService.InputBegan:Connect(function(input, gp)
+            if gp and UserInputService:GetFocusedTextBox() then return end
+            local newKey
+            if input.UserInputType == Enum.UserInputType.Keyboard then
+                newKey = input.KeyCode ~= Enum.KeyCode.Escape and input.KeyCode or "None"
+            elseif input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.MouseButton2 or input.UserInputType == Enum.UserInputType.MouseButton3 then
+                newKey = input.UserInputType
+            end
+            
+            if newKey then
+                conn:Disconnect()
+                self.KeybindData[pageName][rowName].Key = newKey
+                kbBtn.Text = newKey == "None" and "[...]" or ("[ " .. formatKeyName(newKey) .. " ]")
+                kbBtn.TextColor3 = Color3.fromRGB(150, 175, 220)
+                isListening = false
+                
+                local title = row:FindFirstChild("Title") and row.Title.Text or "Feature"
+                SysUI:Notify({Title = "Keybind Updated", Content = title .. " bound to: " .. formatKeyName(newKey), Duration = 3})
+            end
+        end)
+    end)
+    
+    kbBtn.MouseEnter:Connect(function()
+        if not isListening then TweenService:Create(kbBtn, TweenInfo.new(0.15), {TextColor3 = Color3.fromRGB(255, 255, 255)}):Play() end
+    end)
+    kbBtn.MouseLeave:Connect(function()
+        if not isListening then TweenService:Create(kbBtn, TweenInfo.new(0.15), {TextColor3 = Color3.fromRGB(150, 175, 220)}):Play() end
+    end)
+end
+
+-- 3. Bind Slider
+function WindowClass:BindSlider(pageName, rowName, config)
+    config = config or {}
+    local min = config.Min or 0
+    local max = config.Max or 100
+    local default = config.Default or 50
+    local unit = config.Unit or ""
+    local callback = config.Callback or function() end
+    
+    local row = getRow(self, pageName, rowName)
+    local cc = row and row:FindFirstChild("CustomControl")
+    local track = cc and cc:FindFirstChild("Track")
+    local fill = track and track:FindFirstChild("Fill")
+    local knob = track and track:FindFirstChild("Knob")
+    local valLbl = cc and cc:FindFirstChild("ValueLabel")
+    if not track or not fill or not knob or not valLbl then return end
+    
+    local function update(inputObj)
+        local ratio = math.clamp((inputObj.Position.X - track.AbsolutePosition.X) / track.AbsoluteSize.X, 0, 1)
+        fill.Size = UDim2.new(ratio, 0, 1, 0)
+        knob.Position = UDim2.new(ratio, 0, 0.5, 0)
+        local value = min + math.round(ratio * (max - min))
+        valLbl.Text = tostring(value) .. unit
+        callback(value)
+    end
+    
+    -- Setup initial position
+    local initRatio = (default - min) / (max - min)
+    fill.Size = UDim2.new(initRatio, 0, 1, 0)
+    knob.Position = UDim2.new(initRatio, 0, 0.5, 0)
+    valLbl.Text = tostring(default) .. unit
+    
+    local sliding = false
+    track.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            sliding = true
+            update(input)
+            
+            local mConn, rConn
+            mConn = UserInputService.InputChanged:Connect(function(moveInput)
+                if sliding and (moveInput.UserInputType == Enum.UserInputType.MouseMovement or moveInput.UserInputType == Enum.UserInputType.Touch) then
+                    update(moveInput)
+                end
+            end)
+            
+            rConn = UserInputService.InputEnded:Connect(function(releaseInput)
+                if releaseInput.UserInputType == Enum.UserInputType.MouseButton1 or releaseInput.UserInputType == Enum.UserInputType.Touch then
+                    sliding = false
+                    mConn:Disconnect()
+                    rConn:Disconnect()
+                end
+            end)
+        end
+    end)
+    
+    return {
+        Set = function(v)
+            local r = (v - min) / (max - min)
+            fill.Size = UDim2.new(r, 0, 1, 0)
+            knob.Position = UDim2.new(r, 0, 0.5, 0)
+            valLbl.Text = tostring(v) .. unit
+            callback(v)
+        end
+    }
+end
+
+-- 4. Bind Dropdown
+function WindowClass:BindDropdown(pageName, rowName, config)
+    config = config or {}
+    local options = config.Options or {}
+    local default = config.Default or options[1] or ""
+    local callback = config.Callback or function() end
+    
+    local row = getRow(self, pageName, rowName)
+    local cc = row and row:FindFirstChild("CustomControl")
+    local header = cc and cc:FindFirstChild("Header")
+    local list = cc and cc:FindFirstChild("DropdownList")
+    local arrow = header and header:FindFirstChild("Arrow")
+    if not header or not list then return end
+    
+    local openUpwards = (rowName == "Row_E" or rowName == "Row_F" or rowName == "Row_G" or rowName == "Row_H")
+    local closedPos = openUpwards and UDim2.new(0, 0, 0, -82) or UDim2.new(0, 0, 1, 4)
+    
+    header.Text = "   " .. default
+    
+    local function toggleDropdown()
+        list.Visible = not list.Visible
+        list.Position = closedPos
+        row.ZIndex = list.Visible and 15 or 6
+        if arrow then arrow.Text = list.Visible and "▲" or "▼" end
+    end
+    
+    header.MouseButton1Click:Connect(toggleDropdown)
+    
+    local function populate()
+        for _, btn in ipairs(list:GetChildren()) do
+            if btn:IsA("TextButton") then btn:Destroy() end
+        end
+        
+        for _, opt in ipairs(options) do
+            local btn = Instance.new("TextButton")
+            btn.Size = UDim2.new(1, 0, 0, 20)
+            btn.BackgroundTransparency = 1
+            btn.Text = "   " .. opt
+            btn.Font = Enum.Font.Gotham
+            btn.TextSize = 9
+            btn.TextColor3 = Color3.fromRGB(150, 170, 210)
+            btn.TextXAlignment = Enum.TextXAlignment.Left
+            btn.Parent = list
+            
+            btn.MouseEnter:Connect(function()
+                btn.BackgroundTransparency = 0
+                btn.BackgroundColor3 = Color3.fromRGB(20, 45, 110)
+                btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+            end)
+            btn.MouseLeave:Connect(function()
+                btn.BackgroundTransparency = 1
+                btn.TextColor3 = Color3.fromRGB(150, 170, 210)
+            end)
+            
+            btn.MouseButton1Click:Connect(function()
+                header.Text = "   " .. opt
+                list.Visible = false
+                row.ZIndex = 6
+                if arrow then arrow.Text = "▼" end
+                callback(opt)
+            end)
+        end
+    end
+    
+    populate()
+    
+    return {
+        Refresh = function(newOpts, newDef)
+            options = newOpts
+            populate()
+            if newDef then
+                header.Text = "   " .. newDef
+                callback(newDef)
+            end
+        end
+    }
+end
+
+-- 5. Bind Colorpicker
+function WindowClass:BindColorpicker(pageName, rowName, config)
+    config = config or {}
+    local default = config.Default or Color3.fromRGB(0, 110, 255)
+    local callback = config.Callback or function() end
+    
+    local row = getRow(self, pageName, rowName)
+    local cc = row and row:FindFirstChild("CustomControl")
+    local btn = cc and cc:FindFirstChild("ColorBtn")
+    if not btn then return end
+    
+    btn.BackgroundColor3 = default
+    
+    local picker = self.ColorPicker
+    local satValCanvas = picker:WaitForChild("SatValCanvas")
+    local hueSlider = picker:WaitForChild("HueSlider")
+    local hexInput = picker:WaitForChild("BottomBar"):WaitForChild("HexInput")
+    local applyBtn = picker:WaitForChild("BottomBar"):WaitForChild("ApplyBtn")
+    
+    local currentH, currentS, currentV = 0, 1, 1
+    
+    local function updatePickerUI()
+        local base = Color3.fromHSV(currentH, 1, 1)
+        local selected = Color3.fromHSV(currentH, currentS, currentV)
+        satValCanvas.BackgroundColor3 = base
+        picker.BottomBar.Preview.BackgroundColor3 = selected
+        hexInput.Text = rgbToHex(selected)
+        satValCanvas.Pin.Position = UDim2.new(currentS, 0, 1 - currentV, 0)
+        hueSlider.Pin.Position = UDim2.new(currentH, 0, 0.5, 0)
+        btn.BackgroundColor3 = selected
+        callback(selected)
+    end
+    
+    btn.MouseButton1Click:Connect(function()
+        local h, s, v = Color3.toHSV(btn.BackgroundColor3)
+        currentH, currentS, currentV = h, s, v
+        picker.Position = UDim2.new(0, btn.AbsolutePosition.X - 220, 0, btn.AbsolutePosition.Y - 80)
+        picker.Visible = true
+        updatePickerUI()
+        
+        -- Tactile
+        local shrink = TweenService:Create(btn, TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 24, 0, 14)})
+        local restore = TweenService:Create(btn, TweenInfo.new(0.12, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = UDim2.new(0, 28, 0, 18)})
+        shrink:Play() task.wait(0.08) restore:Play()
+    end)
+    
+    -- Connect Picker dragging to local update (only when this button is active)
+    -- We can share the widget. The widget events are hooked globally in `Load` method, but let's handle the specific events for the active picker context:
+    -- In order to make it generic, picker's ApplyBtn/HueSlider/SatVal Canvas updates the active window's colorpicker state
+    
+    return {
+        Set = function(color)
+            btn.BackgroundColor3 = color
+            callback(color)
+        end
+    }
+end
+
+-- 6. Bind Input Box
+function WindowClass:BindInput(pageName, rowName, config)
+    config = config or {}
+    local placeholder = config.Placeholder or "Type here..."
+    local callback = config.Callback or function() end
+    
+    local row = getRow(self, pageName, rowName)
+    local cc = row and row:FindFirstChild("CustomControl")
+    local tb = cc and cc:FindFirstChild("TextBox")
+    if not tb then return end
+    
+    tb.PlaceholderText = placeholder
+    local stroke = tb:FindFirstChildWhichIsA("UIStroke")
+    
+    tb.Focused:Connect(function()
+        if stroke then TweenService:Create(stroke, TweenInfo.new(0.15), {Color = Color3.fromRGB(0, 110, 255)}):Play() end
+    end)
+    tb.FocusLost:Connect(function()
+        if stroke then TweenService:Create(stroke, TweenInfo.new(0.15), {Color = Color3.fromRGB(30, 42, 75)}):Play() end
+        callback(tb.Text)
+    end)
+    
+    return {
+        Set = function(t)
+            tb.Text = t
+            callback(t)
+        end
+    }
+end
+
+-- 7. Bind Button
+function WindowClass:BindButton(pageName, rowName, config)
+    config = config or {}
+    local callback = config.Callback or function() end
+    
+    local row = getRow(self, pageName, rowName)
+    local cc = row and row:FindFirstChild("CustomControl")
+    local btn = cc and cc:FindFirstChild("Button")
+    if not btn then return end
+    
+    btn.MouseButton1Click:Connect(function()
+        -- Tactile
+        local shrink = TweenService:Create(btn, TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 74, 0, 18)})
+        local restore = TweenService:Create(btn, TweenInfo.new(0.12, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = UDim2.new(0, 80, 0, 22)})
+        shrink:Play() task.wait(0.08) restore:Play()
+        callback()
+    end)
+end
+
+-- 8. Bind Numeric Spinner
+function WindowClass:BindSpinner(pageName, rowName, config)
+    config = config or {}
+    local min = config.Min or 0
+    local max = config.Max or 100
+    local default = config.Default or 50
+    local step = config.Step or 1
+    local callback = config.Callback or function() end
+    
+    local row = getRow(self, pageName, rowName)
+    local cc = row and row:FindFirstChild("CustomControl")
+    local input = cc and cc:FindFirstChild("TextBox")
+    local minusBtn = cc and cc:FindFirstChild("MinusBtn")
+    local plusBtn = cc and cc:FindFirstChild("PlusBtn")
+    if not input or not minusBtn or not plusBtn then return end
+    
+    local value = default
+    local function update(newVal)
+        value = math.clamp(newVal, min, max)
+        input.Text = tostring(value)
+        callback(value)
+    end
+    
+    minusBtn.MouseButton1Click:Connect(function() update(value - step) end)
+    plusBtn.MouseButton1Click:Connect(function() update(value + step) end)
+    input.FocusLost:Connect(function()
+        local n = tonumber(input.Text)
+        if n then update(n) else input.Text = tostring(value) end
+    end)
+    
+    update(default)
+    
+    return {
+        Set = function(v) update(v) end
+    }
+end
+
+-- 9. Bind Config Buttons (Load / Save)
+function WindowClass:BindConfigActions(config)
+    config = config or {}
+    local onLoad = config.OnLoad or function() end
+    local onSave = config.OnSave or function() end
+    
+    local settingsPanel = self.MainPanel:FindFirstChild("SettingsPanel")
+    local configContainer = settingsPanel and settingsPanel:FindFirstChild("ConfigContainer")
+    local loadBtn = configContainer and configContainer:FindFirstChild("LoadConfigBtn")
+    local saveBtn = configContainer and configContainer:FindFirstChild("SaveConfigBtn")
+    
+    local function hook(btn, callback, isSave)
+        local stroke = btn:FindFirstChildWhichIsA("UIStroke")
+        
+        btn.MouseEnter:Connect(function()
+            TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(0, 130, 255)}):Play()
+            if stroke then TweenService:Create(stroke, TweenInfo.new(0.2), {Color = Color3.fromRGB(0, 220, 255), Transparency = 0.2}):Play() end
+        end)
+        btn.MouseLeave:Connect(function()
+            TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(0, 110, 255)}):Play()
+            if stroke then TweenService:Create(stroke, TweenInfo.new(0.2), {Color = Color3.fromRGB(60, 140, 255), Transparency = 0.5}):Play() end
+        end)
+        
+        btn.Activated:Connect(function()
+            local targetSize = btn.Size
+            local shrinkSize = UDim2.new(0, targetSize.X.Offset - 8, 0, targetSize.Y.Offset - 2)
+            
+            local shrink = TweenService:Create(btn, TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = shrinkSize})
+            local restore = TweenService:Create(btn, TweenInfo.new(0.12, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = targetSize})
+            
+            shrink:Play() task.wait(0.08) restore:Play()
+            callback()
+            
+            SysUI:Notify({
+                Title = "Configuration",
+                Content = isSave and "Default profile saved successfully!" or "Default profile loaded successfully!",
+                Duration = 3.5
+            })
+        end)
+    end
+    
+    if loadBtn then hook(loadBtn, onLoad, false) end
+    if saveBtn then hook(saveBtn, onSave, true) end
+end
+
+return SysUI
