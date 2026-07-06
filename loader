@@ -265,7 +265,15 @@ function SysUI:Load(config)
     local originalLoginSize = loginFrame.Size
     local originalMainSize = mainFrame.Size
     local isBindingAnyKey = false
-    local keybindData = {} -- Map page -> row -> keybind settings
+    
+    -- Instantiate metatable object
+    local Window = setmetatable({
+        Gui = gui,
+        Main = mainFrame,
+        MainPanel = mainPanel,
+        ColorPicker = colorPickerWidget,
+        States = {} -- Dynamically tracks all toggle, slider, keybind values and callbacks
+    }, WindowClass)
     
     -- Display Name
     displayNameLabel.Text = LocalPlayer.DisplayName
@@ -587,11 +595,481 @@ function SysUI:Load(config)
         end
     end)
     
+    -- ============================================================
+    -- DYNAMIC AUTO-INITIALIZATION SYSTEM FOR ALL ROWS
+    -- ============================================================
+    local function initRowInteractive(row, pageName, rowName)
+        Window.States[pageName][rowName] = {
+            Value = nil,
+            Callbacks = {},
+            Key = "None"
+        }
+        
+        -- Hook hover animations
+        local stroke = row:FindFirstChild("UIStroke")
+        row.MouseEnter:Connect(function()
+            if stroke then TweenService:Create(stroke, TweenInfo.new(0.2), {Color = Color3.fromRGB(30, 60, 110), Thickness = 1.2}):Play() end
+        end)
+        row.MouseLeave:Connect(function()
+            if stroke and not (Window.States[pageName][rowName].Type == "Toggle" and Window.States[pageName][rowName].Value) then
+                TweenService:Create(stroke, TweenInfo.new(0.2), {Color = Color3.fromRGB(20, 28, 48), Thickness = 1}):Play()
+            end
+        end)
+        
+        -- 1. Hook Toggle Switch if present
+        local tf = row:FindFirstChild("Toggle")
+        local sw = tf and tf:FindFirstChild("Switch")
+        local knob = sw and sw:FindFirstChild("Knob")
+        local sl = tf and tf:FindFirstChild("StatusLabel")
+        local clickBtn = sw and (sw:FindFirstChild("ClickButton") or sw)
+        
+        if sw and knob then
+            Window.States[pageName][rowName].Type = "Toggle"
+            Window.States[pageName][rowName].Value = false
+            
+            local function updateToggle(state, silent)
+                Window.States[pageName][rowName].Value = state
+                local kp = state and UDim2.new(0, 19, 0.5, 0) or UDim2.new(0, 3, 0.5, 0)
+                local bc = state and Color3.fromRGB(0, 85, 255) or Color3.fromRGB(20, 26, 46)
+                
+                TweenService:Create(knob, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = kp}):Play()
+                TweenService:Create(sw, TweenInfo.new(0.2), {BackgroundColor3 = bc}):Play()
+                if sl then
+                    sl.Text = state and "ON" or "OFF"
+                    sl.TextColor3 = state and Color3.fromRGB(0, 130, 255) or Color3.fromRGB(100, 115, 135)
+                end
+                
+                -- Trigger callbacks
+                if not silent then
+                    for _, cb in ipairs(Window.States[pageName][rowName].Callbacks) do
+                        pcall(cb, state)
+                    end
+                end
+            end
+            
+            clickBtn.MouseButton1Click:Connect(function()
+                local newState = not Window.States[pageName][rowName].Value
+                updateToggle(newState, false)
+                local title = row:FindFirstChild("Title") and row.Title.Text or "Feature"
+                SysUI:Notify({Title = title, Content = newState and "Activated successfully!" or "Deactivated successfully!", Duration = 3})
+            end)
+            
+            Window.States[pageName][rowName].Update = updateToggle
+            updateToggle(false, true)
+        end
+        
+        -- 2. Hook Keybind Button if present
+        local kb = row:FindFirstChild("KeybindButton")
+        if kb then
+            kb.Text = "[...]"
+            local isListening = false
+            kb.MouseButton1Click:Connect(function()
+                if isListening then return end
+                isListening = true
+                isBindingAnyKey = true
+                kb.Text = "[...]"
+                kb.TextColor3 = Color3.fromRGB(0, 170, 255)
+                
+                local conn
+                conn = UserInputService.InputBegan:Connect(function(inputEvent, gp)
+                    if gp and UserInputService:GetFocusedTextBox() then return end
+                    local newKey
+                    if inputEvent.UserInputType == Enum.UserInputType.Keyboard then
+                        newKey = inputEvent.KeyCode ~= Enum.KeyCode.Escape and inputEvent.KeyCode or "None"
+                    elseif inputEvent.UserInputType == Enum.UserInputType.MouseButton1 or inputEvent.UserInputType == Enum.UserInputType.MouseButton2 or inputEvent.UserInputType == Enum.UserInputType.MouseButton3 then
+                        newKey = inputEvent.UserInputType
+                    end
+                    
+                    if newKey then
+                        conn:Disconnect()
+                        Window.States[pageName][rowName].Key = newKey
+                        kb.Text = (newKey == "None") and "[...]" or ("[ " .. formatKeyName(newKey) .. " ]")
+                        kb.TextColor3 = Color3.fromRGB(150, 175, 220)
+                        isListening = false
+                        task.wait()
+                        isBindingAnyKey = false
+                        
+                        local titleText = row:FindFirstChild("Title") and row.Title.Text or "Feature"
+                        SysUI:Notify({Title = "Keybind Updated", Content = titleText .. " bound to: " .. formatKeyName(newKey), Duration = 3.5})
+                    end
+                end)
+            end)
+            
+            kb.MouseEnter:Connect(function()
+                if not isListening then TweenService:Create(kb, TweenInfo.new(0.15), {TextColor3 = Color3.fromRGB(255, 255, 255)}):Play() end
+            end)
+            kb.MouseLeave:Connect(function()
+                if not isListening then TweenService:Create(kb, TweenInfo.new(0.15), {TextColor3 = Color3.fromRGB(150, 175, 220)}):Play() end
+            end)
+        end
+        
+        -- 3. Custom Control Helpers
+        local cc = row:FindFirstChild("CustomControl")
+        if cc then
+            -- A. Dropdown List
+            local list = cc:FindFirstChild("DropdownList")
+            local dHeader = cc:FindFirstChild("Header")
+            local dArrow = dHeader and dHeader:FindFirstChild("Arrow")
+            if dHeader and list then
+                Window.States[pageName][rowName].Type = "Dropdown"
+                local openUpwards = (rowName == "Row_E" or rowName == "Row_F" or rowName == "Row_G" or rowName == "Row_H")
+                local closedPos = openUpwards and UDim2.new(0, 0, 0, -82) or UDim2.new(0, 0, 1, 4)
+                
+                dHeader.Text = "   Select..."
+                dHeader.MouseButton1Click:Connect(function()
+                    list.Visible = not list.Visible
+                    list.Position = closedPos
+                    row.ZIndex = list.Visible and 15 or 6
+                    if dArrow then dArrow.Text = list.Visible and "▲" or "▼" end
+                end)
+                
+                local function setupListBtn(btn)
+                    btn.MouseEnter:Connect(function()
+                        btn.BackgroundTransparency = 0
+                        btn.BackgroundColor3 = Color3.fromRGB(20, 45, 110)
+                        btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+                    end)
+                    btn.MouseLeave:Connect(function()
+                        btn.BackgroundTransparency = 1
+                        btn.TextColor3 = Color3.fromRGB(150, 170, 210)
+                    end)
+                    btn.MouseButton1Click:Connect(function()
+                        local selectedVal = btn.Text:gsub("^%s+", "")
+                        dHeader.Text = "   " .. selectedVal
+                        list.Visible = false
+                        row.ZIndex = 6
+                        if dArrow then dArrow.Text = "▼" end
+                        
+                        Window.States[pageName][rowName].Value = selectedVal
+                        for _, cb in ipairs(Window.States[pageName][rowName].Callbacks) do
+                            pcall(cb, selectedVal)
+                        end
+                    end)
+                end
+                
+                for _, btn in ipairs(list:GetChildren()) do
+                    if btn:IsA("TextButton") then setupListBtn(btn) end
+                end
+                
+                Window.States[pageName][rowName].Populate = function(options)
+                    for _, old in ipairs(list:GetChildren()) do
+                        if old:IsA("TextButton") then old:Destroy() end
+                    end
+                    for _, opt in ipairs(options) do
+                        local btn = Instance.new("TextButton")
+                        btn.Size = UDim2.new(1, 0, 0, 20)
+                        btn.BackgroundTransparency = 1
+                        btn.Text = "   " .. opt
+                        btn.Font = Enum.Font.Gotham
+                        btn.TextSize = 9
+                        btn.TextColor3 = Color3.fromRGB(150, 170, 210)
+                        btn.TextXAlignment = Enum.TextXAlignment.Left
+                        btn.Parent = list
+                        setupListBtn(btn)
+                    end
+                end
+                
+                Window.States[pageName][rowName].Update = function(val)
+                    dHeader.Text = "   " .. tostring(val)
+                    Window.States[pageName][rowName].Value = val
+                    for _, cb in ipairs(Window.States[pageName][rowName].Callbacks) do
+                        pcall(cb, val)
+                    end
+                end
+            end
+            
+            -- B. Spinner Control
+            local minusBtn = cc:FindFirstChild("MinusBtn")
+            local plusBtn = cc:FindFirstChild("PlusBtn")
+            local spinInput = cc:FindFirstChild("TextBox")
+            if minusBtn and plusBtn and spinInput then
+                Window.States[pageName][rowName].Type = "Spinner"
+                local value = 50
+                local spinMin, spinMax, spinStep = 0, 100, 1
+                
+                local function updateSpinner(newVal, silent)
+                    value = math.clamp(newVal, spinMin, spinMax)
+                    spinInput.Text = tostring(value)
+                    Window.States[pageName][rowName].Value = value
+                    if not silent then
+                        for _, cb in ipairs(Window.States[pageName][rowName].Callbacks) do
+                            pcall(cb, value)
+                        end
+                    end
+                end
+                
+                minusBtn.MouseButton1Click:Connect(function() updateSpinner(value - spinStep) end)
+                plusBtn.MouseButton1Click:Connect(function() updateSpinner(value + spinStep) end)
+                spinInput.FocusLost:Connect(function()
+                    local n = tonumber(spinInput.Text)
+                    if n then updateSpinner(n) else spinInput.Text = tostring(value) end
+                end)
+                
+                for _, b in ipairs({minusBtn, plusBtn}) do
+                    b.MouseEnter:Connect(function()
+                        TweenService:Create(b, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(35, 60, 120), TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+                    end)
+                    b.MouseLeave:Connect(function()
+                        TweenService:Create(b, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(25, 35, 60), TextColor3 = Color3.fromRGB(150, 175, 220)}):Play()
+                    end)
+                end
+                
+                Window.States[pageName][rowName].Update = function(val, config)
+                    config = config or {}
+                    spinMin = config.Min or spinMin
+                    spinMax = config.Max or spinMax
+                    spinStep = config.Step or spinStep
+                    updateSpinner(val)
+                end
+                updateSpinner(50, true)
+            end
+            
+            -- C. Slider Control
+            local sliderTrack = cc:FindFirstChild("Track")
+            local sliderValueLabel = cc:FindFirstChild("ValueLabel")
+            local fill = sliderTrack and sliderTrack:FindFirstChild("Fill")
+            local sliderKnob = sliderTrack and sliderTrack:FindFirstChild("Knob")
+            if sliderTrack and sliderValueLabel and fill and sliderKnob then
+                Window.States[pageName][rowName].Type = "Slider"
+                local sMin, sMax, sValue = 0, 100, 50
+                local sUnit = "%"
+                
+                local function updateSlider(inputObj, silent)
+                    local trackAbsPos = sliderTrack.AbsolutePosition
+                    local trackAbsSize = sliderTrack.AbsoluteSize
+                    local mouseX = inputObj.Position.X
+                    local relativeX = math.clamp((mouseX - trackAbsPos.X) / trackAbsSize.X, 0, 1)
+                    
+                    fill.Size = UDim2.new(relativeX, 0, 1, 0)
+                    sliderKnob.Position = UDim2.new(relativeX, 0, 0.5, 0)
+                    sValue = sMin + math.round(relativeX * (sMax - sMin))
+                    sliderValueLabel.Text = tostring(sValue) .. sUnit
+                    
+                    Window.States[pageName][rowName].Value = sValue
+                    if not silent then
+                        for _, cb in ipairs(Window.States[pageName][rowName].Callbacks) do
+                            pcall(cb, sValue)
+                        end
+                    end
+                end
+                
+                sliderTrack.InputBegan:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                        local sliding = true
+                        updateSlider(input, false)
+                        local mConn, rConn
+                        mConn = UserInputService.InputChanged:Connect(function(moveInput)
+                            if sliding and (moveInput.UserInputType == Enum.UserInputType.MouseMovement or moveInput.UserInputType == Enum.UserInputType.Touch) then
+                                updateSlider(moveInput, false)
+                            end
+                        end)
+                        rConn = UserInputService.InputEnded:Connect(function(releaseInput)
+                            if releaseInput.UserInputType == Enum.UserInputType.MouseButton1 or releaseInput.UserInputType == Enum.UserInputType.Touch then
+                                sliding = false
+                                mConn:Disconnect()
+                                rConn:Disconnect()
+                            end
+                        end)
+                    end
+                end)
+                
+                Window.States[pageName][rowName].Update = function(val, config)
+                    config = config or {}
+                    sMin = config.Min or sMin
+                    sMax = config.Max or sMax
+                    sUnit = config.Unit or sUnit
+                    sValue = val
+                    local r = (val - sMin) / (sMax - sMin)
+                    fill.Size = UDim2.new(r, 0, 1, 0)
+                    sliderKnob.Position = UDim2.new(r, 0, 0.5, 0)
+                    sliderValueLabel.Text = tostring(val) .. sUnit
+                    Window.States[pageName][rowName].Value = val
+                    for _, cb in ipairs(Window.States[pageName][rowName].Callbacks) do
+                        pcall(cb, val)
+                    end
+                end
+            end
+            
+            -- D. InputBox Control
+            local inputTextBox = cc:FindFirstChild("TextBox")
+            if inputTextBox and not minusBtn then -- Check not spinner
+                Window.States[pageName][rowName].Type = "Input"
+                local iStroke = inputTextBox:FindFirstChildWhichIsA("UIStroke")
+                inputTextBox.Focused:Connect(function()
+                    if iStroke then TweenService:Create(iStroke, TweenInfo.new(0.15), {Color = Color3.fromRGB(0, 110, 255)}):Play() end
+                end)
+                inputTextBox.FocusLost:Connect(function()
+                    if iStroke then TweenService:Create(iStroke, TweenInfo.new(0.15), {Color = Color3.fromRGB(30, 42, 75)}):Play() end
+                    local text = inputTextBox.Text
+                    Window.States[pageName][rowName].Value = text
+                    for _, cb in ipairs(Window.States[pageName][rowName].Callbacks) do
+                        pcall(cb, text)
+                    end
+                end)
+                
+                Window.States[pageName][rowName].Update = function(val)
+                    inputTextBox.Text = tostring(val)
+                    Window.States[pageName][rowName].Value = val
+                    for _, cb in ipairs(Window.States[pageName][rowName].Callbacks) do
+                        pcall(cb, val)
+                    end
+                end
+            end
+            
+            -- E. ColorPicker Control
+            local colorBtn = cc:FindFirstChild("ColorBtn")
+            if colorBtn then
+                Window.States[pageName][rowName].Type = "Colorpicker"
+                
+                colorBtn.MouseButton1Click:Connect(function()
+                    local h, s, v = Color3.toHSV(colorBtn.BackgroundColor3)
+                    
+                    picker.Position = UDim2.new(0, colorBtn.AbsolutePosition.X - 220, 0, colorBtn.AbsolutePosition.Y - 80)
+                    picker.Visible = true
+                    
+                    -- Setup connection for picker apply
+                    local applyBtn = picker:WaitForChild("BottomBar"):WaitForChild("ApplyBtn")
+                    local satValCanvas = picker:WaitForChild("SatValCanvas")
+                    local hueSlider = picker:WaitForChild("HueSlider")
+                    local hexInput = picker.BottomBar:WaitForChild("HexInput")
+                    
+                    satValCanvas.BackgroundColor3 = Color3.fromHSV(h, 1, 1)
+                    satValCanvas.Pin.Position = UDim2.new(s, 0, 1 - v, 0)
+                    hueSlider.Pin.Position = UDim2.new(h, 0, 0.5, 0)
+                    picker.BottomBar.Preview.BackgroundColor3 = colorBtn.BackgroundColor3
+                    hexInput.Text = rgbToHex(colorBtn.BackgroundColor3)
+                    
+                    local activeH, activeS, activeV = h, s, v
+                    
+                    local function updateInnerUI()
+                        local base = Color3.fromHSV(activeH, 1, 1)
+                        local selected = Color3.fromHSV(activeH, activeS, activeV)
+                        satValCanvas.BackgroundColor3 = base
+                        picker.BottomBar.Preview.BackgroundColor3 = selected
+                        hexInput.Text = rgbToHex(selected)
+                    end
+                    
+                    -- SatVal Dragging
+                    local satValDragging = false
+                    satValCanvas.InputBegan:Connect(function(input)
+                        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                            satValDragging = true
+                            local function updateSV(inputObj)
+                                local relX = math.clamp((inputObj.Position.X - satValCanvas.AbsolutePosition.X) / satValCanvas.AbsoluteSize.X, 0, 1)
+                                local relY = math.clamp((inputObj.Position.Y - satValCanvas.AbsolutePosition.Y) / satValCanvas.AbsoluteSize.Y, 0, 1)
+                                activeS = relX
+                                activeV = 1 - relY
+                                satValCanvas.Pin.Position = UDim2.new(relX, 0, relY, 0)
+                                updateInnerUI()
+                            end
+                            updateSV(input)
+                            local m, r
+                            m = UserInputService.InputChanged:Connect(function(moveInput)
+                                if satValDragging and (moveInput.UserInputType == Enum.UserInputType.MouseMovement or moveInput.UserInputType == Enum.UserInputType.Touch) then
+                                    updateSV(moveInput)
+                                end
+                            end)
+                            r = UserInputService.InputEnded:Connect(function(releaseInput)
+                                if releaseInput.UserInputType == Enum.UserInputType.MouseButton1 or releaseInput.UserInputType == Enum.UserInputType.Touch then
+                                    satValDragging = false
+                                    m:Disconnect()
+                                    r:Disconnect()
+                                end
+                            end)
+                        end
+                    end)
+                    
+                    -- Hue Slider Dragging
+                    local hueDragging = false
+                    hueSlider.InputBegan:Connect(function(input)
+                        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                            hueDragging = true
+                            local function updateH(inputObj)
+                                local relX = math.clamp((inputObj.Position.X - hueSlider.AbsolutePosition.X) / hueSlider.AbsoluteSize.X, 0, 1)
+                                activeH = relX
+                                hueSlider.Pin.Position = UDim2.new(relX, 0, 0.5, 0)
+                                updateInnerUI()
+                            end
+                            updateH(input)
+                            local m, r
+                            m = UserInputService.InputChanged:Connect(function(moveInput)
+                                if hueDragging and (moveInput.UserInputType == Enum.UserInputType.MouseMovement or moveInput.UserInputType == Enum.UserInputType.Touch) then
+                                    updateH(moveInput)
+                                end
+                            end)
+                            r = UserInputService.InputEnded:Connect(function(releaseInput)
+                                if releaseInput.UserInputType == Enum.UserInputType.MouseButton1 or releaseInput.UserInputType == Enum.UserInputType.Touch then
+                                    hueDragging = false
+                                    m:Disconnect()
+                                    r:Disconnect()
+                                end
+                            end)
+                        end
+                    end)
+                    
+                    local applyConn
+                    applyConn = applyBtn.MouseButton1Click:Connect(function()
+                        applyConn:Disconnect()
+                        picker.Visible = false
+                        local finalColor = Color3.fromHSV(activeH, activeS, activeV)
+                        colorBtn.BackgroundColor3 = finalColor
+                        
+                        Window.States[pageName][rowName].Value = finalColor
+                        for _, cb in ipairs(Window.States[pageName][rowName].Callbacks) do
+                            pcall(cb, finalColor)
+                        end
+                    end)
+                    
+                    -- Tactile
+                    local shrink = TweenService:Create(colorBtn, TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 24, 0, 14)})
+                    local restore = TweenService:Create(colorBtn, TweenInfo.new(0.12, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = UDim2.new(0, 28, 0, 18)})
+                    shrink:Play() task.wait(0.08) restore:Play()
+                end)
+                
+                Window.States[pageName][rowName].Update = function(color)
+                    colorBtn.BackgroundColor3 = color
+                    Window.States[pageName][rowName].Value = color
+                    for _, cb in ipairs(Window.States[pageName][rowName].Callbacks) do
+                        pcall(cb, color)
+                    end
+                end
+            end
+            
+            -- F. ActionButton Control
+            local actBtn = cc:FindFirstChild("Button")
+            if actBtn then
+                Window.States[pageName][rowName].Type = "Button"
+                actBtn.MouseButton1Click:Connect(function()
+                    local shrink = TweenService:Create(actBtn, TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 74, 0, 18)})
+                    local restore = TweenService:Create(actBtn, TweenInfo.new(0.12, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = UDim2.new(0, 80, 0, 22)})
+                    shrink:Play() task.wait(0.08) restore:Play()
+                    
+                    for _, cb in ipairs(Window.States[pageName][rowName].Callbacks) do
+                        pcall(cb)
+                    end
+                end)
+            end
+        end
+    end
+    
+    -- Dynamically initialize all elements on load
+    for _, page in ipairs(mainPanel:GetChildren()) do
+        if page:IsA("ScrollingFrame") and page.Name:match("^Page_") then
+            local pageName = page.Name
+            Window.States[pageName] = {}
+            for _, row in ipairs(page:GetChildren()) do
+                if row:IsA("Frame") and row.Name:match("^Row_") then
+                    initRowInteractive(row, pageName, row.Name)
+                end
+            end
+        end
+    end
+    
     -- Global keybind listener
     UserInputService.InputBegan:Connect(function(input, gp)
         if gp or UserInputService:GetFocusedTextBox() or isBindingAnyKey then return end
         
-        for pName, pageBinds in pairs(keybindData) do
+        for pName, pageBinds in pairs(Window.States) do
             for rName, bind in pairs(pageBinds) do
                 local match = false
                 if bind.Key and bind.Key ~= "None" then
@@ -600,32 +1078,14 @@ function SysUI:Load(config)
                     end
                 end
                 
-                if match then
-                    bind.State = not bind.State
-                    bind.Callback(bind.State)
+                if match and bind.Type == "Toggle" then
+                    local newState = not bind.Value
+                    if bind.Update then bind.Update(newState) end
                     
-                    -- Sync UI Toggle switch visual if active
                     local activePage = mainPanel:FindFirstChild(pName)
                     local row = activePage and activePage:FindFirstChild(rName)
-                    local tf = row and row:FindFirstChild("Toggle")
-                    if tf then
-                        local sw = tf:FindFirstChild("Switch")
-                        local sl = tf:FindFirstChild("StatusLabel")
-                        local knob = sw and sw:FindFirstChild("Knob")
-                        if knob then
-                            local kp = bind.State and UDim2.new(0, 19, 0.5, 0) or UDim2.new(0, 3, 0.5, 0)
-                            local bc = bind.State and Color3.fromRGB(0, 85, 255) or Color3.fromRGB(20, 26, 46)
-                            TweenService:Create(knob, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = kp}):Play()
-                            TweenService:Create(sw, TweenInfo.new(0.2), {BackgroundColor3 = bc}):Play()
-                            if sl then
-                                sl.Text = bind.State and "ON" or "OFF"
-                                sl.TextColor3 = bind.State and Color3.fromRGB(0, 130, 255) or Color3.fromRGB(100, 115, 135)
-                            end
-                        end
-                    end
-                    
                     local title = row and row:FindFirstChild("Title") and row.Title.Text or "Feature"
-                    SysUI:Notify({Title = title, Content = bind.State and "Activated successfully!" or "Deactivated successfully!", Duration = 3})
+                    SysUI:Notify({Title = title, Content = newState and "Activated successfully!" or "Deactivated successfully!", Duration = 3})
                 end
             end
         end
@@ -633,14 +1093,6 @@ function SysUI:Load(config)
     
     -- Parent ScreenGui to PlayerGui
     gui.Parent = PlayerGui
-    
-    local Window = setmetatable({
-        Gui = gui,
-        Main = mainFrame,
-        MainPanel = mainPanel,
-        ColorPicker = colorPickerWidget,
-        KeybindData = keybindData
-    }, WindowClass)
     
     SysUI.ActiveWindow = Window
     return Window
@@ -650,14 +1102,14 @@ end
 -- WRAPPER BINDING APIS (Hook functions to named Rows)
 -- ============================================================
 
--- helper to get a row from page name & row name
-local function getRow(window, pageName, rowName)
-    local page = window.MainPanel:FindFirstChild(pageName)
-    local row = page and page:FindFirstChild(rowName)
-    if not row then
-        warn(string.format("[SysUI] Row '%s' on page '%s' not found!", tostring(rowName), tostring(pageName)))
+-- helper to get a state object from page & row name
+local function getState(window, pageName, rowName)
+    local page = window.States[pageName]
+    local state = page and page[rowName]
+    if not state then
+        warn(string.format("[SysUI] State for row '%s' on page '%s' not found!", tostring(rowName), tostring(pageName)))
     end
-    return row
+    return state
 end
 
 -- 1. Bind Toggle
@@ -666,39 +1118,18 @@ function WindowClass:BindToggle(pageName, rowName, config)
     local default = config.Default or false
     local callback = config.Callback or function() end
     
-    local row = getRow(self, pageName, rowName)
-    local tf = row and row:FindFirstChild("Toggle")
-    local sw = tf and tf:FindFirstChild("Switch")
-    local knob = sw and sw:FindFirstChild("Knob")
-    local sl = tf and tf:FindFirstChild("StatusLabel")
-    local clickBtn = sw and (sw:FindFirstChild("ClickButton") or sw)
-    if not sw or not knob then return end
-    
-    local enabled = default
-    local function update(state)
-        enabled = state
-        local kp = enabled and UDim2.new(0, 19, 0.5, 0) or UDim2.new(0, 3, 0.5, 0)
-        local bc = enabled and Color3.fromRGB(0, 85, 255) or Color3.fromRGB(20, 26, 46)
-        
-        TweenService:Create(knob, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = kp}):Play()
-        TweenService:Create(sw, TweenInfo.new(0.2), {BackgroundColor3 = bc}):Play()
-        if sl then
-            sl.Text = enabled and "ON" or "OFF"
-            sl.TextColor3 = enabled and Color3.fromRGB(0, 130, 255) or Color3.fromRGB(100, 115, 135)
+    local state = getState(self, pageName, rowName)
+    if state then
+        table.insert(state.Callbacks, callback)
+        if state.Update then
+            state.Update(default, true) -- update silently without firing callbacks on setup
         end
-        callback(enabled)
     end
     
-    clickBtn.MouseButton1Click:Connect(function()
-        update(not enabled)
-        local title = row:FindFirstChild("Title") and row.Title.Text or "Feature"
-        SysUI:Notify({Title = title, Content = enabled and "Activated successfully!" or "Deactivated successfully!", Duration = 3})
-    end)
-    
-    update(default)
-    
     return {
-        Set = function(state) update(state) end
+        Set = function(s)
+            if state and state.Update then state.Update(s, false) end
+        end
     }
 end
 
@@ -708,55 +1139,16 @@ function WindowClass:BindKeybind(pageName, rowName, config)
     local default = config.Default or Enum.KeyCode.F
     local callback = config.Callback or function() end
     
-    local row = getRow(self, pageName, rowName)
+    local state = getState(self, pageName, rowName)
+    local page = self.MainPanel:FindFirstChild(pageName)
+    local row = page and page:FindFirstChild(rowName)
     local kbBtn = row and row:FindFirstChild("KeybindButton")
-    if not kbBtn then return end
     
-    if not self.KeybindData[pageName] then self.KeybindData[pageName] = {} end
-    self.KeybindData[pageName][rowName] = {
-        Key = default,
-        State = false,
-        Callback = callback
-    }
-    
-    kbBtn.Text = default == "None" and "[...]" or ("[ " .. formatKeyName(default) .. " ]")
-    local isListening = false
-    
-    kbBtn.MouseButton1Click:Connect(function()
-        if isListening then return end
-        isListening = true
-        kbBtn.Text = "[...]"
-        kbBtn.TextColor3 = Color3.fromRGB(0, 170, 255)
-        
-        local conn
-        conn = UserInputService.InputBegan:Connect(function(input, gp)
-            if gp and UserInputService:GetFocusedTextBox() then return end
-            local newKey
-            if input.UserInputType == Enum.UserInputType.Keyboard then
-                newKey = input.KeyCode ~= Enum.KeyCode.Escape and input.KeyCode or "None"
-            elseif input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.MouseButton2 or input.UserInputType == Enum.UserInputType.MouseButton3 then
-                newKey = input.UserInputType
-            end
-            
-            if newKey then
-                conn:Disconnect()
-                self.KeybindData[pageName][rowName].Key = newKey
-                kbBtn.Text = newKey == "None" and "[...]" or ("[ " .. formatKeyName(newKey) .. " ]")
-                kbBtn.TextColor3 = Color3.fromRGB(150, 175, 220)
-                isListening = false
-                
-                local title = row:FindFirstChild("Title") and row.Title.Text or "Feature"
-                SysUI:Notify({Title = "Keybind Updated", Content = title .. " bound to: " .. formatKeyName(newKey), Duration = 3})
-            end
-        end)
-    end)
-    
-    kbBtn.MouseEnter:Connect(function()
-        if not isListening then TweenService:Create(kbBtn, TweenInfo.new(0.15), {TextColor3 = Color3.fromRGB(255, 255, 255)}):Play() end
-    end)
-    kbBtn.MouseLeave:Connect(function()
-        if not isListening then TweenService:Create(kbBtn, TweenInfo.new(0.15), {TextColor3 = Color3.fromRGB(150, 175, 220)}):Play() end
-    end)
+    if state and kbBtn then
+        state.Key = default
+        kbBtn.Text = default == "None" and "[...]" or ("[ " .. formatKeyName(default) .. " ]")
+        table.insert(state.Callbacks, callback)
+    end
 end
 
 -- 3. Bind Slider
@@ -765,62 +1157,20 @@ function WindowClass:BindSlider(pageName, rowName, config)
     local min = config.Min or 0
     local max = config.Max or 100
     local default = config.Default or 50
-    local unit = config.Unit or ""
+    local unit = config.Unit or "%"
     local callback = config.Callback or function() end
     
-    local row = getRow(self, pageName, rowName)
-    local cc = row and row:FindFirstChild("CustomControl")
-    local track = cc and cc:FindFirstChild("Track")
-    local fill = track and track:FindFirstChild("Fill")
-    local knob = track and track:FindFirstChild("Knob")
-    local valLbl = cc and cc:FindFirstChild("ValueLabel")
-    if not track or not fill or not knob or not valLbl then return end
-    
-    local function update(inputObj)
-        local ratio = math.clamp((inputObj.Position.X - track.AbsolutePosition.X) / track.AbsoluteSize.X, 0, 1)
-        fill.Size = UDim2.new(ratio, 0, 1, 0)
-        knob.Position = UDim2.new(ratio, 0, 0.5, 0)
-        local value = min + math.round(ratio * (max - min))
-        valLbl.Text = tostring(value) .. unit
-        callback(value)
-    end
-    
-    -- Setup initial position
-    local initRatio = (default - min) / (max - min)
-    fill.Size = UDim2.new(initRatio, 0, 1, 0)
-    knob.Position = UDim2.new(initRatio, 0, 0.5, 0)
-    valLbl.Text = tostring(default) .. unit
-    
-    local sliding = false
-    track.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            sliding = true
-            update(input)
-            
-            local mConn, rConn
-            mConn = UserInputService.InputChanged:Connect(function(moveInput)
-                if sliding and (moveInput.UserInputType == Enum.UserInputType.MouseMovement or moveInput.UserInputType == Enum.UserInputType.Touch) then
-                    update(moveInput)
-                end
-            end)
-            
-            rConn = UserInputService.InputEnded:Connect(function(releaseInput)
-                if releaseInput.UserInputType == Enum.UserInputType.MouseButton1 or releaseInput.UserInputType == Enum.UserInputType.Touch then
-                    sliding = false
-                    mConn:Disconnect()
-                    rConn:Disconnect()
-                end
-            end)
+    local state = getState(self, pageName, rowName)
+    if state then
+        table.insert(state.Callbacks, callback)
+        if state.Update then
+            state.Update(default, {Min = min, Max = max, Unit = unit})
         end
-    end)
+    end
     
     return {
         Set = function(v)
-            local r = (v - min) / (max - min)
-            fill.Size = UDim2.new(r, 0, 1, 0)
-            knob.Position = UDim2.new(r, 0, 0.5, 0)
-            valLbl.Text = tostring(v) .. unit
-            callback(v)
+            if state and state.Update then state.Update(v, {Min = min, Max = max, Unit = unit}) end
         end
     }
 end
@@ -832,72 +1182,18 @@ function WindowClass:BindDropdown(pageName, rowName, config)
     local default = config.Default or options[1] or ""
     local callback = config.Callback or function() end
     
-    local row = getRow(self, pageName, rowName)
-    local cc = row and row:FindFirstChild("CustomControl")
-    local header = cc and cc:FindFirstChild("Header")
-    local list = cc and cc:FindFirstChild("DropdownList")
-    local arrow = header and header:FindFirstChild("Arrow")
-    if not header or not list then return end
-    
-    local openUpwards = (rowName == "Row_E" or rowName == "Row_F" or rowName == "Row_G" or rowName == "Row_H")
-    local closedPos = openUpwards and UDim2.new(0, 0, 0, -82) or UDim2.new(0, 0, 1, 4)
-    
-    header.Text = "   " .. default
-    
-    local function toggleDropdown()
-        list.Visible = not list.Visible
-        list.Position = closedPos
-        row.ZIndex = list.Visible and 15 or 6
-        if arrow then arrow.Text = list.Visible and "▲" or "▼" end
+    local state = getState(self, pageName, rowName)
+    if state then
+        table.insert(state.Callbacks, callback)
+        if state.Populate then state.Populate(options) end
+        if state.Update then state.Update(default) end
     end
-    
-    header.MouseButton1Click:Connect(toggleDropdown)
-    
-    local function populate()
-        for _, btn in ipairs(list:GetChildren()) do
-            if btn:IsA("TextButton") then btn:Destroy() end
-        end
-        
-        for _, opt in ipairs(options) do
-            local btn = Instance.new("TextButton")
-            btn.Size = UDim2.new(1, 0, 0, 20)
-            btn.BackgroundTransparency = 1
-            btn.Text = "   " .. opt
-            btn.Font = Enum.Font.Gotham
-            btn.TextSize = 9
-            btn.TextColor3 = Color3.fromRGB(150, 170, 210)
-            btn.TextXAlignment = Enum.TextXAlignment.Left
-            btn.Parent = list
-            
-            btn.MouseEnter:Connect(function()
-                btn.BackgroundTransparency = 0
-                btn.BackgroundColor3 = Color3.fromRGB(20, 45, 110)
-                btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-            end)
-            btn.MouseLeave:Connect(function()
-                btn.BackgroundTransparency = 1
-                btn.TextColor3 = Color3.fromRGB(150, 170, 210)
-            end)
-            
-            btn.MouseButton1Click:Connect(function()
-                header.Text = "   " .. opt
-                list.Visible = false
-                row.ZIndex = 6
-                if arrow then arrow.Text = "▼" end
-                callback(opt)
-            end)
-        end
-    end
-    
-    populate()
     
     return {
         Refresh = function(newOpts, newDef)
-            options = newOpts
-            populate()
-            if newDef then
-                header.Text = "   " .. newDef
-                callback(newDef)
+            if state then
+                if state.Populate then state.Populate(newOpts) end
+                if newDef and state.Update then state.Update(newDef) end
             end
         end
     }
@@ -909,57 +1205,15 @@ function WindowClass:BindColorpicker(pageName, rowName, config)
     local default = config.Default or Color3.fromRGB(0, 110, 255)
     local callback = config.Callback or function() end
     
-    local row = getRow(self, pageName, rowName)
-    local cc = row and row:FindFirstChild("CustomControl")
-    local btn = cc and cc:FindFirstChild("ColorBtn")
-    if not btn then return end
-    
-    btn.BackgroundColor3 = default
-    
-    local picker = self.ColorPicker
-    local satValCanvas = satValCanvas or picker:FindFirstChild("SatValCanvas")
-    local hueSlider = hueSlider or picker:FindFirstChild("HueSlider")
-    local hexInput = hexInput or (picker:FindFirstChild("BottomBar") and picker.BottomBar:FindFirstChild("HexInput"))
-    
-    local currentH, currentS, currentV = 0, 1, 1
-    
-    local function updatePickerUI()
-        if not satValCanvas or not hueSlider or not hexInput then return end
-        local base = Color3.fromHSV(currentH, 1, 1)
-        local selected = Color3.fromHSV(currentH, currentS, currentV)
-        satValCanvas.BackgroundColor3 = base
-        if picker:FindFirstChild("BottomBar") and picker.BottomBar:FindFirstChild("Preview") then
-            picker.BottomBar.Preview.BackgroundColor3 = selected
-        end
-        hexInput.Text = rgbToHex(selected)
-        local satPin = satValCanvas:FindFirstChild("Pin")
-        local huePin = hueSlider:FindFirstChild("Pin")
-        if satPin then satPin.Position = UDim2.new(currentS, 0, 1 - currentV, 0) end
-        if huePin then huePin.Position = UDim2.new(currentH, 0, 0.5, 0) end
-        btn.BackgroundColor3 = selected
-        callback(selected)
+    local state = getState(self, pageName, rowName)
+    if state then
+        table.insert(state.Callbacks, callback)
+        if state.Update then state.Update(default) end
     end
     
-    btn.MouseButton1Click:Connect(function()
-        local h, s, v = Color3.toHSV(btn.BackgroundColor3)
-        currentH, currentS, currentV = h, s, v
-        picker.Position = UDim2.new(0, btn.AbsolutePosition.X - 220, 0, btn.AbsolutePosition.Y - 80)
-        picker.Visible = true
-        updatePickerUI()
-        
-        -- Tactile
-        local shrink = TweenService:Create(btn, TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 24, 0, 14)})
-        local restore = TweenService:Create(btn, TweenInfo.new(0.12, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = UDim2.new(0, 28, 0, 18)})
-        shrink:Play() task.wait(0.08) restore:Play()
-    end)
-    
     return {
-        SatValCanvas = satValCanvas,
-        HueSlider = hueSlider,
-        HexInput = hexInput,
         Set = function(color)
-            btn.BackgroundColor3 = color
-            callback(color)
+            if state and state.Update then state.Update(color) end
         end
     }
 end
@@ -970,26 +1224,20 @@ function WindowClass:BindInput(pageName, rowName, config)
     local placeholder = config.Placeholder or "Type here..."
     local callback = config.Callback or function() end
     
-    local row = getRow(self, pageName, rowName)
+    local state = getState(self, pageName, rowName)
+    local page = self.MainPanel:FindFirstChild(pageName)
+    local row = page and page:FindFirstChild(rowName)
     local cc = row and row:FindFirstChild("CustomControl")
     local tb = cc and cc:FindFirstChild("TextBox")
-    if not tb then return end
     
-    tb.PlaceholderText = placeholder
-    local stroke = tb:FindFirstChildWhichIsA("UIStroke")
-    
-    tb.Focused:Connect(function()
-        if stroke then TweenService:Create(stroke, TweenInfo.new(0.15), {Color = Color3.fromRGB(0, 110, 255)}):Play() end
-    end)
-    tb.FocusLost:Connect(function()
-        if stroke then TweenService:Create(stroke, TweenInfo.new(0.15), {Color = Color3.fromRGB(30, 42, 75)}):Play() end
-        callback(tb.Text)
-    end)
+    if state and tb then
+        tb.PlaceholderText = placeholder
+        table.insert(state.Callbacks, callback)
+    end
     
     return {
         Set = function(t)
-            tb.Text = t
-            callback(t)
+            if state and state.Update then state.Update(t) end
         end
     }
 end
@@ -999,18 +1247,10 @@ function WindowClass:BindButton(pageName, rowName, config)
     config = config or {}
     local callback = config.Callback or function() end
     
-    local row = getRow(self, pageName, rowName)
-    local cc = row and row:FindFirstChild("CustomControl")
-    local btn = cc and cc:FindFirstChild("Button")
-    if not btn then return end
-    
-    btn.MouseButton1Click:Connect(function()
-        -- Tactile
-        local shrink = TweenService:Create(btn, TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 74, 0, 18)})
-        local restore = TweenService:Create(btn, TweenInfo.new(0.12, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = UDim2.new(0, 80, 0, 22)})
-        shrink:Play() task.wait(0.08) restore:Play()
-        callback()
-    end)
+    local state = getState(self, pageName, rowName)
+    if state then
+        table.insert(state.Callbacks, callback)
+    end
 end
 
 -- 8. Bind Numeric Spinner
@@ -1022,31 +1262,18 @@ function WindowClass:BindSpinner(pageName, rowName, config)
     local step = config.Step or 1
     local callback = config.Callback or function() end
     
-    local row = getRow(self, pageName, rowName)
-    local cc = row and row:FindFirstChild("CustomControl")
-    local input = cc and cc:FindFirstChild("TextBox")
-    local minusBtn = cc and cc:FindFirstChild("MinusBtn")
-    local plusBtn = cc and cc:FindFirstChild("PlusBtn")
-    if not input or not minusBtn or not plusBtn then return end
-    
-    local value = default
-    local function update(newVal)
-        value = math.clamp(newVal, min, max)
-        input.Text = tostring(value)
-        callback(value)
+    local state = getState(self, pageName, rowName)
+    if state then
+        table.insert(state.Callbacks, callback)
+        if state.Update then
+            state.Update(default, {Min = min, Max = max, Step = step})
+        end
     end
     
-    minusBtn.MouseButton1Click:Connect(function() update(value - step) end)
-    plusBtn.MouseButton1Click:Connect(function() update(value + step) end)
-    input.FocusLost:Connect(function()
-        local n = tonumber(input.Text)
-        if n then update(n) else input.Text = tostring(value) end
-    end)
-    
-    update(default)
-    
     return {
-        Set = function(v) update(v) end
+        Set = function(v)
+            if state and state.Update then state.Update(v, {Min = min, Max = max, Step = step}) end
+        end
     }
 end
 
