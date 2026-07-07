@@ -1,0 +1,97 @@
+-- require
+local SysUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/tya1002/SysUI-Library/main/loader?t=" .. os.time()))()
+
+-- load
+local Window = SysUI:Load()
+
+-- combat tab bindings
+Window:BindToggle("Page_1_A", "Row_A", {
+    Default = false,
+    Callback = function(enabled)
+        print("Aimbot enabled:", enabled)
+    end
+})
+
+Window:BindKeybind("Page_1_A", "Row_A", {
+    Default = Enum.KeyCode.E,
+    Callback = function()
+        print("Aimbot Keybind Pressed!")
+    end
+})
+
+Window:BindSlider("Page_1_A", "Row_B", {
+    Min = 10,
+    Max = 300,
+    Default = 100,
+    Unit = " studs",
+    Callback = function(value)
+        print("Aimbot FOV Radius set to:", value)
+    end
+})
+
+Window:BindDropdown("Page_1_A", "Row_C", {
+    Options = {"Head", "Torso", "HumanoidRootPart", "Random"},
+    Default = "Head",
+    Callback = function(choice)
+        print("Aimbot Target Hitbox selected:", choice)
+    end
+})
+
+
+-- visuals tab bindings
+Window:BindColorpicker("Page_1_B", "Row_A", {
+    Default = Color3.fromRGB(0, 120, 255),
+    Callback = function(color)
+        print("ESP Color changed to RGB:", math.round(color.R*255), math.round(color.G*255), math.round(color.B*255))
+    end
+})
+
+Window:BindSpinner("Page_1_B", "Row_B", {
+    Min = 50,
+    Max = 1000,
+    Default = 250,
+    Step = 50,
+    Callback = function(spinVal)
+        print("ESP Max Render Distance set to:", spinVal, "studs")
+    end
+})
+
+Window:BindInput("Page_1_B", "Row_C", {
+    Placeholder = "Enter custom player text...",
+    Callback = function(text)
+        print("ESP Custom player label text set to:", text)
+    end
+})
+
+
+-- misc tab bindings
+Window:BindButton("Page_1_C", "Row_A", {
+    Callback = function()
+        print("Destructing UI...")
+        Window:GetGui():Destroy()
+        SysUI:Notify({
+            Title = "SysHub",
+            Content = "UI has been successfully uninstalled!",
+            Duration = 3
+        })
+    end
+})
+
+
+-- config actions hook
+Window:BindConfigActions({
+    OnLoad = function()
+        print("Configuration Profile Loaded successfully!")
+    end,
+    OnSave = function()
+        print("Configuration Profile Saved successfully!")
+    end
+})
+
+
+-- notify loading
+SysUI:Notify({
+    Title = "SysHub Loaded",
+    Content = "All features are active! Press RightShift to hide.",
+    Duration = 4
+})
