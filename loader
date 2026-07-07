@@ -1,10 +1,3 @@
---[[
-    SysUI Library - Premium GUI Wrapper Library (SysHubUI Edition)
-    Wraps around the pre-built `SysHubUI` ScreenGui template.
-    Allows scripters to load their pre-made GUI design and bind callbacks 
-    to rows, buttons, toggles, sliders, dropdowns, inputs, color pickers, and keybinds.
-]]
-
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
@@ -54,9 +47,8 @@ local function hexToRgb(hex)
     return Color3.fromRGB(r, g, b)
 end
 
--- ============================================================
--- TOAST NOTIFICATION SYSTEM
--- ============================================================
+-- Notif System
+
 function SysUI:Notify(config)
     config = config or {}
     local title = config.Title or "Notification"
@@ -103,9 +95,9 @@ function SysUI:Notify(config)
     end)
 end
 
--- ============================================================
+
 -- DRAGGABLE & RESIZABLE HANDLER
--- ============================================================
+
 local function setupDraggableAndResizable(frame, dragHandles, minSize, maxSize, onResizeEnd)
     local dragging = false
     local dragInput, dragStart, startPos
