@@ -1206,10 +1206,40 @@ function SysUI:Load(config)
         end
     end
     
+    -- ============================================================
+    -- SETTINGS PANEL: UI Toggle Key + Streamproof state
+    -- ============================================================
+    local uiToggleKey = Enum.KeyCode.RightShift -- Default toggle key
+
+    local function applyStreamproof(enabled)
+        if enabled then
+            local targetParent = (typeof(gethui) == "function" and gethui())
+                or (typeof(cloneref) == "function" and cloneref(game:GetService("CoreGui")))
+                or game:GetService("CoreGui")
+                or PlayerGui
+            gui.Parent = targetParent
+        else
+            gui.Parent = PlayerGui
+        end
+    end
+
     -- Global keybind listener
     UserInputService.InputBegan:Connect(function(input, gp)
         if gp or UserInputService:GetFocusedTextBox() or isBindingAnyKey then return end
-        
+
+        -- UI Toggle Key (SettingsPanel Row_A)
+        local matchToggleKey = false
+        if typeof(uiToggleKey) == "EnumItem" and uiToggleKey.EnumType == Enum.KeyCode then
+            matchToggleKey = input.KeyCode == uiToggleKey
+        elseif typeof(uiToggleKey) == "EnumItem" and uiToggleKey.EnumType == Enum.UserInputType then
+            matchToggleKey = input.UserInputType == uiToggleKey
+        end
+
+        if matchToggleKey then
+            gui.Enabled = not gui.Enabled
+            return
+        end
+
         for pName, pageBinds in pairs(Window.States) do
             for rName, bind in pairs(pageBinds) do
                 local match = false
@@ -1234,6 +1264,17 @@ function SysUI:Load(config)
     
     -- Parent ScreenGui to PlayerGui
     gui.Parent = PlayerGui
+    
+    -- Expose internal controls on Window object
+    Window.SetUIToggleKey = function(key)
+        uiToggleKey = key
+    end
+    Window.SetStreamproof = function(enabled)
+        applyStreamproof(enabled)
+    end
+    Window.GetGui = function()
+        return gui
+    end
     
     SysUI.ActiveWindow = Window
     return Window
@@ -1421,13 +1462,15 @@ end
 -- 9. Bind Config Actions (Load / Save)
 function WindowClass:BindConfigActions(config)
     config = config or {}
-    local onLoad = config.OnLoad or function() end
-    local onSave = config.OnSave or function() end
+    local onLoad = config.OnLoad or nil
+    local onSave = config.OnSave or nil
     
     local settingsPanel = self.MainPanel:FindFirstChild("SettingsPanel")
     local configContainer = settingsPanel and settingsPanel:FindFirstChild("ConfigContainer")
     local loadBtn = configContainer and configContainer:FindFirstChild("LoadConfigBtn")
     local saveBtn = configContainer and configContainer:FindFirstChild("SaveConfigBtn")
+    
+    local window = self
     
     local function hook(btn, callback, isSave)
         local stroke = btn:FindFirstChildWhichIsA("UIStroke")
@@ -1449,18 +1492,129 @@ function WindowClass:BindConfigActions(config)
             local restore = TweenService:Create(btn, TweenInfo.new(0.12, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = targetSize})
             
             shrink:Play() task.wait(0.08) restore:Play()
-            callback()
             
-            SysUI:Notify({
-                Title = "Configuration",
-                Content = isSave and "Default profile saved successfully!" or "Default profile loaded successfully!",
-                Duration = 3.5
-            })
+            if callback then
+                callback()
+            elseif isSave then
+                window:SaveConfig()
+            else
+                window:LoadConfig()
+            end
         end)
     end
     
     if loadBtn then hook(loadBtn, onLoad, false) end
     if saveBtn then hook(saveBtn, onSave, true) end
+end
+
+-- 10. Built-in Save Config
+function WindowClass:SaveConfig(filename)
+    filename = filename or "syshub_config.json"
+    local HttpService = game:GetService("HttpService")
+    
+    local data = { States = {} }
+    for pageName, pageStates in pairs(self.States) do
+        data.States[pageName] = {}
+        for rowName, state in pairs(pageStates) do
+            local entry = { Type = state.Type, Value = state.Value }
+            
+            -- Serialize Key
+            if state.Key and state.Key ~= "None" then
+                if typeof(state.Key) == "EnumItem" then
+                    entry.KeyType = tostring(state.Key.EnumType)
+                    entry.KeyValue = state.Key.Name
+                else
+                    entry.KeyType = "string"
+                    entry.KeyValue = tostring(state.Key)
+                end
+            end
+            
+            -- Serialize Color
+            if typeof(state.Value) == "Color3" then
+                entry.Value = rgbToHex(state.Value)
+                entry.IsColor = true
+            end
+            
+            data.States[pageName][rowName] = entry
+        end
+    end
+    
+    local json = HttpService:JSONEncode(data)
+    
+    local ok, err = pcall(function()
+        if writefile then
+            writefile(filename, json)
+        else
+            HttpService:PostAsync("http://127.0.0.1:8082/save_config", json)
+        end
+    end)
+    
+    SysUI:Notify({
+        Title = "Configuration",
+        Content = ok and "Profile saved successfully!" or ("Save failed: " .. tostring(err)),
+        Duration = 3.5
+    })
+    return ok
+end
+
+-- 11. Built-in Load Config
+function WindowClass:LoadConfig(filename)
+    filename = filename or "syshub_config.json"
+    local HttpService = game:GetService("HttpService")
+    
+    local json
+    local ok, err = pcall(function()
+        if readfile then
+            json = readfile(filename)
+        else
+            json = HttpService:GetAsync("http://127.0.0.1:8082/load_config")
+        end
+    end)
+    
+    if not ok or not json or json == "" then
+        SysUI:Notify({Title = "Configuration", Content = "No saved profile found.", Duration = 3.5})
+        return false
+    end
+    
+    local data = HttpService:JSONDecode(json)
+    if not data or not data.States then
+        SysUI:Notify({Title = "Configuration", Content = "Failed to parse profile.", Duration = 3.5})
+        return false
+    end
+    
+    for pageName, pageStates in pairs(data.States) do
+        if self.States[pageName] then
+            for rowName, saved in pairs(pageStates) do
+                local state = self.States[pageName][rowName]
+                if state and state.Update then
+                    local value = saved.Value
+                    
+                    -- Restore Color
+                    if saved.IsColor then
+                        value = hexToRgb(tostring(saved.Value))
+                    end
+                    
+                    state.Update(value, false)
+                end
+                
+                -- Restore Key
+                if saved.KeyValue and self.States[pageName][rowName] then
+                    local keyVal
+                    if saved.KeyType == "string" then
+                        keyVal = saved.KeyValue
+                    else
+                        local enumType = saved.KeyType == "Enum.KeyCode" and Enum.KeyCode or Enum.UserInputType
+                        pcall(function() keyVal = enumType[saved.KeyValue] end)
+                        keyVal = keyVal or saved.KeyValue
+                    end
+                    self.States[pageName][rowName].Key = keyVal
+                end
+            end
+        end
+    end
+    
+    SysUI:Notify({Title = "Configuration", Content = "Profile loaded successfully!", Duration = 3.5})
+    return true
 end
 
 return SysUI
