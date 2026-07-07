@@ -1,4 +1,4 @@
--- File 'main' ini me-load library dengan bypass cache agar perubahan langsung aktif
+
 local SysUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/tya1002/SysUI-Library/main/loader?t=" .. os.time()))()
 
 local Window = SysUI:Load()
