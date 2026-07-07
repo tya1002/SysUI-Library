@@ -1,18 +1,27 @@
-
+-- require
 local SysUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/tya1002/SysUI-Library/main/loader?t=" .. os.time()))()
 
+-- load
 local Window = SysUI:Load()
 
+-- toggle
 Window:BindToggle("Page_1_A", "Row_A", {
     Default = false,
     Callback = function(state)
-        print("Aimbot:", state)
+        print("Aimbot status:", state)
     end
 })
 
+-- slider
 Window:BindSlider("Page_1_A", "Row_B", {
-    Min = 10, Max = 100, Default = 50, Unit = "%",
+    Min = 10,
+    Max = 100,
+    Default = 50,
+    Unit = "%",
     Callback = function(val)
-        print("Aimbot FOV set to:", val)
+        print("Aimbot FOV:", val)
     end
 })
+
+-- config actions
+Window:BindConfigActions()
