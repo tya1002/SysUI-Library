@@ -1,0 +1,403 @@
+-- require
+local SysUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/tya1002/SysUI-Library/main/loader?t=" .. os.time()))()
+
+-- load
+local Window = SysUI:Load()
+
+-- Services
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local UserInputService = game:GetService("UserInputService")
+
+-- Global States for Cheat Features
+_G.WalkSpeedActive = false
+_G.WalkSpeedVal = 16
+
+_G.JumpPowerActive = false
+_G.JumpPowerVal = 50
+
+_G.InfJumpActive = false
+
+_G.ESPActive = false
+_G.ESPColor = Color3.fromRGB(0, 120, 255)
+
+-- ==========================================
+-- 🛠️ HACK LOOPS & CONNECTIONS
+-- ==========================================
+
+-- WalkSpeed & JumpPower loop
+task.spawn(function()
+    while task.wait(0.1) do
+        pcall(function()
+            local char = LocalPlayer.Character
+            local hum = char and char:FindFirstChildOfClass("Humanoid")
+            if hum then
+                if _G.WalkSpeedActive then
+                    hum.WalkSpeed = _G.WalkSpeedVal
+                else
+                    hum.WalkSpeed = 16 -- restore default walkspeed if disabled
+                end
+                if _G.JumpPowerActive then
+                    hum.UseJumpPower = true
+                    hum.JumpPower = _G.JumpPowerVal
+                else
+                    hum.JumpPower = 50 -- restore default jumppower if disabled
+                end
+            end
+        end)
+    end
+end)
+
+-- Infinite Jump connection
+UserInputService.JumpRequest:Connect(function()
+    if _G.InfJumpActive then
+        pcall(function()
+            LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
+        end)
+    end
+end)
+
+-- ESP Highlight Logic
+local espHighlights = {}
+
+local function clearESP()
+    for player, hl in pairs(espHighlights) do
+        pcall(function() hl:Destroy() end)
+    end
+    table.clear(espHighlights)
+end
+
+local function applyESP(player)
+    if player == LocalPlayer then return end
+    
+    local function setupChar(char)
+        if not _G.ESPActive then return end
+        
+        -- Clear old highlight if exists
+        if espHighlights[player] then
+            pcall(function() espHighlights[player]:Destroy() end)
+        end
+        
+        local hl = Instance.new("Highlight")
+        hl.Name = "SysHubESP"
+        hl.FillColor = _G.ESPColor
+        hl.OutlineColor = Color3.fromRGB(255, 255, 255)
+        hl.FillTransparency = 0.5
+        hl.OutlineTransparency = 0
+        hl.Adornee = char
+        hl.Parent = char
+        
+        espHighlights[player] = hl
+    end
+    
+    if player.Character then
+        setupChar(player.Character)
+    end
+    player.CharacterAdded:Connect(setupChar)
+end
+
+local function updateESP()
+    clearESP()
+    if not _G.ESPActive then return end
+    
+    for _, player in ipairs(Players:GetPlayers()) do
+        applyESP(player)
+    end
+end
+
+Players.PlayerAdded:Connect(function(player)
+    if _G.ESPActive then
+        applyESP(player)
+    end
+end)
+
+Players.PlayerRemoving:Connect(function(player)
+    if espHighlights[player] then
+        pcall(function() espHighlights[player]:Destroy() end)
+        espHighlights[player] = nil
+    end
+end)
+
+
+-- ==========================================
+-- ⚔️ COMBAT TAB
+-- ==========================================
+local CombatTab = Window:CreateTab("Combat")
+
+-- Aimbot Toggle dengan Keybind "E" terintegrasi dalam satu baris slot!
+CombatTab:AddToggle("Aimbot Toggle", {
+    Default = false,
+    Keybind = Enum.KeyCode.E,
+    Callback = function(enabled)
+        print("Aimbot Toggle state changed to:", enabled)
+    end,
+    KeybindCallback = function()
+        print("Aimbot Hotkey Triggered!")
+    end
+})
+
+-- Slider FOV Range (Tanpa sub-toggle/keybind lain)
+CombatTab:AddSlider("Aimbot FOV Range", {
+    Min = 10,
+    Max = 300,
+    Default = 100,
+    Unit = " studs",
+    Callback = function(value)
+        print("Aimbot FOV Radius set to:", value)
+    end
+})
+
+-- Spinner Smoothness
+CombatTab:AddSpinner("Aimbot Smoothness", {
+    Min = 1,
+    Max = 20,
+    Default = 5,
+    Step = 1,
+    Callback = function(value)
+        print("Aimbot Smoothness set to:", value)
+    end
+})
+
+-- Input Target Player Name
+CombatTab:AddInput("Target Player Name", {
+    Placeholder = "Enter username...",
+    Callback = function(text)
+        print("Target Player set to:", text)
+    end
+})
+
+-- Triggerbot Toggle dengan Keybind "T"
+CombatTab:AddToggle("Triggerbot Toggle", {
+    Default = false,
+    Keybind = Enum.KeyCode.T,
+    Callback = function(enabled)
+        print("Triggerbot Toggle state changed to:", enabled)
+    end
+})
+
+-- Slider Triggerbot Delay
+CombatTab:AddSlider("Triggerbot Delay", {
+    Min = 0,
+    Max = 1000,
+    Default = 100,
+    Unit = " ms",
+    Callback = function(value)
+        print("Triggerbot Delay set to:", value)
+    end
+})
+
+-- Dropdown Target Hitbox
+CombatTab:AddDropdown("Target Hitbox", {
+    Options = {"Head", "Torso", "HumanoidRootPart", "Random"},
+    Default = "Head",
+    Callback = function(choice)
+        print("Aimbot Target Hitbox selected:", choice)
+    end
+})
+
+-- Toggle Team Check
+CombatTab:AddToggle("Team Check", {
+    Default = true,
+    Callback = function(enabled)
+        print("Team Check state changed to:", enabled)
+    end
+})
+
+
+-- ==========================================
+-- 👁️ VISUALS TAB
+-- ==========================================
+local VisualsTab = Window:CreateTab("Visuals")
+
+-- Dropdown ESP Type (Fully Functional)
+VisualsTab:AddDropdown("ESP Type", {
+    Options = {"Enabled", "Disabled"},
+    Default = "Disabled",
+    Callback = function(choice)
+        _G.ESPActive = (choice == "Enabled")
+        updateESP()
+        print("ESP Status set to:", choice)
+    end
+})
+
+-- ESP Name Tags Toggle
+VisualsTab:AddToggle("ESP Name Tags", {
+    Default = false,
+    Callback = function(enabled)
+        print("ESP Name Tags state:", enabled)
+    end
+})
+
+-- Slider Tracers Transparency
+VisualsTab:AddSlider("Tracers Transparency", {
+    Min = 0,
+    Max = 100,
+    Default = 50,
+    Unit = "%",
+    Callback = function(val)
+        print("Tracers transparency set to:", val)
+    end
+})
+
+-- Colorpicker ESP Box Color (Fully Functional)
+VisualsTab:AddColorpicker("ESP Box Color", {
+    Default = Color3.fromRGB(0, 120, 255),
+    Callback = function(color)
+        _G.ESPColor = color
+        -- Update colors of all active highlights dynamically
+        for player, hl in pairs(espHighlights) do
+            pcall(function() hl.FillColor = color end)
+        end
+        print("ESP color changed:", tostring(color))
+    end
+})
+
+-- Spinner Max ESP Distance
+VisualsTab:AddSpinner("Max ESP Distance", {
+    Min = 50,
+    Max = 2000,
+    Default = 500,
+    Step = 50,
+    Callback = function(value)
+        print("Max ESP Distance set to:", value)
+    end
+})
+
+-- Button Force Reload ESP (Fully Functional)
+VisualsTab:AddButton("Force Reload ESP", {
+    Callback = function()
+        updateESP()
+        SysUI:Notify({
+            Title = "Visuals System",
+            Content = "ESP highlights reloaded!",
+            Duration = 2
+        })
+    end
+})
+
+
+-- ==========================================
+-- ⚙️ MISC TAB
+-- ==========================================
+local MiscTab = Window:CreateTab("Misc")
+
+-- WalkSpeed Slider dengan Toggle Switch terintegrasi pada slot yang sama!
+MiscTab:AddSlider("WalkSpeed Hack", {
+    Min = 16,
+    Max = 200,
+    Default = 16,
+    Unit = " studs/s",
+    Callback = function(val)
+        _G.WalkSpeedVal = val
+        print("WalkSpeed Multiplier set to:", val)
+    end,
+    Toggle = {
+        Default = false,
+        Callback = function(enabled)
+            _G.WalkSpeedActive = enabled
+            print("WalkSpeed Hack active state:", enabled)
+        end
+    }
+})
+
+-- Dropdown Teleport Player
+MiscTab:AddDropdown("Teleport Player", {
+    Options = {"Select Player", "Sugeng", "Budi", "Tono"},
+    Default = "Select Player",
+    Callback = function(choice)
+        print("Teleport requested to player:", choice)
+    end
+})
+
+-- Colorpicker Accent Color
+MiscTab:AddColorpicker("Accent Color", {
+    Default = Color3.fromRGB(0, 85, 255),
+    Callback = function(color)
+        print("UI Accent Color customized:", tostring(color))
+    end
+})
+
+-- JumpPower Slider dengan Toggle Switch terintegrasi!
+MiscTab:AddSlider("JumpPower Hack", {
+    Min = 50,
+    Max = 300,
+    Default = 50,
+    Unit = " power",
+    Callback = function(val)
+        print("JumpPower Multiplier set to:", val)
+    end,
+    Toggle = {
+        Default = false,
+        Callback = function(enabled)
+            _G.JumpPowerActive = enabled
+            print("JumpPower Hack active state:", enabled)
+        end
+    }
+})
+
+-- Spinner Gravity Changer (Fully Functional)
+MiscTab:AddSpinner("Gravity Changer", {
+    Min = 0,
+    Max = 196,
+    Default = 196,
+    Step = 10,
+    Callback = function(val)
+        pcall(function()
+            workspace.Gravity = val
+        end)
+        print("Gravity changed to:", val)
+    end
+})
+
+-- Toggle Infinite Jump (Fully Functional)
+MiscTab:AddToggle("Infinite Jump", {
+    Default = false,
+    Callback = function(enabled)
+        _G.InfJumpActive = enabled
+        print("Infinite Jump active:", enabled)
+    end
+})
+
+-- Input Console Command
+MiscTab:AddInput("Console Command", {
+    Placeholder = "/command...",
+    Callback = function(text)
+        print("Console command submitted:", text)
+    end
+})
+
+-- Button Uninstall Script (Fully Functional)
+MiscTab:AddButton("Uninstall Script", {
+    Callback = function()
+        clearESP()
+        _G.WalkSpeedActive = false
+        _G.JumpPowerActive = false
+        _G.InfJumpActive = false
+        pcall(function() workspace.Gravity = 196.2 end)
+        Window:GetGui():Destroy()
+        SysUI:Notify({
+            Title = "SysHub",
+            Content = "UI has been successfully uninstalled!",
+            Duration = 3
+        })
+    end
+})
+
+
+-- Hook Config Actions
+Window:BindConfigActions({
+    OnLoad = function()
+        print("Configuration Profile Loaded successfully!")
+    end,
+    OnSave = function()
+        print("Configuration Profile Saved successfully!")
+    end
+})
+
+
+-- Notify loading
+SysUI:Notify({
+    Title = "SysHub Loaded",
+    Content = "All features are active! Press RightShift to hide.",
+    Duration = 4
+})
