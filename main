@@ -1,0 +1,486 @@
+-- require
+local SysUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/tya1002/SysUI-Library/main/loader?t=" .. os.time()))()
+
+-- load
+local Window = SysUI:Load()
+
+-- Services
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+local Camera = workspace.CurrentCamera
+
+-- Logic States
+_G.WalkSpeedActive = false
+_G.WalkSpeedVal = 16
+
+_G.JumpPowerActive = false
+_G.JumpPowerVal = 50
+
+_G.InfJumpActive = false
+
+_G.ESPActive = false
+_G.ESPColor = Color3.fromRGB(0, 120, 255)
+
+_G.AimbotActive = false
+_G.AimbotFOV = 150
+
+_G.FlyActive = false
+_G.FlySpeed = 50
+
+-- Fly Hack Variables
+local flyConnection
+local bodyGyro, bodyVelocity
+
+-- WalkSpeed & JumpPower Loop
+task.spawn(function()
+    while task.wait(0.1) do
+        pcall(function()
+            local char = LocalPlayer.Character
+            local hum = char and char:FindFirstChildOfClass("Humanoid")
+            if hum then
+                if _G.WalkSpeedActive then
+                    hum.WalkSpeed = _G.WalkSpeedVal
+                else
+                    hum.WalkSpeed = 16
+                end
+                if _G.JumpPowerActive then
+                    hum.UseJumpPower = true
+                    hum.JumpPower = _G.JumpPowerVal
+                else
+                    hum.JumpPower = 50
+                end
+            end
+        end)
+    end
+end)
+
+-- Infinite Jump Listener
+UserInputService.JumpRequest:Connect(function()
+    if _G.InfJumpActive then
+        pcall(function()
+            LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
+        end)
+    end
+end)
+
+-- Fly Hack Functions
+local function startFlying()
+    local char = LocalPlayer.Character
+    local hrp = char and char:FindFirstChild("HumanoidRootPart")
+    local hum = char and char:FindFirstChildOfClass("Humanoid")
+    if not hrp or not hum then return end
+    
+    bodyGyro = Instance.new("BodyGyro")
+    bodyGyro.P = 9e4
+    bodyGyro.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+    bodyGyro.cframe = hrp.CFrame
+    bodyGyro.Parent = hrp
+    
+    bodyVelocity = Instance.new("BodyVelocity")
+    bodyVelocity.velocity = Vector3.new(0, 0.1, 0)
+    bodyVelocity.maxForce = Vector3.new(9e9, 9e9, 9e9)
+    bodyVelocity.Parent = hrp
+    
+    hum.PlatformStand = true
+    
+    flyConnection = RunService.RenderStepped:Connect(function()
+        pcall(function()
+            bodyGyro.cframe = Camera.CFrame
+            local moveDirection = hum.MoveDirection
+            local vel = Vector3.new(0, 0, 0)
+            
+            if moveDirection.Magnitude > 0 then
+                vel = moveDirection * _G.FlySpeed
+            end
+            
+            if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
+                vel = vel + Vector3.new(0, _G.FlySpeed, 0)
+            elseif UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then
+                vel = vel - Vector3.new(0, _G.FlySpeed, 0)
+            end
+            
+            bodyVelocity.velocity = vel
+        end)
+    end)
+end
+
+local function stopFlying()
+    if flyConnection then
+        flyConnection:Disconnect()
+        flyConnection = nil
+    end
+    if bodyGyro then bodyGyro:Destroy() bodyGyro = nil end
+    if bodyVelocity then bodyVelocity:Destroy() bodyVelocity = nil end
+    pcall(function()
+        local char = LocalPlayer.Character
+        local hum = char and char:FindFirstChildOfClass("Humanoid")
+        if hum then hum.PlatformStand = false end
+    end)
+end
+
+-- ESP Highlight Logic
+local espHighlights = {}
+
+local function clearESP()
+    for obj, hl in pairs(espHighlights) do
+        pcall(function() hl:Destroy() end)
+    end
+    table.clear(espHighlights)
+end
+
+local function applyESP(model)
+    if model == LocalPlayer.Character then return end
+    
+    if espHighlights[model] then
+        pcall(function() espHighlights[model]:Destroy() end)
+    end
+    
+    local hl = Instance.new("Highlight")
+    hl.Name = "SysHubESP"
+    hl.FillColor = _G.ESPColor
+    hl.OutlineColor = Color3.fromRGB(255, 255, 255)
+    hl.FillTransparency = 0.5
+    hl.OutlineTransparency = 0
+    hl.Adornee = model
+    hl.Parent = model
+    
+    espHighlights[model] = hl
+end
+
+local function updateESP()
+    clearESP()
+    if not _G.ESPActive then return end
+    
+    -- Highlight players
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character then
+            applyESP(player.Character)
+        end
+    end
+    
+    -- Highlight spawned dummies in workspace
+    for _, obj in ipairs(workspace:GetChildren()) do
+        if obj:IsA("Model") and obj:FindFirstChildOfClass("Humanoid") and obj ~= LocalPlayer.Character then
+            applyESP(obj)
+        end
+    end
+end
+
+-- Monitor workspace for dynamic dummies
+workspace.ChildAdded:Connect(function(child)
+    if _G.ESPActive and child:IsA("Model") and child:FindFirstChildOfClass("Humanoid") then
+        task.wait(0.1)
+        applyESP(child)
+    end
+end)
+
+Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function(char)
+        if _G.ESPActive then
+            task.wait(0.2)
+            applyESP(char)
+        end
+    end)
+end)
+
+Players.PlayerRemoving:Connect(function(player)
+    if player.Character and espHighlights[player.Character] then
+        pcall(function() espHighlights[player.Character]:Destroy() end)
+        espHighlights[player.Character] = nil
+    end
+end)
+
+-- Aimbot Target Search
+local function getClosestTarget()
+    local closest = nil
+    local shortestDistance = math.huge
+    local myHrp = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+    if not myHrp then return nil end
+    
+    local function checkChar(char)
+        local head = char:FindFirstChild("Head")
+        if head then
+            local screenPos, onScreen = Camera:WorldToViewportPoint(head.Position)
+            if onScreen then
+                local mousePos = UserInputService:GetMouseLocation()
+                local dist = (Vector2.new(screenPos.X, screenPos.Y) - mousePos).Magnitude
+                if dist < shortestDistance and dist < _G.AimbotFOV then
+                    shortestDistance = dist
+                    closest = head
+                end
+            end
+        end
+    end
+    
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character then
+            checkChar(player.Character)
+        end
+    end
+    for _, obj in ipairs(workspace:GetChildren()) do
+        if obj:IsA("Model") and obj:FindFirstChildOfClass("Humanoid") and obj ~= LocalPlayer.Character then
+            checkChar(obj)
+        end
+    end
+    return closest
+end
+
+-- Aimbot holding right click loop
+task.spawn(function()
+    while task.wait() do
+        if _G.AimbotActive and UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton2) then
+            local target = getClosestTarget()
+            if target then
+                Camera.CFrame = CFrame.new(Camera.CFrame.Position, target.Position)
+            end
+        end
+    end
+end)
+
+
+-- Group Menu
+local MainCheatsGroup = Window:CreateGroup("Main Cheats", { Collapsible = true })
+
+-- Combat Tab
+local CombatTab = MainCheatsGroup:CreateTab("Combat")
+
+CombatTab:AddToggle("Aimbot Toggle", {
+    Default = false,
+    Keybind = Enum.KeyCode.E,
+    Callback = function(enabled)
+        _G.AimbotActive = enabled
+        print("Aimbot status:", enabled)
+    end
+})
+
+CombatTab:AddSlider("Aimbot FOV Range", {
+    Min = 50,
+    Max = 800,
+    Default = 150,
+    Unit = " px",
+    Callback = function(value)
+        _G.AimbotFOV = value
+        print("Aimbot FOV set to:", value)
+    end
+})
+
+CombatTab:AddButton("Spawn Test Dummy", {
+    Callback = function()
+        local char = LocalPlayer.Character
+        local hrp = char and char:FindFirstChild("HumanoidRootPart")
+        if not hrp then return end
+        
+        local dummy = Instance.new("Model")
+        dummy.Name = "Enemy Dummy (" .. math.random(100, 999) .. ")"
+        
+        local dHrp = Instance.new("Part")
+        dHrp.Name = "HumanoidRootPart"
+        dHrp.Size = Vector3.new(2, 2, 1)
+        dHrp.Position = hrp.Position + hrp.CFrame.LookVector * 12
+        dHrp.Anchored = true
+        dHrp.CanCollide = true
+        dHrp.Parent = dummy
+        
+        local head = Instance.new("Part")
+        head.Name = "Head"
+        head.Size = Vector3.new(1.2, 1.2, 1.2)
+        head.Position = dHrp.Position + Vector3.new(0, 2, 0)
+        head.Color = Color3.fromRGB(220, 50, 50)
+        head.Anchored = true
+        head.Parent = dummy
+        
+        local hum = Instance.new("Humanoid")
+        hum.Parent = dummy
+        
+        dummy.PrimaryPart = dHrp
+        dummy.Parent = workspace
+        
+        SysUI:Notify({
+            Title = "Combat System",
+            Content = "Spawned test dummy for Aimbot and ESP testing!",
+            Duration = 3
+        })
+    end
+})
+
+
+-- Visuals Tab
+local VisualsTab = MainCheatsGroup:CreateTab("Visuals")
+
+VisualsTab:AddDropdown("ESP Type", {
+    Options = {"Enabled", "Disabled"},
+    Default = "Disabled",
+    Callback = function(choice)
+        _G.ESPActive = (choice == "Enabled")
+        updateESP()
+        print("ESP Status set to:", choice)
+    end
+})
+
+VisualsTab:AddColorpicker("ESP Box Color", {
+    Default = Color3.fromRGB(0, 120, 255),
+    Callback = function(color)
+        _G.ESPColor = color
+        for obj, hl in pairs(espHighlights) do
+            pcall(function() hl.FillColor = color end)
+        end
+        print("ESP color changed:", tostring(color))
+    end
+})
+
+VisualsTab:AddButton("Clear Spawned Dummies", {
+    Callback = function()
+        for _, obj in ipairs(workspace:GetChildren()) do
+            if obj:IsA("Model") and obj.Name:match("^Enemy Dummy") then
+                obj:Destroy()
+            end
+        end
+        updateESP()
+        SysUI:Notify({
+            Title = "Visuals System",
+            Content = "All test dummies cleared!",
+            Duration = 2
+        })
+    end
+})
+
+
+-- Misc Tab
+local MiscTab = MainCheatsGroup:CreateTab("Misc")
+
+MiscTab:AddSlider("WalkSpeed Hack", {
+    Min = 16,
+    Max = 200,
+    Default = 16,
+    Unit = " studs/s",
+    Callback = function(val)
+        _G.WalkSpeedVal = val
+    end,
+    Toggle = {
+        Default = false,
+        Callback = function(enabled)
+            _G.WalkSpeedActive = enabled
+        end
+    }
+})
+
+MiscTab:AddSlider("JumpPower Hack", {
+    Min = 50,
+    Max = 300,
+    Default = 50,
+    Unit = " power",
+    Callback = function(val)
+        _G.JumpPowerVal = val
+    end,
+    Toggle = {
+        Default = false,
+        Callback = function(enabled)
+            _G.JumpPowerActive = enabled
+        end
+    }
+})
+
+MiscTab:AddSpinner("Gravity Changer", {
+    Min = 0,
+    Max = 196,
+    Default = 196,
+    Step = 10,
+    Callback = function(val)
+        pcall(function() workspace.Gravity = val end)
+        print("Gravity set to:", val)
+    end
+})
+
+MiscTab:AddToggle("Infinite Jump", {
+    Default = false,
+    Callback = function(enabled)
+        _G.InfJumpActive = enabled
+        print("Infinite Jump active:", enabled)
+    end
+})
+
+MiscTab:AddToggle("Fly Hack Mode", {
+    Default = false,
+    Keybind = Enum.KeyCode.F,
+    Callback = function(enabled)
+        _G.FlyActive = enabled
+        if enabled then
+            startFlying()
+        else
+            stopFlying()
+        end
+        print("Fly Hack active:", enabled)
+    end
+})
+
+MiscTab:AddSlider("Fly speed", {
+    Min = 10,
+    Max = 200,
+    Default = 50,
+    Unit = " studs/s",
+    Callback = function(val)
+        _G.FlySpeed = val
+    end
+})
+
+MiscTab:AddButton("Spawn Neon Block", {
+    Callback = function()
+        local char = LocalPlayer.Character
+        local hrp = char and char:FindFirstChild("HumanoidRootPart")
+        if not hrp then return end
+        
+        local part = Instance.new("Part")
+        part.Size = Vector3.new(4, 4, 4)
+        part.Position = hrp.Position + hrp.CFrame.LookVector * 8
+        part.Material = Enum.Material.Neon
+        part.Color = Color3.fromHSV(math.random(), 1, 1)
+        part.Anchored = false
+        part.Parent = workspace
+        
+        SysUI:Notify({
+            Title = "Misc Actions",
+            Content = "Spawned neon block successfully!",
+            Duration = 2
+        })
+    end
+})
+
+MiscTab:AddButton("Uninstall Script", {
+    Callback = function()
+        clearESP()
+        stopFlying()
+        _G.WalkSpeedActive = false
+        _G.JumpPowerActive = false
+        _G.InfJumpActive = false
+        _G.AimbotActive = false
+        pcall(function() workspace.Gravity = 196.2 end)
+        Window:GetGui():Destroy()
+        SysUI:Notify({
+            Title = "SysHub",
+            Content = "UI has been successfully uninstalled!",
+            Duration = 3
+        })
+    end
+})
+
+
+-- Config Actions Hook
+Window:BindConfigActions({
+    OnLoad = function()
+        print("Configuration Profile Loaded successfully!")
+    end,
+    OnSave = function()
+        print("Configuration Profile Saved successfully!")
+    end
+})
+
+
+-- Notify loading
+SysUI:Notify({
+    Title = "SysHub Loaded",
+    Content = "All features are active! Press RightShift to hide.",
+    Duration = 4
+})
