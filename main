@@ -1,5 +1,5 @@
 -- require
-local SysUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/tya1002/SysUI-Library/main/loader?t=" .. os.time()))()
+local SysUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/tya1002/SysUI-Library/main/loader?t="
 
 -- load
 local Window = SysUI:Load()
